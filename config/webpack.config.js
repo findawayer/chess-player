@@ -110,14 +110,6 @@ module.exports = function createWebpackConfig(env) {
         },
       }),
     ],
-    devServer: isDevelopment
-      ? {
-          contentBase: 'public',
-          port: pkg.config.port,
-          hot: true,
-          historyApiFallback: true,
-        }
-      : undefined,
     // Source mapping method.
     devtool: isDevelopment ? 'eval-cheap-module-source-map' : undefined,
     // Compilation log.

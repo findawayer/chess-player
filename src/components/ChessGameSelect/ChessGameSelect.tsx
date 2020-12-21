@@ -29,7 +29,7 @@ interface ChessGameSelectProps {
   duration: number;
   engineLevel: number;
   increment: number;
-  playerColor: ChessPieceColor;
+  playerColor: ChessPieceColor | null;
 }
 
 export const ChessGameSelect: React.FC<ChessGameSelectProps> = ({

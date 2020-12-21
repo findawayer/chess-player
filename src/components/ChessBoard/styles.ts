@@ -37,8 +37,8 @@ export default makeStyles<Theme>(theme =>
   createStyles({
     board: {
       position: 'relative',
-      width: '80vh',
-      height: '80vh',
+      width: '70vh',
+      height: '70vh',
       minWidth: 500,
       minHeight: 500,
       overflow: 'hidden',

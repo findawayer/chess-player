@@ -10,3 +10,6 @@ node_modules
 # Private files
 .idea
 TODOs.md
+
+# Bundles
+public/static/js

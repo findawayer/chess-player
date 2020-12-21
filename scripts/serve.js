@@ -20,15 +20,17 @@ const port = pkg.config.port || 3000;
 const devConfig = createWebpackConfig(process.env.NODE_ENV);
 // Create server config based on the webpack config created.
 const serverConfig = {
-  contentBase: devConfig.devServer.contentBase,
-  publicPath: devConfig.output.publicPath,
+  contentBase: 'public',
+  publicPath: process.env.PUBLIC_URL,
   hot: true,
   disableHostCheck: true,
+  historyApiFallback: true,
   stats: {
     colors: true,
     modules: false,
   },
 };
+
 // Create both compiler and the dev server.
 const compiler = webpack(devConfig);
 const devServer = new WebpackDevServer(compiler, serverConfig);

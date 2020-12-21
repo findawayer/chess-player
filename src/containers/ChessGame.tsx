@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ChessBoard from '@components/ChessBoard';
@@ -85,6 +91,8 @@ const ChessGame: React.FC = () => {
   /** The source & target squares of the recently played move. */
   const recentMovePath = useMemo(() => getRecentMovePath(moves), [moves]);
 
+  console.log('render');
+
   /** Reset the game data. Swap piece colors when `alternate` is set to true. */
   const rematch = useCallback(
     (alternate: boolean) => {
@@ -100,8 +108,8 @@ const ChessGame: React.FC = () => {
     return () => rematch(false);
   }, [rematch]);
 
-  // Initialize players
-  useEffect(() => {
+  // Initialize players before rendering.
+  useLayoutEffect(() => {
     const players = playerColor
       ? createHumanAndComputer({ playerColor })
       : createComputers();
@@ -109,7 +117,7 @@ const ChessGame: React.FC = () => {
   }, [dispatch, playerColor]);
 
   // Initialize pieces.
-  useEffect(() => {
+  useLayoutEffect(() => {
     // debug
     // validator.load(FEN_WHITE_STALEMATE);
     dispatch(setPieces({ board: validator.board() }));

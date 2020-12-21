@@ -40,19 +40,25 @@ interface ChessClockTime {
   b: number;
 }
 
-/**
- * Renderer function invoked by `requestAnimationFrame`.
- * Exploited here to calculate timing with high precision.
- */
+// Frame updater to keep track of time flow.
 type UpdateClock = (now: number) => void;
-/** Start running the clock. starts with the white side. */
+// Start clock.
 type StartClock = () => void;
-/** Stop running the clock. */
+// Stop clock.
 type PauseClock = () => void;
-/** Change the active side of the clock to the passed value. */
+// Change the active side of the clock.
 type SetClockSide = (side: ChessPieceColor) => void;
-/** Stop and reset the clock to initial settings. */
+// Stop and reset the clock.
 type ResetClock = () => void;
+
+/* Returned values of `useChessClock` hook. */
+interface UseChessClockAPI {
+  time: ChessClockTime;
+  startClock: StartClock;
+  pauseClock: PauseClock;
+  setClockSide: SetClockSide;
+  resetClock: ResetClock;
+}
 
 /** Initial form of the clock. */
 const initialClock: ChessClock = {
@@ -100,13 +106,7 @@ export const useChessClock = ({
 }: {
   duration: number;
   increment: number;
-}): {
-  time: ChessClockTime;
-  startClock: StartClock;
-  pauseClock: PauseClock;
-  setClockSide: SetClockSide;
-  resetClock: ResetClock;
-} => {
+}): UseChessClockAPI => {
   // Use `useRef` instead of `useState` to avoid re-render while tracking the time.
   const clockRef = useRef(initialClock);
   // Reference for the frame id that `requestAnimationFrame` returns.
@@ -168,6 +168,8 @@ export const useChessClock = ({
 
   // Cache clock frame update handler.
   useLayoutEffect(() => {
+    // Renderer function invoked by `requestAnimationFrame`.
+    // Exploited here to calculate timing with high precision.
     updateRef.current = (now: number) => {
       const clock = clockRef.current;
       // Record the timestamp when starting
