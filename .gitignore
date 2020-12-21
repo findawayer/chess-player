@@ -1,0 +1,12 @@
+# Packages
+node_modules
+
+# OS cookies
+.DS_Store
+
+# Logs
+*.log
+
+# Private files
+.idea
+TODOs.md
