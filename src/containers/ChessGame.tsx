@@ -19,6 +19,7 @@ import {
 } from '@helpers';
 import { useChessClock, useStockfish } from '@hooks';
 // import { FEN_WHITE_STALEMATE } from '@settings';
+import { STOCKFISH_FILE_PATH } from '@settings';
 import {
   ChessState,
   checkmate,
@@ -74,7 +75,7 @@ const ChessGame: React.FC = () => {
     duration,
     increment,
     skillLevel: engineLevel,
-    filepath: 'assets/stockfish/src/stockfish.js',
+    filepath: STOCKFISH_FILE_PATH,
   });
   /** Chess board theme of user's choice. */
   const userChessBoardTheme = useMemo(() => getChessBoardTheme(boardColor), [
@@ -90,8 +91,6 @@ const ChessGame: React.FC = () => {
   const bottomPlayerColor: ChessPieceColor = isFlipped ? 'b' : 'w';
   /** The source & target squares of the recently played move. */
   const recentMovePath = useMemo(() => getRecentMovePath(moves), [moves]);
-
-  console.log('render');
 
   /** Reset the game data. Swap piece colors when `alternate` is set to true. */
   const rematch = useCallback(
