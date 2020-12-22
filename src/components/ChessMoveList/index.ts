@@ -1,1 +1,3 @@
-export { MemoizedChessMoveList as default } from './ChessMoveList';
+import ChessMoveList from './ChessMoveList';
+
+export default ChessMoveList;

@@ -1,17 +1,17 @@
 import clsx from 'clsx';
 import React, { memo } from 'react';
 
-import { usePieceStyles } from '@components/ChessPiece';
-import { pieceClass } from '@helpers';
-import { ChessPieceColor, ChessPieceVariant } from '@types';
+import { usePieceStyles } from '@/components/ChessPiece';
+import { pieceClass } from '@/helpers';
+import { ChessPieceColor, ChessPieceVariant } from '@/types';
 
-export interface ChessPieceDragPreviewProps {
+interface ChessPieceDragPreviewProps {
   color: ChessPieceColor;
   variant: ChessPieceVariant;
   size: number;
 }
 
-export const ChessPieceDragPreview: React.FC<ChessPieceDragPreviewProps> = ({
+const ChessPieceDragPreview: React.FC<ChessPieceDragPreviewProps> = ({
   color,
   variant,
   size,
@@ -25,4 +25,4 @@ export const ChessPieceDragPreview: React.FC<ChessPieceDragPreviewProps> = ({
   );
 };
 
-export const MemoizedChessPieceDragPreview = memo(ChessPieceDragPreview);
+export default memo(ChessPieceDragPreview);

@@ -4,7 +4,7 @@ import {
   ChessPieceColor,
   ChessPieces,
   ChessPlayers,
-} from '@types';
+} from '@/types';
 
 /**
  * Blueprint of chess game related states.
@@ -29,9 +29,9 @@ export interface ChessState {
  */
 export const initializeChess = (): ChessState => ({
   // Time given to play per side. (in milliseconds)
-  duration: 5 * 60 * 1000, // 5 min.
+  duration: 10 * 60 * 1000, // 10 min.
   // Time gained by playing a move. (in milliseconds)
-  increment: 3 * 1000, // 3 sec.
+  increment: 2 * 1000, // 2 sec.
   // The time during which a player can move their pieces. Represented by the piece color.
   turn: 'w',
   // Chess pieces. All pieces stored in `byId` object, and their positions on board

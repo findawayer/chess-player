@@ -1,1 +1,3 @@
-export { ChessGameOverDialog as default } from './ChessGameOverDialog';
+import ChessGameOverDialog from './ChessGameOverDialog';
+
+export default ChessGameOverDialog;

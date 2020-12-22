@@ -1,1 +1,3 @@
-export { ChessControl as default } from './ChessControl';
+import ChessControl from './ChessControl';
+
+export default ChessControl;

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import update from 'immutability-helper';
 
-import { stringifySquare } from '@helpers';
-import { ChessPromotionVariant, ChessPromotion } from '@types';
+import { stringifySquare } from '@/helpers';
+import { ChessPromotionVariant, ChessPromotion } from '@/types';
 
 export type PromptPromotion = (
   promotion: Omit<ChessPromotion, 'variant'>,

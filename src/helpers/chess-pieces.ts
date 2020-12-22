@@ -1,10 +1,13 @@
-import { Board } from 'chess.js';
-
-import { ChessPieceColor, ChessPieces, ChessPieceVariant } from '@types';
+import {
+  ChessBoardData,
+  ChessPieceColor,
+  ChessPieces,
+  ChessPieceVariant,
+} from '@/types';
 import { stringifySquare } from './chess-squares';
 
 /** Create pieces from board data fetched from `chess.js` instance. */
-export const createPieces = (board: Board): ChessPieces => {
+export const createPieces = (board: ChessBoardData): ChessPieces => {
   // Dictionary of piece data.
   const byId = {} as ChessPieces['byId'];
   // Relational data of pieces and their positions.

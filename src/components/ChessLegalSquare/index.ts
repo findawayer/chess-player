@@ -1,1 +1,3 @@
-export { ChessLegalSquare as default } from './ChessLegalSquare';
+import ChessLegalSquare from './ChessLegalSquare';
+
+export default ChessLegalSquare;

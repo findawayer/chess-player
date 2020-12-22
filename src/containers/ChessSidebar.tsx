@@ -3,37 +3,45 @@ import times from 'lodash/times';
 import React, { memo, useCallback, useContext, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ChessControl from '@components/ChessControl';
-import ChessMoveList from '@components/ChessMoveList';
-import ChessSettingsDialog from '@components/ChessSettingsDialog';
-import { ChessValidatorContext } from '@contexts';
-import { ChessState, flipBoard, resign, undoMove } from '@slices/chess';
-import { PreferencesState, updateGameSettings } from '@slices/preferences';
-import { AppState } from '@vendors/redux';
+import ChessControl from '@/components/ChessControl';
+import ChessMoveList from '@/components/ChessMoveList';
+import ChessSettingsDialog from '@/components/ChessSettingsDialog';
+import { ChessValidatorContext } from '@/contexts';
+import { ApplyChessSettings } from '@/hooks';
+import { ChessState, flipBoard, resign, undoMove } from '@/slices/chess';
+import { ChessSettings } from '@/types';
+import { AppState } from '@/vendors/redux';
 
-interface ChessSidebarState
-  extends Pick<ChessState, 'gameOver' | 'moves' | 'playerColor' | 'turn'> {
-  settings: PreferencesState;
+type ChessSidebarState = Pick<
+  ChessState,
+  'gameOver' | 'moves' | 'playerColor' | 'turn'
+>;
+
+interface ChessSidebarProps {
+  settings: ChessSettings;
+  applySettings: ApplyChessSettings;
 }
 
-const ChessSidebar: React.FC = () => {
+const ChessSidebar: React.FC<ChessSidebarProps> = ({
+  settings,
+  applySettings,
+}) => {
   /** chess game validator. */
   const validator = useContext(ChessValidatorContext);
   // Fetch state from Redux store.
-  const { settings, gameOver, moves, playerColor, turn } = useSelector<
+  const { gameOver, moves, playerColor, turn } = useSelector<
     AppState,
     ChessSidebarState
   >(state => ({
     gameOver: state.chess.gameOver,
     moves: state.chess.moves,
     playerColor: state.chess.playerColor,
-    settings: state.preferences,
     turn: state.chess.turn,
   }));
   /** Action dispatcher to Redux store. */
   const dispatch = useDispatch();
   // Local state: Settings dialog's visibility.
-  const [openSettings, setOpenSettings] = useState(false);
+  const [settingsVisibility, setSettingsVisibilty] = useState(false);
   /** Whether the current turn is the user's turn. */
   const isPlayerTurn = turn === playerColor;
   /** List of played moves splitted by their fullmove count. */
@@ -76,16 +84,13 @@ const ChessSidebar: React.FC = () => {
   }, [dispatch, isPlayerTurn, validator]);
   /** Concede the game. */
   const handleResign = useCallback(() => dispatch(resign()), [dispatch]);
-  const toggleSettings = (force?: boolean) => {
-    setOpenSettings(previousOpenSettings =>
-      typeof force === 'boolean' ? force : !previousOpenSettings,
-    );
-  };
-  /** Update game settings */
-  const updateSettings = useCallback(
-    (update: Partial<PreferencesState>) => dispatch(updateGameSettings(update)),
-    [dispatch],
-  );
+  /** Close the game settings dialog */
+  const openSettings = useCallback(() => {
+    setSettingsVisibilty(true);
+  }, []);
+  const closeSettings = useCallback(() => {
+    setSettingsVisibilty(false);
+  }, []);
 
   return (
     <>
@@ -95,14 +100,14 @@ const ChessSidebar: React.FC = () => {
         flipBoard={handleFlipBoard}
         resign={handleResign}
         takeBack={handleTakeBack}
-        toggleSettings={toggleSettings}
+        openSettings={openSettings}
       />
       <ChessMoveList moveList={moveList} />
       <ChessSettingsDialog
-        isOpen={openSettings}
+        isOpen={settingsVisibility}
         settings={settings}
-        toggleSettings={toggleSettings}
-        updateSettings={updateSettings}
+        applySettings={applySettings}
+        closeSettings={closeSettings}
       />
     </>
   );

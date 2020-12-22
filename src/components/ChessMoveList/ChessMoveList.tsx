@@ -3,7 +3,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
 
-import { ChessMoveLog } from '@types';
+import { ChessMoveLog } from '@/types';
 import useStyles from './styles';
 
 interface ChessMoveListProps {
@@ -12,7 +12,7 @@ interface ChessMoveListProps {
   moveList: ChessMoveLog[][];
 }
 
-export const ChessMoveList: React.FC<ChessMoveListProps> = ({ moveList }) => {
+const ChessMoveList: React.FC<ChessMoveListProps> = ({ moveList }) => {
   /** Scroller element ref. */
   const scrollerRef = useRef<HTMLLIElement>(null);
   /** CSS classes created via Material-UI. */
@@ -42,19 +42,4 @@ export const ChessMoveList: React.FC<ChessMoveListProps> = ({ moveList }) => {
   );
 };
 
-/* Comparator function for props changes. Decide when to re-render. */
-// function areEqual(
-//   previousProps: ChessMoveListProps,
-//   nextProps: ChessMoveListProps,
-// ): boolean {
-//   const previousList = previousProps.moveList;
-//   const nextList = nextProps.moveList;
-//   const arrayLengthsAreEqual = previousList.length === nextList.length;
-//   const subArrayLengthsAreEqual =
-//     previousList[previousList.length - 1].length ===
-//     nextList[nextList.length - 1].length;
-
-//   return arrayLengthsAreEqual && subArrayLengthsAreEqual;
-// }
-
-export const MemoizedChessMoveList = memo(ChessMoveList);
+export default memo(ChessMoveList);

@@ -1,19 +1,20 @@
 import map from 'lodash/map';
 import React from 'react';
 
-import ChessGuide from '@components/ChessGuide';
-import ChessLegalSquare from '@components/ChessLegalSquare';
-import ChessPiece from '@components/ChessPiece';
-import ChessPromotionDialog from '@components/ChessPromotionDialog';
-import { objectifySquare } from '@helpers';
-import { AbortPromotion, SelectPromotion } from '@hooks';
+import ChessGuide from '@/components/ChessGuide';
+import ChessLegalSquare from '@/components/ChessLegalSquare';
+import ChessPiece from '@/components/ChessPiece';
+import ChessPromotionDialog from '@/components/ChessPromotionDialog';
+import { objectifySquare } from '@/helpers';
+import { AbortPromotion, SelectPromotion } from '@/hooks';
 import {
+  ChessBoardThemeVariant,
   ChessLegalMove,
   ChessPieces,
   ChessPromotion,
   ChessSquare,
   ChessSquareName,
-} from '@types';
+} from '@/types';
 
 /* Render chess pieces. */
 export function renderPieces(
@@ -49,15 +50,21 @@ export function renderPieces(
 /* Render user selected square during a piece drag action. */
 export function renderActiveSquare(
   square: ChessSquareName | null,
+  color: ChessBoardThemeVariant,
 ): JSX.Element | null {
-  return square ? <ChessGuide variant="active" square={square} /> : null;
+  return square ? (
+    <ChessGuide variant="active" color={color} square={square} />
+  ) : null;
 }
 
 /* Render currently hovered square during a piece drag action. */
 export function renderHoveredSquare(
   square: ChessSquareName | null,
+  color: ChessBoardThemeVariant,
 ): JSX.Element | null {
-  return square ? <ChessGuide variant="hover" square={square} /> : null;
+  return square ? (
+    <ChessGuide variant="hover" color={color} square={square} />
+  ) : null;
 }
 
 /* Render currently hovered square during a piece drag action. */
@@ -83,10 +90,16 @@ export function renderLegalSquares(
 /* Redner recentmost move's source & target squares. */
 export function renderRecentSquares(
   squares: ChessSquareName[] | null,
+  color: ChessBoardThemeVariant,
 ): JSX.Element[] | null {
   return squares
     ? squares.map(square => (
-        <ChessGuide key={square} variant="recent" square={square} />
+        <ChessGuide
+          key={square}
+          variant="recent"
+          color={color}
+          square={square}
+        />
       ))
     : null;
 }

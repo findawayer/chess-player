@@ -1,12 +1,12 @@
 import React from 'react';
+import { Box, IconButton, Tooltip } from '@material-ui/core';
+import {
+  Cached as CachedIcon,
+  Flag as FlagIcon,
+  Settings as SettingsIcon,
+  Undo as UndoIcon,
+} from '@material-ui/icons';
 
-import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import CachedIcon from '@material-ui/icons/Cached';
-import FlagIcon from '@material-ui/icons/Flag';
-import SettingsIcon from '@material-ui/icons/Settings';
-import UndoIcon from '@material-ui/icons/Undo';
 import useStyles from './styles';
 
 interface ChessControlProps {
@@ -15,16 +15,16 @@ interface ChessControlProps {
   flipBoard(): void;
   takeBack(): void;
   resign(): void;
-  toggleSettings(force?: boolean): void;
+  openSettings(): void;
 }
 
-export const ChessControl: React.FC<ChessControlProps> = ({
+const ChessControl: React.FC<ChessControlProps> = ({
   canResign,
   canTakeBack,
   flipBoard,
   takeBack,
   resign,
-  toggleSettings,
+  openSettings,
 }) => {
   /** CSS classes created via Material-UI. */
   const classes = useStyles();
@@ -67,7 +67,7 @@ export const ChessControl: React.FC<ChessControlProps> = ({
         <IconButton
           className={classes.button}
           edge="end"
-          onClick={() => toggleSettings(true)}
+          onClick={() => openSettings()}
         >
           <SettingsIcon fontSize="inherit" />
         </IconButton>
@@ -75,3 +75,5 @@ export const ChessControl: React.FC<ChessControlProps> = ({
     </Box>
   );
 };
+
+export default ChessControl;

@@ -1,1 +1,3 @@
-export { ChessPromotionDialog as default } from './ChessPromotionDialog';
+import ChessPromotionDialog from './ChessPromotionDialog';
+
+export default ChessPromotionDialog;

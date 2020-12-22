@@ -5,11 +5,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 
-import { getFullPieceColor } from '@helpers';
-import { ChessGameOver, ChessGameOverType, ChessPieceColor } from '@types';
+import { getFullPieceColor } from '@/helpers';
+import { ChessGameOver, ChessGameOverType, ChessPieceColor } from '@/types';
 import useStyles from './styles';
 
-export interface ChessGameOverDialogProps {
+interface ChessGameOverDialogProps {
   gameOver: ChessGameOver | false;
   playerColor: ChessPieceColor | null;
   rematch(alternate: boolean): void;
@@ -54,7 +54,7 @@ const getDescription = (gameOver: ChessGameOver): string => {
   }
 };
 
-export const ChessGameOverDialog: React.FC<ChessGameOverDialogProps> = ({
+const ChessGameOverDialog: React.FC<ChessGameOverDialogProps> = ({
   gameOver,
   playerColor,
   rematch,
@@ -111,3 +111,5 @@ export const ChessGameOverDialog: React.FC<ChessGameOverDialogProps> = ({
     </Dialog>
   );
 };
+
+export default ChessGameOverDialog;

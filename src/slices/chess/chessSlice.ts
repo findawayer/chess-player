@@ -1,4 +1,4 @@
-import { Board, Move } from 'chess.js';
+import { Move } from 'chess.js';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import {
@@ -7,15 +7,16 @@ import {
   isCastling,
   isQueenSideSquare,
   shiftSquareName,
-} from '@helpers';
-import { SCORE_DRAW, SCORE_WIN } from '@settings';
+} from '@/helpers';
+import { SCORE_DRAW, SCORE_WIN } from '@/settings';
 import {
+  ChessBoardData,
   ChessGameOverType,
   ChessMove,
   ChessPieceColor,
   ChessSquareName,
   User,
-} from '@types';
+} from '@/types';
 import { initializeChess } from './chessInitializer';
 
 // Action types
@@ -74,7 +75,9 @@ const chessSlice = createSlice({
       chess,
       action: PayloadAction<ChessPieceColor | null, ChessActionType>,
     ) => {
-      chess.playerColor = action.payload;
+      const playerColor = action.payload;
+      chess.playerColor = playerColor;
+      chess.isFlipped = playerColor === 'b';
     },
     // setEngineLevel
     [ChessActionType.SetEngineLevel]: (
@@ -88,7 +91,7 @@ const chessSlice = createSlice({
     // setPieces
     [ChessActionType.SetPieces]: (
       chess,
-      action: PayloadAction<{ board: Board }, ChessActionType>,
+      action: PayloadAction<{ board: ChessBoardData }, ChessActionType>,
     ) => {
       chess.pieces = createPieces(action.payload.board);
     },
@@ -166,7 +169,10 @@ const chessSlice = createSlice({
     // undoMove
     [ChessActionType.UndoMove]: (
       chess,
-      action: PayloadAction<{ length: number; board: Board }, ChessActionType>,
+      action: PayloadAction<
+        { length: number; board: ChessBoardData },
+        ChessActionType
+      >,
     ) => {
       const undoSize = action.payload.length || 1;
       // Update movelist.
@@ -272,7 +278,7 @@ const chessSlice = createSlice({
     [ChessActionType.ResetGame]: (
       chess,
       action: PayloadAction<
-        { board: Board; alternate: boolean },
+        { board: ChessBoardData; alternate: boolean },
         ChessActionType
       >,
     ) => {
@@ -280,6 +286,8 @@ const chessSlice = createSlice({
       chess.pieces = createPieces(action.payload.board);
       // Reset moves.
       chess.moves = [];
+      // Reset turn.
+      chess.turn = 'w';
       // Setup a rematch state
       if (action.payload.alternate) {
         // Swap player colors.

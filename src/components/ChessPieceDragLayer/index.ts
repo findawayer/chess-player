@@ -1,1 +1,3 @@
-export { ChessPieceDragLayer as default } from './ChessPieceDragLayer';
+import ChessPieceDragLayer from './ChessPieceDragLayer';
+
+export default ChessPieceDragLayer;

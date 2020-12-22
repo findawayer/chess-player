@@ -1,4 +1,5 @@
+import ChessPiece from './ChessPiece';
 import useStyles from './styles';
 
 export { useStyles as usePieceStyles };
-export { ChessPiece as default } from './ChessPiece';
+export default ChessPiece;

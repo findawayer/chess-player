@@ -1,10 +1,15 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 
-import { ChessBoardTheme } from '@themes';
-import { SQUARE_SIZE } from '@settings/chess-config';
+import { SQUARE_SIZE } from '@/settings/chess-config';
+import { ChessBoardThemeVariant } from '@/types';
+import { chessBoardTheme } from '@/vendors/material-ui/themes';
 
-export default makeStyles<Theme, ChessBoardTheme>({
+interface ChessBoardGridProps {
+  color: ChessBoardThemeVariant;
+}
+
+export default makeStyles<Theme, ChessBoardGridProps>({
   grid: {
     position: 'absolute',
     top: 0,
@@ -20,10 +25,10 @@ export default makeStyles<Theme, ChessBoardTheme>({
     flex: '0 0 auto',
     // Square colors
     '&.light': {
-      backgroundColor: ({ lightSquare }) => lightSquare,
+      backgroundColor: ({ color }) => chessBoardTheme[color].lightSquare,
     },
     '&.dark': {
-      backgroundColor: ({ darkSquare }) => darkSquare,
+      backgroundColor: ({ color }) => chessBoardTheme[color].darkSquare,
     },
   },
 });

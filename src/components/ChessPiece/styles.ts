@@ -1,4 +1,4 @@
-import { SQUARE_SIZE } from '@settings/chess-config';
+import { SQUARE_SIZE } from '@/settings/chess-config';
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles({
@@ -18,51 +18,51 @@ export default makeStyles({
     },
     // Black King
     '&.piece-bk': {
-      backgroundImage: 'url(/assets/svg/BlackKing.svg)',
+      backgroundImage: 'url(/graphics/BlackKing.svg)',
     },
     // Black Queen
     '&.piece-bq': {
-      backgroundImage: 'url(/assets/svg/BlackQueen.svg)',
+      backgroundImage: 'url(/graphics/BlackQueen.svg)',
     },
     // Black Rook
     '&.piece-br': {
-      backgroundImage: 'url(/assets/svg/BlackRook.svg)',
+      backgroundImage: 'url(/graphics/BlackRook.svg)',
     },
     // Black Bishop
     '&.piece-bb': {
-      backgroundImage: 'url(/assets/svg/BlackBishop.svg)',
+      backgroundImage: 'url(/graphics/BlackBishop.svg)',
     },
     // Black Knight
     '&.piece-bn': {
-      backgroundImage: 'url(/assets/svg/BlackKnight.svg)',
+      backgroundImage: 'url(/graphics/BlackKnight.svg)',
     },
     // Black Pawn
     '&.piece-bp': {
-      backgroundImage: 'url(/assets/svg/BlackPawn.svg)',
+      backgroundImage: 'url(/graphics/BlackPawn.svg)',
     },
     // White King
     '&.piece-wk': {
-      backgroundImage: 'url(/assets/svg/WhiteKing.svg)',
+      backgroundImage: 'url(/graphics/WhiteKing.svg)',
     },
     // White Queen
     '&.piece-wq': {
-      backgroundImage: 'url(/assets/svg/WhiteQueen.svg)',
+      backgroundImage: 'url(/graphics/WhiteQueen.svg)',
     },
     // White Rook
     '&.piece-wr': {
-      backgroundImage: 'url(/assets/svg/WhiteRook.svg)',
+      backgroundImage: 'url(/graphics/WhiteRook.svg)',
     },
     // White Bishop
     '&.piece-wb': {
-      backgroundImage: 'url(/assets/svg/WhiteBishop.svg)',
+      backgroundImage: 'url(/graphics/WhiteBishop.svg)',
     },
     // White Knight
     '&.piece-wn': {
-      backgroundImage: 'url(/assets/svg/WhiteKnight.svg)',
+      backgroundImage: 'url(/graphics/WhiteKnight.svg)',
     },
     // White Pawn
     '&.piece-wp': {
-      backgroundImage: 'url(/assets/svg/WhitePawn.svg)',
+      backgroundImage: 'url(/graphics/WhitePawn.svg)',
     },
   },
   playablePiece: {

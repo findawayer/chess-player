@@ -1,1 +1,3 @@
-export { ChessSettingsDialog as default } from './ChessSettingsDialog';
+import ChessSettingsDialog from './ChessSettingsDialog';
+
+export default ChessSettingsDialog;

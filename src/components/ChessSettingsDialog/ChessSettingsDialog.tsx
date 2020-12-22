@@ -8,22 +8,21 @@ import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 
-import { PreferencesState } from '@slices/preferences';
-import { ChessBoardThemeVariant } from '@themes';
+import { ChessBoardThemeVariant, ChessSettings } from '@/types';
 import useStyles from './styles';
 
-export interface ChessSettingsDialogProps {
+interface ChessSettingsDialogProps {
   isOpen: boolean;
-  settings: PreferencesState;
-  updateSettings(update: Partial<PreferencesState>): void;
-  toggleSettings(force?: boolean): void;
+  settings: ChessSettings;
+  applySettings(diff: Partial<ChessSettings>): void;
+  closeSettings(): void;
 }
 
-export const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
+const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
   isOpen,
   settings,
-  updateSettings,
-  toggleSettings,
+  applySettings,
+  closeSettings,
 }) => {
   /* CSS classes via Material UI */
   const classes = useStyles();
@@ -34,42 +33,33 @@ export const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
     'golden',
   ];
 
-  /**
-   * These form control change handlers below are bound to Redux store
-   * rather than to local state, because they are closely tied to
-   * user preferences that need to stay constant between sessions.
-   *
-   * These settings are cached in user's localStorage as of currently,
-   * and preloaded as default state before the app's hydration.)
-   */
-
   /* [Control handler] highlight moves */
   const handleHighlightMovesChange = (
     _: React.ChangeEvent<HTMLInputElement>,
     checked: boolean,
-  ) => updateSettings({ highlightMoves: checked });
+  ) => applySettings({ highlightMoves: checked });
 
   /* [Control handler] show legal moves */
   const handleShowLegalMovesChange = (
     _: React.ChangeEvent<HTMLInputElement>,
     checked: boolean,
-  ) => updateSettings({ showLegalMoves: checked });
+  ) => applySettings({ showLegalMoves: checked });
 
   /* [Control handler] auto promote to queen */
   const handleAutoPromoteToQueenChange = (
     _: React.ChangeEvent<HTMLInputElement>,
     checked: boolean,
-  ) => updateSettings({ autoPromoteToQueen: checked });
+  ) => applySettings({ autoPromoteToQueen: checked });
 
   /* [Control handler] board color */
   const handleBoardColorChange = (
     event: React.ChangeEvent<{ value: ChessBoardThemeVariant }>,
-  ) => updateSettings({ boardColor: event.target.value });
+  ) => applySettings({ boardColor: event.target.value });
 
   return (
     <Dialog
       open={isOpen}
-      onClose={() => toggleSettings(false)}
+      onClose={() => closeSettings()}
       aria-labelledby="chessSettingsDialogTitle"
       aria-describedby="chessSettingsDialogDescription"
     >
@@ -155,3 +145,5 @@ export const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
     </Dialog>
   );
 };
+
+export default ChessSettingsDialog;

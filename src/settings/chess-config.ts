@@ -46,4 +46,4 @@ export const FEN_BLACK_PROMOTION = '8/8/8/8/8/6k1/7p/5K2 b - - 0 1';
 // ----- Assets ----- //
 
 /** Stockfish.js file location */
-export const STOCKFISH_FILE_PATH = 'assets/stockfish/stockfish.js';
+export const STOCKFISH_FILE_PATH = 'stockfish/stockfish.js';

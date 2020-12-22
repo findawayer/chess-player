@@ -1,12 +1,6 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { ChessPieceColor } from '@types';
+import { ChessPieceColor } from '@/types';
 
 /* Delta time reference for a single player side. */
 interface ChessClockSide {
@@ -167,7 +161,7 @@ export const useChessClock = ({
   }, [duration]);
 
   // Cache clock frame update handler.
-  useLayoutEffect(() => {
+  useEffect(() => {
     // Renderer function invoked by `requestAnimationFrame`.
     // Exploited here to calculate timing with high precision.
     updateRef.current = (now: number) => {

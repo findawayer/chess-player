@@ -2,24 +2,24 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useLayoutEffect,
   useMemo,
+  useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ChessBoard from '@components/ChessBoard';
-import ChessGameOverDialog from '@components/ChessGameOverDialog';
-import ChessPlayer from '@components/ChessPlayer';
-import { ChessValidatorContext, ChessBoardThemeContext } from '@contexts';
+import ChessBoard from '@/components/ChessBoard';
+import ChessGameOverDialog from '@/components/ChessGameOverDialog';
+import ChessPlayer from '@/components/ChessPlayer';
+import { ChessValidatorContext } from '@/contexts';
 import {
   createComputers,
   createHumanAndComputer,
   invertPieceColor,
   getRecentMovePath,
-} from '@helpers';
-import { useChessClock, useStockfish } from '@hooks';
-// import { FEN_WHITE_STALEMATE } from '@settings';
-import { STOCKFISH_FILE_PATH } from '@settings';
+} from '@/helpers';
+import { useChessClock, useStockfish } from '@/hooks';
+// import { FEN_WHITE_STALEMATE } from '@/settings';
+import { STOCKFISH_FILE_PATH } from '@/settings';
 import {
   ChessState,
   checkmate,
@@ -31,12 +31,15 @@ import {
   setPlayers,
   stalemate,
   timeout,
-} from '@slices/chess';
-import { getChessBoardTheme } from '@themes';
-import { ChessPieceColor, GameSettings } from '@types';
-import { AppDispatch, AppState } from '@vendors/redux';
+} from '@/slices/chess';
+import { ChessPieceColor, ChessSettings } from '@/types';
+import { AppDispatch, AppState } from '@/vendors/redux';
 
-const ChessGame: React.FC = () => {
+interface ChessGameProps {
+  settings: ChessSettings;
+}
+
+const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
   /** chess game validator. */
   const validator = useContext(ChessValidatorContext);
   // Extract chess-related state from Redux store.
@@ -53,13 +56,6 @@ const ChessGame: React.FC = () => {
     players,
     turn,
   } = useSelector<AppState, ChessState>(state => state.chess);
-  // Extract chess settings related state from Redux store.
-  const {
-    autoPromoteToQueen,
-    boardColor,
-    highlightMoves,
-    showLegalMoves,
-  } = useSelector<AppState, GameSettings>(state => state.preferences);
   /** Action dispatcher to Redux store. */
   const dispatch = useDispatch<AppDispatch>();
   // Local state: Update clock for active player side until one of their time runs out.
@@ -77,10 +73,11 @@ const ChessGame: React.FC = () => {
     skillLevel: engineLevel,
     filepath: STOCKFISH_FILE_PATH,
   });
-  /** Chess board theme of user's choice. */
-  const userChessBoardTheme = useMemo(() => getChessBoardTheme(boardColor), [
-    boardColor,
-  ]);
+  /**
+   * Board element that we want to monitor the size with `react-resize-detector.
+   * @api https://www.npmjs.com/package/react-resize-detector
+   */
+  const boardRef = useRef<HTMLDivElement>(null);
   /** Whether the current turn is the user's turn. */
   const isPlayerTurn = turn === playerColor;
   /** Flag to boost AI's performance when < 1 minute left. */
@@ -107,8 +104,8 @@ const ChessGame: React.FC = () => {
     return () => rematch(false);
   }, [rematch]);
 
-  // Initialize players before rendering.
-  useLayoutEffect(() => {
+  // Initialize players.
+  useEffect(() => {
     const players = playerColor
       ? createHumanAndComputer({ playerColor })
       : createComputers();
@@ -116,7 +113,7 @@ const ChessGame: React.FC = () => {
   }, [dispatch, playerColor]);
 
   // Initialize pieces.
-  useLayoutEffect(() => {
+  useEffect(() => {
     // debug
     // validator.load(FEN_WHITE_STALEMATE);
     dispatch(setPieces({ board: validator.board() }));
@@ -198,30 +195,27 @@ const ChessGame: React.FC = () => {
 
   return (
     <>
-      <ChessBoardThemeContext.Provider value={userChessBoardTheme}>
-        <ChessPlayer
-          player={players[topPlayerColor]}
-          time={time[topPlayerColor]}
-        />
-        <ChessBoard
-          pieces={pieces}
-          autoPromoteToQueen={autoPromoteToQueen}
-          highlightMoves={highlightMoves}
-          showLegalMoves={showLegalMoves}
-          recentMovePath={recentMovePath}
-          isFlipped={isFlipped}
-          isFrozen={isFrozen}
-        />
-        <ChessPlayer
-          player={players[bottomPlayerColor]}
-          time={time[bottomPlayerColor]}
-        />
-        <ChessGameOverDialog
-          gameOver={gameOver}
-          playerColor={playerColor}
-          rematch={rematch}
-        />
-      </ChessBoardThemeContext.Provider>
+      <ChessPlayer
+        player={players[topPlayerColor]}
+        time={time[topPlayerColor]}
+      />
+      <ChessBoard
+        targetRef={boardRef}
+        pieces={pieces}
+        recentMovePath={recentMovePath}
+        isFlipped={isFlipped}
+        isFrozen={isFrozen}
+        settings={settings}
+      />
+      <ChessPlayer
+        player={players[bottomPlayerColor]}
+        time={time[bottomPlayerColor]}
+      />
+      <ChessGameOverDialog
+        gameOver={gameOver}
+        playerColor={playerColor}
+        rematch={rematch}
+      />
     </>
   );
 };

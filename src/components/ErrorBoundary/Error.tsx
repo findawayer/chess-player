@@ -1,17 +1,11 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
+/**
+ * Display errors. Do NOT include fancy styles as they might
+ * cause another error themselves.
+ */
+const Error: React.FC = () => (
+  <div style={{ textAlign: 'center' }}>
+    <h2>Something went wrong. Please refresh x_X</h2>
+  </div>
+);
 
-import useStyles from './styles';
-
-export const Error: React.FC = () => {
-  /* CSS classes via Material UI */
-  const classes = useStyles();
-
-  return (
-    <div className={classes.root}>
-      <Typography variant="h4" component="h2">
-        Something went wrong. Please refresh x_X
-      </Typography>
-    </div>
-  );
-};
+export default Error;

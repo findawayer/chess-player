@@ -1,7 +1,7 @@
 import sample from 'lodash/sample';
+import Link from 'next/link';
 import React, { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -20,9 +20,9 @@ import {
   setEngineLevel,
   setIncrement,
   setPlayerColor,
-} from '@slices/chess';
-import { ChessPieceColor } from '@types';
-import { AppDispatch } from '@vendors/redux';
+} from '@/slices/chess';
+import { ChessPieceColor } from '@/types';
+import { AppDispatch } from '@/vendors/redux';
 import useStyles from './styles';
 
 interface ChessGameSelectProps {
@@ -32,7 +32,7 @@ interface ChessGameSelectProps {
   playerColor: ChessPieceColor | null;
 }
 
-export const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
+const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
   duration,
   engineLevel,
   increment,
@@ -191,17 +191,21 @@ export const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
         </FormControl>
       </CardContent>
       <CardActions>
-        <Button
-          color="primary"
-          component={Link}
-          fullWidth
-          size="large"
-          to="/play"
-          variant="contained"
-        >
-          Start
-        </Button>
+        <Link href="/play">
+          <Button
+            color="primary"
+            component="a"
+            fullWidth
+            rel="next"
+            size="large"
+            variant="contained"
+          >
+            Start
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );
 };
+
+export default ChessGameSelect;

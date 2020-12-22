@@ -104,5 +104,5 @@ The app makes use of Web Worker API available in modern browsers, check out [the
 ## Special credits
 
 - [Jeff Hlywa](https://github.com/jhlywa/chess.js) &mdash; Author of game validator `chess.js`.
-- [Stockfish](https://github.com/official-stockfish) &mdash; Stockfish chess engine.
+- [Stockfish](https://github.com/official-stockfish) &mdash; Stockfish chess engine developer team.
 - [Colin M.L.Burnett](https://en.wikipedia.org/wiki/User:Cburnett) &mdash; Designer of chess piece graphics.

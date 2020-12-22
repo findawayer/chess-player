@@ -1,1 +1,3 @@
-export { Player as default } from './Player';
+import ChessPlayer from './ChessPlayer';
+
+export default ChessPlayer;

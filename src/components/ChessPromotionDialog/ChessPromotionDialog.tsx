@@ -2,14 +2,14 @@ import clsx from 'clsx';
 import React, { useMemo } from 'react';
 import Typography from '@material-ui/core/Typography';
 
-import { usePieceStyles } from '@components/ChessPiece';
-import { getFullPieceVariant, objectifySquare, pieceClass } from '@helpers';
-import { AbortPromotion, SelectPromotion } from '@hooks';
+import { usePieceStyles } from '@/components/ChessPiece';
+import { getFullPieceVariant, objectifySquare, pieceClass } from '@/helpers';
+import { AbortPromotion, SelectPromotion } from '@/hooks';
 import {
   ChessPieceColor,
   ChessPromotionVariant,
   ChessSquareName,
-} from '@types';
+} from '@/types';
 
 import useStyles from './styles';
 
@@ -21,7 +21,7 @@ interface ChessPromotionDialogProps {
 }
 
 // @todo: Find correct a11y sementics for the dialog backdrop
-export const ChessPromotionDialog: React.FC<ChessPromotionDialogProps> = ({
+const ChessPromotionDialog: React.FC<ChessPromotionDialogProps> = ({
   color,
   square,
   abortPromotion,
@@ -66,3 +66,5 @@ export const ChessPromotionDialog: React.FC<ChessPromotionDialogProps> = ({
     </div>
   );
 };
+
+export default ChessPromotionDialog;

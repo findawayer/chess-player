@@ -1,16 +1,22 @@
-import { ChessBoardThemeVariant } from '@themes/chess-board/types';
-
 /**
- * Possible types of color mode of app's theme.
+ * App's color mode. String union is used instead of enums because
+ * this value is going to be serialized and stored in user's `localStorage`.
  */
-export const enum ColorMode {
-  Dark,
-  Light,
+export type ColorMode = 'light' | 'dark';
+
+export interface ChessBoardTheme {
+  lightSquare: string;
+  darkSquare: string;
+  highlight: string;
+  hover: string;
 }
 
-export interface GameSettings {
-  autoPromoteToQueen: boolean;
+export type ChessBoardThemeVariant = 'arctic' | 'golden' | 'loyal';
+
+/* Blueprint of chess game related state. */
+export interface ChessSettings {
   boardColor: ChessBoardThemeVariant;
   highlightMoves: boolean;
   showLegalMoves: boolean;
+  autoPromoteToQueen: boolean;
 }

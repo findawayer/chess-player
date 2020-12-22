@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 
-import { MemoizedChessPieceDragPreview } from './ChessPieceDragPreview';
+import ChessPieceDragPreview from './ChessPieceDragPreview';
 import useStyles from './styles';
 
 function getLayerStyles(
@@ -16,7 +16,7 @@ function getLayerStyles(
   return { transform: `translate3d(${x}px, ${y}px, 0)` };
 }
 
-export const ChessPieceDragLayer: React.FC = () => {
+const ChessPieceDragLayer: React.FC = () => {
   // DragItemLayer data of `react-dnd` API.
   const { item, initialOffset, currentOffset, isDragging } = useDragLayer(
     monitor => ({
@@ -36,7 +36,7 @@ export const ChessPieceDragLayer: React.FC = () => {
         className={classes.dragObject}
         style={getLayerStyles(initialOffset, currentOffset)}
       >
-        <MemoizedChessPieceDragPreview
+        <ChessPieceDragPreview
           color={item.color}
           variant={item.variant}
           size={item.size}
@@ -45,3 +45,5 @@ export const ChessPieceDragLayer: React.FC = () => {
     </div>
   );
 };
+
+export default ChessPieceDragLayer;

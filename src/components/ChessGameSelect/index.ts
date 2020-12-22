@@ -1,1 +1,3 @@
-export { ChessGameSelect as default } from './ChessGameSelect';
+import ChessGameSelect from './ChessGameSelect';
+
+export default ChessGameSelect;

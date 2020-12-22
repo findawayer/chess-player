@@ -1,1 +1,3 @@
-export { MemoizedChessGuide as default } from './ChessGuide';
+import ChessGuide from './ChessGuide';
+
+export default ChessGuide;

@@ -1,1 +1,3 @@
-export { Board, ResizeAwareBoard as default } from './ChessBoard';
+import ChessBoard from './ChessBoard';
+
+export default ChessBoard;

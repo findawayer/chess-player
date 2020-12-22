@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { squareClass } from '@helpers';
-import { ChessLegalMove, ChessSquare } from '@types';
+import { squareClass } from '@/helpers';
+import { ChessLegalMove, ChessSquare } from '@/types';
 import useStyles from './styles';
 
 interface ChessLegalSquareProps extends ChessLegalMove {
@@ -11,7 +11,7 @@ interface ChessLegalSquareProps extends ChessLegalMove {
 }
 
 // @todo: a11y key input handler
-export const ChessLegalSquare: React.FC<ChessLegalSquareProps> = ({
+const ChessLegalSquare: React.FC<ChessLegalSquareProps> = ({
   flags,
   square,
   showLegalMoves,
@@ -29,3 +29,5 @@ export const ChessLegalSquare: React.FC<ChessLegalSquareProps> = ({
     />
   );
 };
+
+export default ChessLegalSquare;

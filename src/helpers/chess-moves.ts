@@ -6,7 +6,7 @@ import {
   ChessMoveLog,
   ChessSquare,
   ChessSquareName,
-} from '@types';
+} from '@/types';
 import { stringifySquare } from './chess-squares';
 
 /** Find out whether a chess move is a castling. */

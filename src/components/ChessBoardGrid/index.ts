@@ -1,1 +1,3 @@
-export { Grid, MemoizedGrid as default } from './Grid';
+import ChessBoardGrid from './ChessBoardGrid';
+
+export default ChessBoardGrid;

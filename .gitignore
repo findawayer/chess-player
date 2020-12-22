@@ -1,15 +1,18 @@
-# Packages
-node_modules
+# Dependencies
+/node_modules
+
+# next.js
+/.next
+
+# production
+/build
 
 # OS cookies
 .DS_Store
 
 # Logs
-*.log
+*.log*
 
-# Private files
+# Developer notes
 .idea
 TODOs.md
-
-# Bundles
-public/static/js
