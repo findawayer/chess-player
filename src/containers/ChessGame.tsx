@@ -188,6 +188,7 @@ const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
         recentMovePath={recentMovePath}
         isFlipped={isFlipped}
         isFrozen={isFrozen}
+        isGameOver={!!gameOver}
         settings={settings}
       />
       <ChessPlayer

@@ -47,6 +47,7 @@ interface BoardProps {
   recentMovePath: ChessSquareName[] | null;
   isFlipped: boolean;
   isFrozen: boolean;
+  isGameOver: boolean;
   // Game settings
   settings: ChessSettings;
 }
@@ -58,6 +59,7 @@ const ChessBoard: React.FC<BoardProps> = ({
   recentMovePath,
   isFlipped,
   isFrozen,
+  isGameOver,
   settings,
 }) => {
   /** Chess game validotor */
@@ -180,6 +182,18 @@ const ChessBoard: React.FC<BoardProps> = ({
       handleSquareSelect(droppedSquare);
     },
   });
+
+  // Clear guides on unmount.
+  useEffect(() => {
+    return () => setActive(null);
+  }, []);
+
+  // Clear guides on game end.
+  useEffect(() => {
+    if (isGameOver) {
+      setActive(null);
+    }
+  }, [isGameOver]);
 
   // Handle confirmation of pawn promotion.
   useEffect(() => {
