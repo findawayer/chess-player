@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { CssBaseline } from '@material-ui/core';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 
 import { useColorMode } from '@/hooks';

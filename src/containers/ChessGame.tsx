@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ChessBoard from '@/components/ChessBoard';
@@ -12,25 +6,14 @@ import ChessGameOverDialog from '@/components/ChessGameOverDialog';
 import ChessPlayer from '@/components/ChessPlayer';
 import { ChessValidatorContext } from '@/contexts';
 import {
-  createComputers,
-  createHumanAndComputer,
-  invertPieceColor,
-  getRecentMovePath,
+  createComputers, createHumanAndComputer, getRecentMovePath, invertPieceColor
 } from '@/helpers';
 import { useChessClock, useStockfish } from '@/hooks';
-// import { FEN_WHITE_STALEMATE } from '@/settings';
+// import { FEN_WHITE_EN_PASSANT, STOCKFISH_FILE_PATH } from '@/settings';
 import { STOCKFISH_FILE_PATH } from '@/settings';
 import {
-  ChessState,
-  checkmate,
-  notEnoughMaterial,
-  playMove,
-  resetGame,
-  repetition,
-  setPieces,
-  setPlayers,
-  stalemate,
-  timeout,
+  checkmate, ChessState, notEnoughMaterial, playMove, repetition, resetGame, setPieces,
+  setPlayers, stalemate, timeout,
 } from '@/slices/chess';
 import { ChessPieceColor, ChessSettings } from '@/types';
 import { AppDispatch, AppState } from '@/vendors/redux';
@@ -115,7 +98,7 @@ const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
   // Initialize pieces.
   useEffect(() => {
     // debug
-    // validator.load(FEN_WHITE_STALEMATE);
+    // validator.load(FEN_WHITE_EN_PASSANT);
     dispatch(setPieces({ board: validator.board() }));
   }, [dispatch, validator]);
 

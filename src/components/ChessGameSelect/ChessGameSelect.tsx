@@ -3,17 +3,7 @@ import Link from 'next/link';
 import React, { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Slider from '@material-ui/core/Slider';
-import Typography from '@material-ui/core/Typography';
+import { Button, Card, CardActions, CardContent, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Slider, Typography } from '@material-ui/core';
 
 import {
   setDuration,

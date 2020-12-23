@@ -29,3 +29,10 @@
 ### Bug fix
 
 - Reset the game turn on unmounting.
+
+## 0.2.1 (2020-12-24)
+
+### Bug fix
+
+- Handle en passant moves on board.
+- Double-check for illegal moves when a move is submitted.

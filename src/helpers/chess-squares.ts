@@ -34,24 +34,10 @@ export function isValidSquare(square: ChessSquare): boolean {
   return inRange(x, 0, NUMBER_OF_FILES) && inRange(y, 0, NUMBER_OF_RANKS);
 }
 
-/* Test if 2 squares are pointing to the same square, regardless of their format. */
-export function areSameSquares(
-  squareA: ChessSquare,
-  squareB: ChessSquare,
-): boolean {
-  return stringifySquare(squareA) === stringifySquare(squareB);
-}
-
 /** Test if the square passed belons to the queen-side half of the chess board. */
 export function isQueenSideSquare(square: ChessSquare): boolean {
   const { x } = objectifySquare(square);
   return (x + 1) / NUMBER_OF_FILES <= 0.5;
-}
-
-/** Test if the square passed belongs to the first or the last rank. */
-export function isEdgeRank(square: ChessSquare): boolean {
-  const { y } = objectifySquare(square);
-  return y === 0 || y === NUMBER_OF_RANKS - 1;
 }
 
 /** Find the name of the reletive square by delta x/y from the square passed. */

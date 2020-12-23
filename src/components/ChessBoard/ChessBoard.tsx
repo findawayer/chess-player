@@ -3,15 +3,14 @@ import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { withResizeDetector } from 'react-resize-detector';
-import NoSsr from '@material-ui/core/NoSsr';
+import { NoSsr } from '@material-ui/core';
 
 import ChessPieceDragLayer from '@/components/ChessPieceDragLayer';
 import ChessBoardGrid from '@/components/ChessBoardGrid';
 import { ChessValidatorContext } from '@/contexts';
 import {
-  areSameSquares,
   findLegalMoves,
-  isEdgeRank,
+  isPromotingPawn,
   stringifySquare,
 } from '@/helpers';
 import { useChessGuides, useChessPromotion } from '@/hooks';
@@ -94,10 +93,10 @@ const ChessBoard: React.FC<BoardProps> = ({
 
   /** Handle click event on a piece. */
   const handlePieceSelect = useCallback(
-    (square: ChessSquare) => {
+    (sourceSquare: ChessSquare) => {
       if (!isFrozen) {
-        const legalMoves = findLegalMoves(validator, square);
-        setActive(square, legalMoves);
+        const legalMoves = findLegalMoves(validator, sourceSquare);
+        setActive(sourceSquare, legalMoves);
       }
     },
     [isFrozen, setActive, validator],
@@ -107,22 +106,26 @@ const ChessBoard: React.FC<BoardProps> = ({
    * (Wrapped by another handler transmitting the paylod.)
    */
   const handleSquareSelect = useCallback(
-    (square: ChessSquare) => {
-      // Skip if gameplay is not allowed, or no source square is found.
-      if (isFrozen || !activeSquare) {
+    (targetSquare: ChessSquare) => {
+      const from = activeSquare;
+      const to = stringifySquare(targetSquare);
+      const isLegalMove = legalMoves.find(({ square }) => square === to);
+      // Skip if
+      // 1. Gameplay is not allowed. (Due to gameover?)
+      // 2. Cannot find the square that the current move is originated from.
+      // 3. The current move is illegal.
+      if (isFrozen || !from || !isLegalMove) {
         return;
       }
       // Selecting the very same square is considered as a blur event.
-      if (areSameSquares(activeSquare, square)) {
+      if (from === to) {
         setHover(null);
       }
       // Try to move piece to the target square.
       else {
-        const activePieceId = pieces.positions[activeSquare];
+        const activePieceId = pieces.positions[from];
         const activePiece = pieces.byId[activePieceId];
-        const isPromotion = activePiece.variant === 'p' && isEdgeRank(square);
-        const from = activeSquare;
-        const to = stringifySquare(square);
+        const isPromotion = isPromotingPawn(activePiece, to);
         // Prompt promotion confirm dialog
         if (isPromotion && !autoPromoteToQueen) {
           dispatch(movePiece({ from, to }));
@@ -148,6 +151,7 @@ const ChessBoard: React.FC<BoardProps> = ({
       autoPromoteToQueen,
       dispatch,
       isFrozen,
+      legalMoves,
       pieces,
       promptPromotion,
       setActive,

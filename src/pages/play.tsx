@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import Container from '@material-ui/core/Container';
+import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ChessGame from '@/containers/ChessGame';

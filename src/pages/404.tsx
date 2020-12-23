@@ -1,6 +1,6 @@
-import React from 'react';
 import Link from 'next/link';
-import Button from '@material-ui/core/Button';
+import React from 'react';
+import { Button } from '@material-ui/core';
 
 const NotFound: React.FC = () => (
   <div style={{ marginTop: '5em', textAlign: 'center' }}>

@@ -1,14 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Switch from '@material-ui/core/Switch';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import FlareIcon from '@material-ui/icons/Flare';
-import GitHubIcon from '@material-ui/icons/GitHub';
+import { AppBar, Grid, IconButton, Switch, Toolbar, Tooltip, Typography } from '@material-ui/core';
+import { Flare as FlareIcon, GitHub as GitHubIcon } from '@material-ui/icons';
 
 import { ColorMode } from '@/types';
 import useStyles from './styles';

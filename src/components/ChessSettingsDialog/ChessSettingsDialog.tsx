@@ -1,12 +1,5 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Switch from '@material-ui/core/Switch';
-import Typography from '@material-ui/core/Typography';
+import { Box, Dialog, DialogContent, DialogTitle, MenuItem, Select, Switch, Typography } from '@material-ui/core';
 
 import { ChessBoardThemeVariant, ChessSettings } from '@/types';
 import useStyles from './styles';

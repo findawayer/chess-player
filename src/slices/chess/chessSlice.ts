@@ -5,6 +5,7 @@ import {
   createPieces,
   invertPieceColor,
   isCastling,
+  isEnPassant,
   isQueenSideSquare,
   shiftSquareName,
 } from '@/helpers';
@@ -139,7 +140,7 @@ const chessSlice = createSlice({
         chess.pieces.byId[pawnId].variant = promotion;
       }
       // Handle castling.
-      if (isCastling(action.payload)) {
+      else if (isCastling(move)) {
         // 1. Find the direction of castling.
         const isQueenSide = isQueenSideSquare(to);
         // 2. Find the rook involved in the castling.
@@ -154,6 +155,12 @@ const chessSlice = createSlice({
         // 4. Move the rook.
         chess.pieces.positions[rookNewSquare] = rookId;
         delete chess.pieces.positions[rookSquare];
+      }
+      // Handle en passant move
+      else if (isEnPassant(move)) {
+        const isWhitePawn = chess.pieces.byId[movedPieceId].color === 'w';
+        const capturedPawnPosition = shiftSquareName(move.to, 0, isWhitePawn ? 1 : -1);
+        delete chess.pieces.positions[capturedPawnPosition];
       }
       // Update movelist.
       // 1. Calculate fullmove, halfmove based on previous movelist length.
@@ -174,15 +181,16 @@ const chessSlice = createSlice({
         ChessActionType
       >,
     ) => {
-      const undoSize = action.payload.length || 1;
+      // Default undo length to 1
+      const undoLength = action.payload.length || 1;
       // Update movelist.
-      // 1. Find the range of moves to remove. (default to 1)
-      const startIndex = undoSize * -1;
+      // 1. Find the range of moves to remove.
+      const startIndex = undoLength * -1;
       const removedSize = chess.moves.length - startIndex;
       // 2. Pop from the movelist.
       chess.moves.splice(startIndex, removedSize);
       // 3. Update turn.
-      if (undoSize % 2) {
+      if (undoLength % 2) {
         chess.turn = invertPieceColor(chess.turn);
       }
       // 4. Update pieces.
