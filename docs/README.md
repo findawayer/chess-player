@@ -64,8 +64,8 @@ $ npm run start
  ┃ ┣ 📂helpers ── Utility functions
  ┃ ┣ 📂hooks ── React hooks
  ┃ ┣ 📂pages ── Next.js pages
- ┃ ┗ 📜_app.tsx ── Client side markup
- ┃ ┗ 📜_document.tsx ── Server side markup
+ ┃ ┃ ┗ 📜_app.tsx ── Client side markup
+ ┃ ┃ ┗ 📜_document.tsx ── Server side markup
  ┃ ┣ 📂settings ── App configuration constants
  ┃ ┣ 📂slices ── Redux toolkit slices and state schema
  ┃ ┣ 📂types ── TypeScript type references
