@@ -1,4 +1,4 @@
-import { ColorMode, ChessBoardThemeVariant } from '@/types';
+import { ColorMode, ChessBoardThemeVariant } from '~/types';
 
 /** Default color mode of global site theme. */
 export const DEFAULT_COLOR_MODE: ColorMode = 'light';

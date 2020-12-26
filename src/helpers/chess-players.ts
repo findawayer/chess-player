@@ -1,4 +1,4 @@
-import { ChessPieceColor, User } from '@/types';
+import { ChessPieceColor, User } from '~/types';
 
 import { invertPieceColor } from './chess-pieces';
 

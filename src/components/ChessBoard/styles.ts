@@ -3,8 +3,8 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { CSSProperties } from '@material-ui/core/styles/withStyles';
 
-import { NUMBER_OF_FILES, NUMBER_OF_RANKS } from '@/settings/chess-config';
-import { squareClass } from '@/helpers';
+import { NUMBER_OF_FILES, NUMBER_OF_RANKS } from '~/settings/chess-config';
+import { squareClass } from '~/helpers';
 
 // Generate helper classes for positionning of squares & pieces
 export const createSquareCSS = (): CSSProperties => {

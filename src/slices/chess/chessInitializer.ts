@@ -4,7 +4,7 @@ import {
   ChessPieceColor,
   ChessPieces,
   ChessPlayers,
-} from '@/types';
+} from '~/types';
 
 /**
  * Blueprint of chess game related states.
@@ -56,7 +56,7 @@ export const initializeChess = (): ChessState => ({
   // The piece color that the user is playing. `null` means both players are AI.
   playerColor: 'w',
   // The engine's strength.
-  engineLevel: 2,
+  engineLevel: 0,
   // Whether the board direction is being flipped or not.
   isFlipped: false,
   // Whether the gameplay is currently allowed or not.

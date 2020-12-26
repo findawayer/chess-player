@@ -1,2 +1,9 @@
+# Dependencies
 node_modules
-public
+
+# Static files
+/public
+
+# Auto-generated (next, nexus, prisma)
+.next
+/src/database/generated

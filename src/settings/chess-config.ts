@@ -47,7 +47,6 @@ export const FEN_WHITE_EN_PASSANT = '4k3/3p4/8/4P3/8/8/8/4K3 b - - 0 1';
 /** FEN: Black is about to capture a white pawn en passant. */
 export const FEN_BLACK_EN_PASSANT = '4k3/8/8/8/3p4/8/4P3/4K3 w - - 0 1';
 
-
 // ----- Assets ----- //
 
 /** Stockfish.js file location */

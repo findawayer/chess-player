@@ -1,9 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 
-import { SQUARE_SIZE } from '@/settings/chess-config';
-import { ChessBoardThemeVariant } from '@/types';
-import { chessBoardTheme } from '@/vendors/material-ui/themes';
+import { SQUARE_SIZE } from '~/settings/chess-config';
+import { ChessBoardThemeVariant } from '~/types';
+import { chessBoardTheme } from '~/vendors/material-ui/themes';
 
 interface ChessBoardGridProps {
   color: ChessBoardThemeVariant;

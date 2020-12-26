@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 
-import { DEFAULT_COLOR_MODE } from '@/settings';
-import { ColorMode } from '@/types';
+import { DEFAULT_COLOR_MODE } from '~/settings';
+import { ColorMode } from '~/types';
 import { baseTheme, darkTheme, lightTheme } from './themes';
 
 const createGlobalTheme = (colorMode: ColorMode): Theme =>

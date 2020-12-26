@@ -1,9 +1,17 @@
 import Link from 'next/link';
 import React from 'react';
-import { AppBar, Grid, IconButton, Switch, Toolbar, Tooltip, Typography } from '@material-ui/core';
+import {
+  AppBar,
+  Grid,
+  IconButton,
+  Switch,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 import { Flare as FlareIcon, GitHub as GitHubIcon } from '@material-ui/icons';
 
-import { ColorMode } from '@/types';
+import { ColorMode } from '~/types';
 import useStyles from './styles';
 
 interface HeaderProps {

@@ -1,20 +1,4 @@
-const path = require('path');
-const tsConfig = require('./tsconfig');
-
-const createAliasesMap = tsconfig => {
-  const {
-    compilerOptions: { baseUrl, paths },
-  } = tsconfig;
-  return Object.keys(paths)
-    .filter(alias => !/\/\*$/.test(alias))
-    .reduce((aliases, alias) => {
-      const moduleDirectory = paths[alias][0];
-      aliases.push([alias, path.resolve(baseUrl, moduleDirectory)]);
-      return aliases;
-    }, []);
-};
-
-// Shared rules for all files.
+/** Shared rules for all files. */
 const baseRules = {
   'no-console': 'off',
   'no-param-reassign': 'off',
@@ -23,7 +7,7 @@ const baseRules = {
   'import/prefer-default-export': 'off',
 };
 
-// TypeScript rules
+/** TypeScript rules */
 const tsRules = {
   ...baseRules,
   'no-redeclare': 'off',
@@ -73,8 +57,8 @@ module.exports = {
     'import/resolver': {
       // eslint-import-resolver-alias
       alias: {
-        map: createAliasesMap(tsConfig),
-        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+        map: [['~', './src']],
+        extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
       },
     },
   },
@@ -96,7 +80,7 @@ module.exports = {
         sourceType: 'module',
       },
       extends: [
-        // eslint:recommended run by @typescript-eslint/eslint-plugin
+        // eslint (recommended) run by @typescript-eslint/eslint-plugin
         'plugin:@typescript-eslint/eslint-recommended',
         // @typescript-eslint/eslint-plugin
         'plugin:@typescript-eslint/recommended',
@@ -123,7 +107,7 @@ module.exports = {
     {
       files: ['*.js'],
       extends: [
-        // eslint:recommended
+        // eslint (recommended)
         'eslint:recommended',
         // eslint-config-airbnb
         'airbnb',

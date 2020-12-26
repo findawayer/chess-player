@@ -3,14 +3,14 @@ import times from 'lodash/times';
 import React, { memo, useCallback, useContext, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ChessControl from '@/components/ChessControl';
-import ChessMoveList from '@/components/ChessMoveList';
-import ChessSettingsDialog from '@/components/ChessSettingsDialog';
-import { ChessValidatorContext } from '@/contexts';
-import { ApplyChessSettings } from '@/hooks';
-import { ChessState, flipBoard, resign, undoMove } from '@/slices/chess';
-import { ChessSettings } from '@/types';
-import { AppState } from '@/vendors/redux';
+import ChessControl from '~/components/ChessControl';
+import ChessMoveList from '~/components/ChessMoveList';
+import ChessSettingsDialog from '~/components/ChessSettingsDialog';
+import { ChessValidatorContext } from '~/contexts';
+import { ApplyChessSettings } from '~/hooks';
+import { ChessState, flipBoard, resign, undoMove } from '~/slices/chess';
+import { ChessSettings } from '~/types';
+import { AppState } from '~/vendors/redux';
 
 type ChessSidebarState = Pick<
   ChessState,

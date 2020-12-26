@@ -1,4 +1,4 @@
-import { ChessBoardTheme, ChessBoardThemeVariant } from '@/types';
+import { ChessBoardTheme, ChessBoardThemeVariant } from '~/types';
 
 export const chessBoardTheme: Record<
   ChessBoardThemeVariant,

@@ -8,8 +8,8 @@ import {
   isEnPassant,
   isQueenSideSquare,
   shiftSquareName,
-} from '@/helpers';
-import { SCORE_DRAW, SCORE_WIN } from '@/settings';
+} from '~/helpers';
+import { SCORE_DRAW, SCORE_WIN } from '~/settings';
 import {
   ChessBoardData,
   ChessGameOverType,
@@ -17,7 +17,7 @@ import {
   ChessPieceColor,
   ChessSquareName,
   User,
-} from '@/types';
+} from '~/types';
 import { initializeChess } from './chessInitializer';
 
 // Action types
@@ -159,7 +159,11 @@ const chessSlice = createSlice({
       // Handle en passant move
       else if (isEnPassant(move)) {
         const isWhitePawn = chess.pieces.byId[movedPieceId].color === 'w';
-        const capturedPawnPosition = shiftSquareName(move.to, 0, isWhitePawn ? 1 : -1);
+        const capturedPawnPosition = shiftSquareName(
+          move.to,
+          0,
+          isWhitePawn ? 1 : -1,
+        );
         delete chess.pieces.positions[capturedPawnPosition];
       }
       // Update movelist.

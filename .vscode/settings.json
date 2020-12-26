@@ -1,5 +1,9 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true
+  },
   "[javascript]": {
     "editor.formatOnSave": false,
     "editor.codeActionsOnSave": {

@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { Provider as ReactReduxProvider } from 'react-redux';
 
-import ErrorBoundary from '@/components/ErrorBoundary';
-import Layout from '@/components/Layout';
-import { useStore } from '@/vendors/redux';
+import ErrorBoundary from '~/components/ErrorBoundary';
+import Layout from '~/components/Layout';
+import { useStore } from '~/vendors/redux';
 
 import 'nprogress/nprogress.css';
 
 /** Load progressbar only in the browser. */
-const ProgressBar = dynamic(() => import('@/components/Layout/ProgressBar'), {
+const ProgressBar = dynamic(() => import('~/components/Layout/ProgressBar'), {
   ssr: false,
 });
 

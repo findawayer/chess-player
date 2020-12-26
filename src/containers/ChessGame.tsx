@@ -1,22 +1,39 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ChessBoard from '@/components/ChessBoard';
-import ChessGameOverDialog from '@/components/ChessGameOverDialog';
-import ChessPlayer from '@/components/ChessPlayer';
-import { ChessValidatorContext } from '@/contexts';
+import ChessBoard from '~/components/ChessBoard';
+import ChessGameOverDialog from '~/components/ChessGameOverDialog';
+import ChessPlayer from '~/components/ChessPlayer';
+import { ChessValidatorContext } from '~/contexts';
 import {
-  createComputers, createHumanAndComputer, getRecentMovePath, invertPieceColor
-} from '@/helpers';
-import { useChessClock, useStockfish } from '@/hooks';
-// import { FEN_WHITE_EN_PASSANT, STOCKFISH_FILE_PATH } from '@/settings';
-import { STOCKFISH_FILE_PATH } from '@/settings';
+  createComputers,
+  createHumanAndComputer,
+  getRecentMovePath,
+  invertPieceColor,
+} from '~/helpers';
+import { useChessClock, useStockfish } from '~/hooks';
+// import { FEN_WHITE_EN_PASSANT, STOCKFISH_FILE_PATH } from '~/settings';
+import { STOCKFISH_FILE_PATH } from '~/settings';
 import {
-  checkmate, ChessState, notEnoughMaterial, playMove, repetition, resetGame, setPieces,
-  setPlayers, stalemate, timeout,
-} from '@/slices/chess';
-import { ChessPieceColor, ChessSettings } from '@/types';
-import { AppDispatch, AppState } from '@/vendors/redux';
+  checkmate,
+  ChessState,
+  notEnoughMaterial,
+  playMove,
+  repetition,
+  resetGame,
+  setPieces,
+  setPlayers,
+  stalemate,
+  timeout,
+} from '~/slices/chess';
+import { ChessPieceColor, ChessSettings } from '~/types';
+import { AppDispatch, AppState } from '~/vendors/redux';
 
 interface ChessGameProps {
   settings: ChessSettings;

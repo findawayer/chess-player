@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef } from 'react';
 import { List, ListItem, Typography } from '@material-ui/core';
 
-import { ChessMoveLog } from '@/types';
+import { ChessMoveLog } from '~/types';
 import useStyles from './styles';
 
 interface ChessMoveListProps {

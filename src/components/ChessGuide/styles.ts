@@ -2,9 +2,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 
-import { SQUARE_SIZE } from '@/settings';
-import { ChessBoardThemeVariant } from '@/types';
-import { chessBoardTheme } from '@/vendors/material-ui/themes';
+import { SQUARE_SIZE } from '~/settings';
+import { ChessBoardThemeVariant } from '~/types';
+import { chessBoardTheme } from '~/vendors/material-ui/themes';
 
 interface ChessGuideProps {
   color: ChessBoardThemeVariant;

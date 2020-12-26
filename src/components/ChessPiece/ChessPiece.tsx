@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { DragItem } from '@/vendors/react-dnd';
-import { pieceClass, squareClass } from '@/helpers';
-import { ChessPieceColor, ChessPieceVariant, ChessSquare } from '@/types';
+import { DragItem } from '~/vendors/react-dnd';
+import { pieceClass, squareClass } from '~/helpers';
+import { ChessPieceColor, ChessPieceVariant, ChessSquare } from '~/types';
 
 import useStyles from './styles';
 

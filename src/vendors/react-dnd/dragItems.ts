@@ -1,4 +1,4 @@
-import { ChessPiece } from '@/types';
+import { ChessPiece } from '~/types';
 
 /**
  * Drag item types for `react-dnd` library.

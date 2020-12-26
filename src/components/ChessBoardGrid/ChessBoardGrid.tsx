@@ -6,8 +6,8 @@ import {
   NUMBER_OF_FILES,
   NUMBER_OF_RANKS,
   NUMBER_OF_SQUARES,
-} from '@/settings/chess-config';
-import { ChessBoardThemeVariant } from '@/types';
+} from '~/settings/chess-config';
+import { ChessBoardThemeVariant } from '~/types';
 import useStyles from './styles';
 
 interface GridProps {

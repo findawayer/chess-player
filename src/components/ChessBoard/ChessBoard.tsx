@@ -5,29 +5,25 @@ import { useDispatch } from 'react-redux';
 import { withResizeDetector } from 'react-resize-detector';
 import { NoSsr } from '@material-ui/core';
 
-import ChessPieceDragLayer from '@/components/ChessPieceDragLayer';
-import ChessBoardGrid from '@/components/ChessBoardGrid';
-import { ChessValidatorContext } from '@/contexts';
-import {
-  findLegalMoves,
-  isPromotingPawn,
-  stringifySquare,
-} from '@/helpers';
-import { useChessGuides, useChessPromotion } from '@/hooks';
-import { NUMBER_OF_FILES } from '@/settings/chess-config';
-import { movePiece, playMove } from '@/slices/chess';
+import ChessPieceDragLayer from '~/components/ChessPieceDragLayer';
+import ChessBoardGrid from '~/components/ChessBoardGrid';
+import { ChessValidatorContext } from '~/contexts';
+import { findLegalMoves, isPromotingPawn, stringifySquare } from '~/helpers';
+import { useChessGuides, useChessPromotion } from '~/hooks';
+import { NUMBER_OF_FILES } from '~/settings/chess-config';
+import { movePiece, playMove } from '~/slices/chess';
 import {
   DragItem,
   DraggedPiece,
   getDropTargetSquare,
-} from '@/vendors/react-dnd';
-import { AppDispatch } from '@/vendors/redux';
+} from '~/vendors/react-dnd';
+import { AppDispatch } from '~/vendors/redux';
 import {
   ChessPieces,
   ChessSettings,
   ChessSquare,
   ChessSquareName,
-} from '@/types';
+} from '~/types';
 import useStyles from './styles';
 import {
   renderPieces,
@@ -186,14 +182,14 @@ const ChessBoard: React.FC<BoardProps> = ({
   // Clear guides on unmount.
   useEffect(() => {
     return () => setActive(null);
-  }, []);
+  }, [setActive]);
 
   // Clear guides on game end.
   useEffect(() => {
     if (isGameOver) {
       setActive(null);
     }
-  }, [isGameOver]);
+  }, [isGameOver, setActive]);
 
   // Handle confirmation of pawn promotion.
   useEffect(() => {

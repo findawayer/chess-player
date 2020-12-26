@@ -1,18 +1,31 @@
 # Dependencies
-/node_modules
+node_modules
 
-# next.js
-/.next
-
-# production
-/build
-
-# OS cookies
-.DS_Store
-
-# Logs
-*.log*
+# Auto generated (next, nexus, prisma)
+.next
+/src/database/generated
 
 # Developer notes
 .idea
-TODOs.md
+
+# !! Environmental variables !!
+.env
+.env.*
+
+# OS garbadge
+.DS_Store
+
+# Logs
+npm-debug.log*
+npm-error.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker-compose is not successfully configured in the current workspace.
+# Keep the related files away for a while...
+.docker
+docker-compose.yml
+
+# Testing files: next to come...
+cypress
+cypress.json

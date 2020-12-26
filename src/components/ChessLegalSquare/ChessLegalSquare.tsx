@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { squareClass } from '@/helpers';
-import { ChessLegalMove, ChessSquare } from '@/types';
+import { squareClass } from '~/helpers';
+import { ChessLegalMove, ChessSquare } from '~/types';
 import useStyles from './styles';
 
 interface ChessLegalSquareProps extends ChessLegalMove {

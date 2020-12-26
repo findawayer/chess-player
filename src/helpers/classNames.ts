@@ -1,4 +1,4 @@
-import { ChessPiece, ChessSquare } from '@/types';
+import { ChessPiece, ChessSquare } from '~/types';
 import { stringifySquare } from './chess-squares';
 
 /** Format a CSS class for chess piece. */

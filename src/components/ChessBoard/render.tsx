@@ -1,12 +1,12 @@
 import map from 'lodash/map';
 import React from 'react';
 
-import ChessGuide from '@/components/ChessGuide';
-import ChessLegalSquare from '@/components/ChessLegalSquare';
-import ChessPiece from '@/components/ChessPiece';
-import ChessPromotionDialog from '@/components/ChessPromotionDialog';
-import { objectifySquare } from '@/helpers';
-import { AbortPromotion, SelectPromotion } from '@/hooks';
+import ChessGuide from '~/components/ChessGuide';
+import ChessLegalSquare from '~/components/ChessLegalSquare';
+import ChessPiece from '~/components/ChessPiece';
+import ChessPromotionDialog from '~/components/ChessPromotionDialog';
+import { objectifySquare } from '~/helpers';
+import { AbortPromotion, SelectPromotion } from '~/hooks';
 import {
   ChessBoardThemeVariant,
   ChessLegalMove,
@@ -14,7 +14,7 @@ import {
   ChessPromotion,
   ChessSquare,
   ChessSquareName,
-} from '@/types';
+} from '~/types';
 
 /* Render chess pieces. */
 export function renderPieces(

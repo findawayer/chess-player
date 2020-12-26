@@ -1,4 +1,4 @@
-import { SQUARE_SIZE } from '@/settings';
+import { SQUARE_SIZE } from '~/settings';
 import { makeStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 

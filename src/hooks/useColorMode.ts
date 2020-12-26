@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { getPersistedState, persistState } from '@/helpers';
-import { DEFAULT_COLOR_MODE } from '@/settings/preferences';
-import { ColorMode } from '@/types';
+import { getPersistedState, persistState } from '~/helpers';
+import { DEFAULT_COLOR_MODE } from '~/settings/preferences';
+import { ColorMode } from '~/types';
 
 /** Key for localStorage cache. */
 const COLOR_MODE_CACHE_KEY = 'ColorMode';

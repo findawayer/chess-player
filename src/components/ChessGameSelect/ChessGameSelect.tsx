@@ -3,16 +3,28 @@ import Link from 'next/link';
 import React, { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Button, Card, CardActions, CardContent, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Slider, Typography } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Slider,
+  Typography,
+} from '@material-ui/core';
 
 import {
   setDuration,
   setEngineLevel,
   setIncrement,
   setPlayerColor,
-} from '@/slices/chess';
-import { ChessPieceColor } from '@/types';
-import { AppDispatch } from '@/vendors/redux';
+} from '~/slices/chess';
+import { ChessPieceColor } from '~/types';
+import { AppDispatch } from '~/vendors/redux';
 import useStyles from './styles';
 
 interface ChessGameSelectProps {

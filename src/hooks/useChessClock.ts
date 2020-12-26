@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { ChessPieceColor } from '@/types';
+import { ChessPieceColor } from '~/types';
 
 /* Delta time reference for a single player side. */
 interface TimeTrackerSide {
@@ -110,49 +110,56 @@ export const useChessClock = ({
     w: duration,
     b: duration,
   });
-  // Renderer function invoked by `requestAnimationFrame`.
-  // Exploited here to calculate timing with high precision.
-  const update = (now: number) => {
-    const tracker = trackerRef.current;
-    // Record the timestamp when starting
-    if (tracker.startTime === null) {
-      tracker.startTime = now;
-    }
-    // Record elapsed time since the `startTime`.
-    else {
-      tracker.elapsed = now - tracker.startTime;
-    }
-    // Update delta time of current side.
-    if (tracker.lastTime !== null) {
-      tracker[tracker.side].delta += now - tracker.lastTime;
-    }
-    // Reflect the delta time to the `time` state, with an update rate limit of 1 second.
-    const whiteDelta = floorToSecond(tracker.w.delta);
-    const blackDelta = floorToSecond(tracker.b.delta);
-    if (
-      whiteDelta !== tracker.w.deltaSeconds ||
-      blackDelta !== tracker.b.deltaSeconds
-    ) {
-      setTime({
-        w: Math.max(duration - whiteDelta, 0),
-        b: Math.max(duration - blackDelta, 0),
-      });
-      tracker.w.deltaSeconds = whiteDelta;
-      tracker.b.deltaSeconds = blackDelta;
-    }
-    // Continue updating until current player runs out of the time.
-    if (tracker[tracker.side].delta < duration) {
-      requestRef.current = window.requestAnimationFrame(update);
-    }
-    tracker.lastTime = now;
-  };
 
+  /**
+   * Track delta time between each `requestAnimationFrame` calls and update
+   * timer for each player side.
+   *
+   * @param now The timestamp of current `requestAnimationFrame` execution.
+   */
+  const update = useCallback(
+    (now: number) => {
+      const tracker = trackerRef.current;
+      // Record the timestamp when starting
+      if (tracker.startTime === null) {
+        tracker.startTime = now;
+      }
+      // Record elapsed time since the `startTime`.
+      else {
+        tracker.elapsed = now - tracker.startTime;
+      }
+      // Update delta time of current side.
+      if (tracker.lastTime !== null) {
+        tracker[tracker.side].delta += now - tracker.lastTime;
+      }
+      // Reflect the delta time to the `time` state, with an update rate limit of 1 second.
+      const whiteDelta = floorToSecond(tracker.w.delta);
+      const blackDelta = floorToSecond(tracker.b.delta);
+      if (
+        whiteDelta !== tracker.w.deltaSeconds ||
+        blackDelta !== tracker.b.deltaSeconds
+      ) {
+        setTime({
+          w: Math.max(duration - whiteDelta, 0),
+          b: Math.max(duration - blackDelta, 0),
+        });
+        tracker.w.deltaSeconds = whiteDelta;
+        tracker.b.deltaSeconds = blackDelta;
+      }
+      // Continue updating until current player runs out of the time.
+      if (tracker[tracker.side].delta < duration) {
+        requestRef.current = window.requestAnimationFrame(update);
+      }
+      tracker.lastTime = now;
+    },
+    [duration],
+  );
   /** Start running the clock. */
   const startClock = useCallback<StartClock>(() => {
     if (!requestRef.current) {
       requestRef.current = window.requestAnimationFrame(update);
     }
-  }, []);
+  }, [update]);
   /** Stop updating the clock. */
   const pauseClock = useCallback<PauseClock>(() => {
     if (requestRef.current) {
@@ -203,7 +210,7 @@ export const useChessClock = ({
       }
       // Reset the tracker.
       trackerRef.current = createTimeTracker();
-    }
+    };
   }, [resetClock]);
 
   return {

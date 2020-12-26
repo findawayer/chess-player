@@ -1,4 +1,4 @@
-import { SQUARE_SIZE } from '@/settings/chess-config';
+import { SQUARE_SIZE } from '~/settings/chess-config';
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles({

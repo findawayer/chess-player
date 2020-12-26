@@ -5,8 +5,8 @@ import {
   NUMBER_OF_FILES,
   NUMBER_OF_RANKS,
   RANK_NAMES,
-} from '@/settings/chess-config';
-import { ChessSquare, ChessSquareName, ChessSquareXY } from '@/types';
+} from '~/settings/chess-config';
+import { ChessSquare, ChessSquareName, ChessSquareXY } from '~/types';
 
 /** Convert x, y coordinates of a chess square in SAN format. */
 export function stringifySquare(square: ChessSquare): ChessSquareName {

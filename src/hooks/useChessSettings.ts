@@ -1,9 +1,9 @@
 import update from 'immutability-helper';
 import { useCallback, useEffect, useState } from 'react';
 
-import { getPersistedState, persistState } from '@/helpers';
-import { DEFAULT_CHESS_BOARD_THEME } from '@/settings/preferences';
-import { ChessSettings } from '@/types';
+import { getPersistedState, persistState } from '~/helpers';
+import { DEFAULT_CHESS_BOARD_THEME } from '~/settings/preferences';
+import { ChessSettings } from '~/types';
 
 export type ApplyChessSettings = (diff: Partial<ChessSettings>) => void;
 

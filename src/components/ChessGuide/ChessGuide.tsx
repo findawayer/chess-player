@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { memo } from 'react';
 
-import { squareClass } from '@/helpers';
-import { ChessBoardThemeVariant, ChessSquareName } from '@/types';
+import { squareClass } from '~/helpers';
+import { ChessBoardThemeVariant, ChessSquareName } from '~/types';
 import useStyles from './styles';
 
 interface ChessGuideProps {
