@@ -1,22 +1,35 @@
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { Provider as ReactReduxProvider } from 'react-redux';
+import { ApolloClient, ApolloProvider } from '@apollo/client';
 
-import ErrorBoundary from '~/components/ErrorBoundary';
-import Layout from '~/components/Layout';
+import Layout from '~/features/common/components/Layout';
+import { withApolloClient } from '~/vendors/apollo-client';
 import { useStore } from '~/vendors/redux';
 
+// Use Nprogress built-in CSS
 import 'nprogress/nprogress.css';
 
-/** Load progressbar only in the browser. */
-const ProgressBar = dynamic(() => import('~/components/Layout/ProgressBar'), {
-  ssr: false,
-});
+interface MyAppProps extends AppProps {
+  apollo: ApolloClient<unknown>;
+}
 
-export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+/** Load progressbar only in the browser. */
+const ProgressBar = dynamic(
+  () => import('~/features/common/components/ProgressBar'),
+  {
+    ssr: false,
+  },
+);
+
+/** Custom client-side markup for `next.js` */
+const App: React.FC<MyAppProps> = ({
+  Component,
+  pageProps,
+  apollo,
+}): JSX.Element => {
   // Dynmically created Redux store to support SSR
   const store = useStore();
 
@@ -56,20 +69,16 @@ export default function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         />
         <meta property="og:type" content="website" />
       </Head>
-      <ReactReduxProvider store={store}>
-        <ErrorBoundary>
+      <ApolloProvider client={apollo}>
+        <ReactReduxProvider store={store}>
           <Layout>
             <ProgressBar />
             <Component {...pageProps} />
           </Layout>
-        </ErrorBoundary>
-      </ReactReduxProvider>
+        </ReactReduxProvider>
+      </ApolloProvider>
     </>
   );
-}
-
-MyApp.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  pageProps: PropTypes.object.isRequired,
 };
+
+export default withApolloClient(App);

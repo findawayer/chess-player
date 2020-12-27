@@ -37,6 +37,11 @@ export const baseTheme: ThemeOptions = {
       fontWeight: 400,
     },
   },
+  palette: {
+    error: {
+      main: '#b8372e',
+    },
+  },
   shape: {
     borderRadius: 0,
   },
@@ -50,6 +55,14 @@ export const baseTheme: ThemeOptions = {
         body: {
           overflow: 'hidden',
         },
+        a: {
+          '&:hover': {
+            textDecoration: 'none',
+          },
+        },
+        fieldset: {
+          border: 0,
+        },
         '::selection': {
           color: '#fff',
           backgroundColor: '#303f9f',
@@ -61,6 +74,11 @@ export const baseTheme: ThemeOptions = {
         '#nprogress .spinner': {
           display: 'none',
         },
+      },
+    },
+    MuiCard: {
+      root: {
+        padding: '32px',
       },
     },
   },

@@ -1,5 +1,26 @@
+const path = require('path');
+const tsConfig = require('./tsconfig');
+
+/** Create module alias map for `eslint-import-resolver-alias` plugin. */
+const createAliasArray = () => {
+  const {
+    compilerOptions: { paths },
+  } = tsConfig;
+  return Object.keys(paths)
+    .filter(key => !/\/\*$/.test(key))
+    .reduce((output, key) => {
+      const value = paths[key];
+      // Remove '/' at the end from the key.
+      const alias = key.replace(/\/$/, '');
+      // Resolve the path from the root directory.
+      const target = path.resolve(process.cwd(), value[0]);
+      output.push([alias, target]);
+      return output;
+    }, []);
+};
+
 /** Shared rules for all files. */
-const baseRules = {
+const jsRules = {
   'no-console': 'off',
   'no-param-reassign': 'off',
   'no-shadow': 'off',
@@ -9,7 +30,7 @@ const baseRules = {
 
 /** TypeScript rules */
 const tsRules = {
-  ...baseRules,
+  ...jsRules,
   'no-redeclare': 'off',
   'no-use-before-define': 'off',
   'no-unused-expressions': 'off',
@@ -57,11 +78,23 @@ module.exports = {
     'import/resolver': {
       // eslint-import-resolver-alias
       alias: {
-        map: [['~', './src']],
+        map: createAliasArray(),
         extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
       },
     },
   },
+  extends: [
+    // eslint (recommended)
+    'eslint:recommended',
+    // eslint-config-airbnb
+    'airbnb',
+    // eslint-plugin-import
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    // eslint-config-prettier (turn off conflicting rules with prettier)
+    // + eslint-plugin-prettier (use prettier as eslint rules)
+    'plugin:prettier/recommended',
+  ],
   // Plugins are extended per language, because there is no way to remove extended plugins.
   overrides: [
     // For TypeScript
@@ -106,19 +139,7 @@ module.exports = {
     // For JavaScript
     {
       files: ['*.js'],
-      extends: [
-        // eslint (recommended)
-        'eslint:recommended',
-        // eslint-config-airbnb
-        'airbnb',
-        // eslint-plugin-import
-        'plugin:import/errors',
-        'plugin:import/warnings',
-        // eslint-config-prettier (turn off conflicting rules with prettier)
-        // + eslint-plugin-prettier (use prettier as eslint rules)
-        'plugin:prettier/recommended',
-      ],
-      rules: baseRules,
+      rules: jsRules,
     },
   ],
 };

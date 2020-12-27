@@ -62,35 +62,43 @@ $ npm run start
 - [Nexus](https://github.com/graphql-nexus/nexus) as GraphQL schema generator.
 - [W3Tec Microframework](https://www.npmjs.com/package/microframework-w3tec) for Node.js framework.
 
+### Others
+
+- [Chess piece graphics](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces) by Colin M.L.Burnett
+
 ## Structure
 
-```
+<pre>
 📦chess-player
  ┣ 📂.vscode ── VS Code editor specific setup
  ┣ 📂docs ── READMEs and related assets
  ┣ 📂public ── Static files
  ┃ ┣ 📂graphics ── Chess piece vector graphics
  ┃ ┗ 📂stockfish ── Chess engine library
- ┣ 📂src ── Source code
- ┃ ┣ 📂components ── React components: presentational
- ┃ ┣ 📂containers ── React components: with Redux data bindings
- ┃ ┣ 📂contexts ── React contexts
- ┃ ┣ 📂helpers ── Utility functions
- ┃ ┣ 📂hooks ── React hooks
- ┃ ┣ 📂pages ── Next.js pages
- ┃ ┃ ┗ 📜_app.tsx ── Client side markup
- ┃ ┃ ┗ 📜_document.tsx ── Server side markup
- ┃ ┣ 📂prisma ── Database schema
- ┃ ┣ 📂schema ── Database schema
- ┃ ┣ 📂server ── Backend resources
- ┃ ┣ 📂settings ── App configuration constants
- ┃ ┣ 📂slices ── Redux Toolkit slices & Redux state schema
- ┃ ┣ 📂types ── Shared type definitions
- ┃ ┗ 📂vendors ── Library specific resources
- ┃ ┃ ┣ 📂material-ui ── Material UI themes
- ┃ ┃ ┣ 📂react-dnd ── React-Dnd setup
- ┃ ┃ ┗ 📂redux ── Redux store & reducers
-```
+ ┗ 📂src ── Source code
+   ┣ 📂components ── React components: presentational
+   ┣ 📂containers ── React components: with Redux data bindings
+   ┣ 📂contexts ── React contexts
+   ┣ 📂database ── Database components
+   ┃ ┣ 📂generated ── Auto generated GraphQL schema & Nexus type definitions
+   ┃ ┣ 📂nexus ── JavaScript based type definitions and GraphQL schema
+   ┃ ┗ 📂prisma ── Database Configurations & Prisma data model
+   ┣ 📂features ── Functional segments of the app
+   ┃ ┗ 📂chess ── Chess game related resources
+   ┣ 📂helpers ── Utility functions
+   ┣ 📂hooks ── React hooks
+   ┣ 📂pages ── Next.js pages
+   ┃ ┗ 📜_app.tsx ── Client side markup
+   ┃ ┗ 📜_document.tsx ── Server side markup
+   ┣ 📂server ── Backend resources
+   ┣ 📂settings ── App configuration constants
+   ┣ 📂types ── Shared type definitions
+   ┗ 📂vendors ── Library specific resources
+     ┣ 📂apollo ── Apollo client setup
+     ┣ 📂material-ui ── Material UI themes
+     ┣ 📂react-dnd ── React-Dnd setup
+     ┗ 📂redux ── Redux store & reducers
+</pre>
 
 ## Next to come
 
@@ -108,9 +116,3 @@ Latest ✅ | Latest ✅ | Latest ✅
 <!-- prettier-ignore-end -->
 
 The app makes use of Web Worker API available in modern browsers, check out [the compatibility chart](https://caniuse.com/webworkers).
-
-## Special credits
-
-- [Jeff Hlywa](https://github.com/jhlywa/chess.js) &mdash; Author of game validator `chess.js`.
-- [Stockfish](https://github.com/official-stockfish) &mdash; Stockfish chess engine developer team.
-- [Colin M.L.Burnett](https://en.wikipedia.org/wiki/User:Cburnett) &mdash; Designer of chess piece graphics.

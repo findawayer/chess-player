@@ -5,12 +5,12 @@
     "target": "es5",
     "noEmit": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "esModuleInterop": true,
     "moduleResolution": "Node",
     "paths": {
-      "~/": ["./"],
-      "~/*": ["./*"]
+      "~/": ["src"],
+      "~/*": ["src/*"]
     },
     "skipLibCheck": true,
     "strict": false,

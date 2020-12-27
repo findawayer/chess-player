@@ -3,10 +3,7 @@
 ## Module aliases
 
 - Use module aliases for import statements. (e.g. `import logger from '~/devtools/logger'`)
-- The aliases are declared in next 3 files:
-  - `.babelrc.js` — under `plugins.babel-plugin-root-import`
-  - `.eslintrc.js` — under `setting.import/resolver.alias.map`
-  - `tsconfig.json` — under `paths`
+- The aliases are declared in `tsconfig.json`, under `paths` property.
 - Use function components and hooks over class components whenever possible.
 
 ## Comments
@@ -40,6 +37,10 @@
 - Create custom hooks to group multiple related states into one unit.# What did I learn?
 
 ## Pitfalls
+
+### Avoid use of `.env` file for client side.
+
+[Issue](https://github.com/motdotla/dotenv/issues/233). Reading environmental setup from `.env` file with `dotenv` library requires the Node.js `fs` module in the context, which is absent in client side. Just use a regular JS/TS code to provide custom variables.
 
 ### Nothing can stop MUI from spawning thousands of style tags.
 

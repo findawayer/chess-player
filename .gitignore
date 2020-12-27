@@ -1,9 +1,13 @@
 # Dependencies
 node_modules
 
+# Production build
+/dist
+
 # Auto generated (next, nexus, prisma)
 .next
-/src/database/generated
+**/*/generated
+**/*/prisma/migrations
 
 # Developer notes
 .idea
@@ -21,7 +25,7 @@ npm-error.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Docker-compose is not successfully configured in the current workspace.
+# Didn't get around to get `docker-compose` working in Windows after many trials.
 # Keep the related files away for a while...
 .docker
 docker-compose.yml

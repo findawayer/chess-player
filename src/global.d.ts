@@ -4,8 +4,15 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       NODE_ENV?: 'development' | 'production';
-      CLIENT_PORT: number;
-      SERVER_PORT: number;
+      APP_SECRET?: string;
+      CLIENT_PORT?: number;
+      SERVER_ENDPOINT?: string;
+      SERVER_PORT?: number;
+      MAIL_HOST?: string;
+      MAIL_PORT?: number;
+      MAIL_USERNAME?: string;
+      MAIL_PASSWORD?: string;
+      MAIL_SENDER?: string;
     }
   }
   // Express

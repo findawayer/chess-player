@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
 
-import environment from '~/environment';
-import { ChessState } from '~/slices/chess';
+import { ChessState } from '~/features/chess/state';
 import { rootReducer } from './reducers';
 
 /** Redux state */
@@ -21,7 +20,7 @@ const initializeStore = (preloadedState?: Record<string, unknown>): AppStore =>
   configureStore({
     reducer: rootReducer,
     preloadedState,
-    devTools: environment.isDevelopment,
+    devTools: process.env.NODE_ENV === 'development',
   });
 
 /** Dynamically create Redux store */

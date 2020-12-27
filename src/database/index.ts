@@ -29,7 +29,7 @@ export const schema = makeSchema({
   // Connect context type definition with nexus schema.
   contextType: {
     // This file contains the type definition of `Context`
-    module: path.resolve(process.cwd(), './src/server/loaders/prismaLoader.ts'),
+    module: path.resolve(process.cwd(), './src/server/loaders/apolloLoader.ts'),
     // Name of the export.
     export: 'Context',
   },

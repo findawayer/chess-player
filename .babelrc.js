@@ -29,5 +29,14 @@ module.exports = {
       },
       'icons',
     ],
+    [
+      'babel-plugin-import',
+      {
+        libraryName: '@material-ui/lab',
+        libraryDirectory: '',
+        camel2DashComponentName: false,
+      },
+      'lab',
+    ],
   ],
 };

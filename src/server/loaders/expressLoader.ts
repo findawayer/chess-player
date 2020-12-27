@@ -1,15 +1,31 @@
+import cookieParser from 'cookie-parser';
 import express from 'express';
+import jwt from 'jsonwebtoken';
 import { MicroframeworkLoader, MicroframeworkSettings } from 'microframework';
 
-import environment from '~/environment';
+import environment from '../environment';
 
 export const expressLoader: MicroframeworkLoader = (
   settings: MicroframeworkSettings | undefined,
 ): void => {
   // Create express app.
-  const app = express();
+  const expressApp = express();
+  // Parse cookie and populate it to req.cookies.
+  expressApp.use(cookieParser());
+  // Decode the JSONWebtoken from cookie so we can get the user Id on each request
+  expressApp.use((req, _res, next) => {
+    const { accessToken } = req.cookies;
+    if (accessToken) {
+      const decoded = jwt.verify(accessToken, process.env.APP_SECRET) as {
+        userId: string;
+      };
+      // put the userId onto the req for future requests to access
+      req.userId = decoded.userId;
+    }
+    next();
+  });
   // Run the app to listen on given port.
-  app.listen(environment.server.port);
+  expressApp.listen(environment.server.port);
   // Cache the created app as the microframework's internal data.
-  settings.setData(environment.server.expressKey, app);
+  settings.setData('expressServer', expressApp);
 };

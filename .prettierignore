@@ -4,6 +4,10 @@ node_modules
 # Static files
 /public
 
+# Production build
+/dist
+
 # Auto-generated (next, nexus, prisma)
 .next
-/src/database/generated
+**/*/generated
+**/*/prisma/migrations

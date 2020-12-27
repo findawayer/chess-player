@@ -4,9 +4,9 @@ import { TouchBackend } from 'react-dnd-touch-backend';
 import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import ChessGame from '~/containers/ChessGame';
-import ChessSidebar from '~/containers/ChessSidebar';
-import { useChessSettings } from '~/hooks';
+import ChessGame from '~/features/chess/containers/ChessGame';
+import ChessSidebar from '~/features/chess/containers/ChessSidebar';
+import { useChessSettings } from '~/features/chess/hooks';
 import { createBackendOptions } from '~/vendors/react-dnd';
 
 /** Customize Material UI components */

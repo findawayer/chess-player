@@ -3,8 +3,8 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 
 /**
- * Next.js SSR custom document.
- * @see https://github.com/mui-org/material-ui/blob/master/examples/nextjs/pages/_document.js
+ * Custom server-side markup for `next.js`. Template from:
+ * https://github.com/mui-org/material-ui/blob/master/examples/nextjs/pages/_document.js
  */
 export default class MyDocument extends Document {
   // The `theme-color` meta is dynamically updated according to the
