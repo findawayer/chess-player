@@ -1,3 +1,7 @@
+## 1.0.0-alpha.1 (2020-12-30)
+
+- Bundle backend with webpack.
+
 ## 1.0.0-alpha.0 (2020-12-29)
 
 - Integrate backend.

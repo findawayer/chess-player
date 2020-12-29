@@ -3,7 +3,7 @@ import * as express from 'express';
 import { MicroframeworkLoader, MicroframeworkSettings } from 'microframework';
 import { PrismaClient } from '@prisma/client';
 
-import { schema } from '~/database';
+import { schema } from '~/database/schema';
 
 interface ExpressContext {
   req: express.Request;
@@ -52,7 +52,11 @@ export const apolloLoader: MicroframeworkLoader = (
     origin: process.env.CLIENT_ENDPOINT,
   };
   // Integrate express instance to the Apollo Server.
-  apolloServer.applyMiddleware({ app: expressApp, cors: corsOptions });
+  apolloServer.applyMiddleware({
+    app: expressApp,
+    cors: corsOptions,
+    path: '/',
+  });
   // Cache the created app as the microframework's internal data.
   settings.setData('apolloServer', apolloServer);
 };

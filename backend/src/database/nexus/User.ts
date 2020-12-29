@@ -18,7 +18,8 @@ import isEmail from 'validator/lib/isEmail';
 import '../../helpers/module-alias';
 // Then the local imports.
 import { hasPermissions } from '~/helpers/users';
-import { createRecoveryEmail, transport } from '~/mails';
+import { createRecoveryEmail } from '~/mails/recovery';
+import { transport } from '~/mails/transport';
 
 /** Factor passed to hashing algorithm to make the encrypted output unique. */
 const SALT_ROUNDS = 10;

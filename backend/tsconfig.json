@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "lib": ["esnext"],
-    "noEmit": true,
     "isolatedModules": true,
     "module": "CommonJS",
+    "outDir": "dist",
+    "rootDir": "src",
     "target": "es5",
     "strict": false,
     "allowSyntheticDefaultImports": true,
@@ -14,15 +15,9 @@
       "~/": ["src"],
       "~/*": ["src/*"]
     },
-    "typeRoots": [
-      "src/typings",
-      "node_modules/@types",
-      "node_modules"
-    ],
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules"],
   "include": ["src/**/*"]
 }

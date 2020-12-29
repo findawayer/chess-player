@@ -3,6 +3,7 @@ import { makeSchema, declarativeWrappingPlugin } from 'nexus';
 import { nexusPrisma } from 'nexus-plugin-prisma';
 // import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema';
 import * as types from './nexus';
+import { resolve } from '~/helpers/resolve';
 
 /**
  * Create GraphQL schema & type definitions with `Nexus.js`.
@@ -17,8 +18,8 @@ export const schema = makeSchema({
   // TODO: changing path to `.generated/...` loses type references in `./nexus/*.ts`.
   // Find a correct configuration of `tsconfig.json`.
   outputs: {
-    schema: path.join(__dirname, 'generated/schema.graphql'),
-    typegen: path.join(__dirname, 'generated/nexus.ts'),
+    schema: resolve('src/database/generated/schema.graphql'),
+    typegen: resolve('src/database/generated/nexus.ts'),
   },
   // Integrate prisma into nexus, with some CRUD helpers bundled in.
   // TypeScript complains incompatibility for some reason,
@@ -29,7 +30,7 @@ export const schema = makeSchema({
   // Connect context type definition with nexus schema.
   contextType: {
     // This file contains the type definition of `Context`
-    module: path.resolve(process.cwd(), './src/server/loaders/apolloLoader.ts'),
+    module: resolve('src/server/loaders/apolloLoader.ts'),
     // Name of the export.
     export: 'Context',
   },

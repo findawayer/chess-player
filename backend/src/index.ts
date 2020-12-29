@@ -3,7 +3,7 @@ import path from 'path';
 // Load aliases map BEFORE local imports
 // and aliased imports will be correctly resolved.
 import './helpers/module-alias';
-import { init } from './server';
+import init from './server/init';
 
 // Load environment variables
 // (In production build, Vercel will take care of those variables.)
