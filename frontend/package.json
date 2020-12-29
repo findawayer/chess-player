@@ -1,6 +1,6 @@
 {
   "name": "chess-player-frontend",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "In-browser chess game and simulation built with React.",
   "main": "index.js",
   "repository": "git@github.com:findawayer/chess-player.git",

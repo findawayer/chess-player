@@ -1,6 +1,6 @@
 {
   "name": "chess-player-backend",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "GraphQL server for chess-player app.",
   "main": "src/index.ts",
   "homepage": "https://chess-player.vercel.app/",
