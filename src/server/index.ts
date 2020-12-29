@@ -1,14 +1,17 @@
 import { bootstrapMicroframework } from 'microframework';
+import dotenv from 'dotenv';
 
 // Load aliases map BEFORE local imports
 import '../moduleAlias';
 
 // Then aliased imports can be correctly resolved.
 import logger from '~/devtools/logger';
-import environment from './environment';
 import { apolloLoader } from './loaders/apolloLoader';
 import { expressLoader } from './loaders/expressLoader';
 import { prismaLoader } from './loaders/prismaLoader';
+
+// Load environment variables
+dotenv.config({ path: '../../.env' });
 
 // Initiate the server
 bootstrapMicroframework({
@@ -20,7 +23,7 @@ bootstrapMicroframework({
 })
   .then(() =>
     logger.info(
-      `You Apollo server is ready at: ${environment.server.endpoint}/graphql`,
+      `You Apollo server is ready at: ${process.env.SERVER_ENDPOINT}`,
     ),
   )
   .catch(error => logger.error(`Server has crashed: ${error}`));

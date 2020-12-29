@@ -11,7 +11,9 @@ const ServerError: React.FC<ServerErrorProps> = ({ error }) => {
   // This reduces repetitive conditional statements of this component.
   // [X] {error && <Erorr />}
   // [O] <Error />
-  if (!error || !error.message) return null;
+  if (!error || !error.message) {
+    return null;
+  }
   return (
     <Alert severity="error" variant="filled">
       {error.message.replace('GraphQL error: ', '')}

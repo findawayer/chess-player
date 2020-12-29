@@ -4,8 +4,8 @@ import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { DragItem } from '~/vendors/react-dnd';
-import { pieceClass, squareClass } from '~/helpers';
 import { ChessPieceColor, ChessPieceVariant, ChessSquare } from '~/types';
+import { pieceClass, squareClass } from '../helpers';
 
 import useStyles from './styles/ChessPiece';
 

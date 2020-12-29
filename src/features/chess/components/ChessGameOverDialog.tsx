@@ -8,8 +8,8 @@ import {
 } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import { getFullPieceColor } from '~/helpers';
 import { ChessGameOver, ChessGameOverType, ChessPieceColor } from '~/types';
+import { getFullPieceColor } from '../helpers';
 
 interface ChessGameOverDialogProps {
   gameOver: ChessGameOver | false;

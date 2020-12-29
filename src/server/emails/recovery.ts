@@ -1,5 +1,4 @@
 import { withTemplate } from './template';
-import environment from '~/server/environment';
 
 export const createRecoveryEmail = ({
   resetToken,
@@ -11,7 +10,7 @@ export const createRecoveryEmail = ({
 } => ({
   title: 'Your Password Reset Token',
   body: withTemplate(
-    `Your Password Reset Token is here! <a href="${environment.client.endpoint}/reset?resetToken=${resetToken}">
+    `Your Password Reset Token is here! <a href="${process.env.CLIENT_ENDPOINT}/reset?resetToken=${resetToken}">
     Click Here to Reset</a>`,
   ),
 });

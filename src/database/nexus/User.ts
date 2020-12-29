@@ -1,14 +1,27 @@
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
-import { mutationType, objectType, queryType, stringArg } from 'nexus';
+import * as jwt from 'jsonwebtoken';
+import {
+  arg,
+  idArg,
+  intArg,
+  mutationType,
+  nonNull,
+  objectType,
+  queryType,
+  stringArg,
+} from 'nexus';
 import { promisify } from 'util';
+import isEmail from 'validator/lib/isEmail';
 
 // Load aliases map BEFORE local imports.
 import '../../moduleAlias';
 // Then the local imports.
-import environment from '~/server/environment';
 import { createRecoveryEmail, transport } from '~/server/emails';
+import { hasPermissions } from '~/helpers/permissions';
+
+/** Factor passed to hashing algorithm to make the encrypted output unique. */
+const SALT_ROUNDS = 10;
 
 /* ========== Type: User  ========== */
 export const User = objectType({
@@ -19,8 +32,11 @@ export const User = objectType({
     t.model.email();
     t.model.password();
     t.model.role();
+    t.model.verified();
     t.model.createdAt();
     t.model.updatedAt();
+    t.model.resetToken();
+    t.model.resetTokenExpiry();
   },
 });
 
@@ -30,18 +46,41 @@ export const UserQuery = queryType({
     // ---------- user ---------- //
     t.crud.user();
     // ---------- users ---------- //
-    t.crud.users();
+    t.list.field('users', {
+      type: User,
+      args: {
+        take: nonNull(intArg()),
+        skip: intArg(),
+      },
+      // Cursor based pagination
+      async resolve(_root, { take, skip = 0 }, context) {
+        const users = await context.prisma.user.findMany({
+          take,
+          skip,
+          orderBy: { createdAt: 'desc' },
+        });
+        return users;
+      },
+    });
+    // ---------- allUsers ---------- //
+    t.crud.users({
+      alias: 'allUsers',
+      filtering: true,
+      ordering: true,
+      pagination: true,
+    });
     // ---------- me ---------- //
     t.field('me', {
       type: User,
       nullable: true,
-      resolve: (_root, _args, context) => {
+      async resolve(_root, _args, context) {
         if (!context.userId) {
           return null;
         }
-        return context.prisma.user.findUnique({
-          where: { id: parseInt(context.userId, 10) },
+        const me = await context.prisma.user.findUnique({
+          where: { id: context.userId },
         });
+        return me;
       },
     });
   },
@@ -54,12 +93,22 @@ export const UserMutation = mutationType({
     t.crud.createOneUser({
       alias: 'signup',
       async resolve(root, { data }, context, info, originalResolve) {
-        // 1. Normalize email
+        // Normalize email
         const email = data.email.trim().toLowerCase();
-        // 2. Hash the password — pass hashing algorithm as 2nd argument
-        //    to make the output hash unique across platforms.
-        const password = await bcrypt.hash(data.password, 10);
-        // 3. Create the user in the database.
+        // Validate email pattern
+        if (!isEmail(email)) {
+          throw new Error('Invalid email input.');
+        }
+        // Check if there is a user with that email.
+        const existingUser = await context.prisma.user.findUnique({
+          where: { email },
+        });
+        if (existingUser) {
+          throw new Error('Email already in use.');
+        }
+        // Hash the password.
+        const password = await bcrypt.hash(data.password, SALT_ROUNDS);
+        // Create the user in the database.
         const user = await originalResolve(
           root,
           {
@@ -73,14 +122,7 @@ export const UserMutation = mutationType({
           context,
           info,
         );
-        // // 4. Create JWT token for this request.
-        // const token = jwt.sign({ userId: user.id }, environment.app.secret);
-        // // 5. Set the JWT token as a cookie on the response.
-        // context.res.cookie('accessToken', token, {
-        //   httpOnly: true,
-        //   maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
-        // });
-        // 6. Return the user.
+        // Return the user.
         return user;
       },
     });
@@ -89,60 +131,62 @@ export const UserMutation = mutationType({
       type: User,
       nullable: false,
       args: {
-        email: stringArg(),
-        password: stringArg(),
+        email: nonNull(stringArg()),
+        password: nonNull(stringArg()),
       },
       async resolve(_root, { email, password }, context) {
-        // 1. Check if there is a user with that email.
+        // Check if there is a user with that email.
         const user = await context.prisma.user.findUnique({
           where: { email },
         });
         if (!user) {
           throw new Error(`No such user found for email ${email}.`);
         }
-        // 2. Check if the password is correct.
+        // Check if the password is correct.
         const passwordIsValid = await bcrypt.compare(password, user.password);
         if (!passwordIsValid) {
           throw new Error(`Invalid password!`);
         }
-        // 3. Genrate a JWT token.
-        const token = jwt.sign({ userId: user.id }, environment.app.secret);
-        // 4. Set the cookie with the token.
+        // Genrate a JWT token.
+        const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+        // Set the cookie with the token.
         context.res.cookie('accessToken', token, {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
         });
-        // 5. Return the user.
+        // Return the user.
         return user;
       },
     });
     // ---------- signout ---------- //
+    // TODO: the return type is not user, null.
+    // Find the right nexus syntax and update it.
     t.field('signout', {
       type: User,
+      nullable: true,
       resolve: (_root, _args, { res }) => {
-        // 1. Remove user login token from cookie.
+        // Remove user login token from cookie.
         res.clearCookie('accessToken');
-        // 2. Return true as success flag.
+        // Return nothing.
         return null;
       },
     });
     // ---------- deleteUser ---------- //
     t.crud.deleteOneUser({ alias: 'deleteUser' });
     // ---------- recoverPassword ---------- //
-    t.field('recoverPassword', {
-      type: User,
+    t.string('recoverPassword', {
       args: {
-        email: stringArg(),
+        email: nonNull(stringArg()),
       },
       async resolve(_root, { email }, context) {
-        // 1. Check if there is a user with that email.
+        // Check if there is a user with that email.
         const user = await context.prisma.user.findUnique({
           where: { email },
         });
         if (!user) {
           throw new Error(`No such user found for email ${email}.`);
         }
-        // 1. Set a reset token and expiry on that user
+        // Set a reset token and expiry on that user
         const promisifiedRandomBytes = promisify(crypto.randomBytes);
         // (It's better to run every module asynchronously for just in case)
         const resetToken = (await promisifiedRandomBytes(20)).toString('hex');
@@ -151,15 +195,15 @@ export const UserMutation = mutationType({
           where: { email },
           data: { resetToken, resetTokenExpiry },
         });
-        // 3. Email them the reset token.
+        // Email them the reset token.
         const { title, body } = createRecoveryEmail({ resetToken });
         await transport.sendMail({
-          from: environment.mail.sender,
+          from: process.env.MAIL_SENDER,
           to: user.email,
           subject: title,
           html: body,
         });
-        // 2. Return true as success flag.
+        // Nothing is returned.
         return null;
       },
     });
@@ -167,9 +211,9 @@ export const UserMutation = mutationType({
     t.field('resetPassword', {
       type: User,
       args: {
-        resetToken: stringArg(),
-        password: stringArg(),
-        confirmPassword: stringArg(),
+        resetToken: nonNull(stringArg()),
+        password: nonNull(stringArg()),
+        confirmPassword: nonNull(stringArg()),
       },
       async resolve(_root, { resetToken, password, confirmPassword }, context) {
         // Check if the passwords match.
@@ -187,9 +231,9 @@ export const UserMutation = mutationType({
         if (!user) {
           throw new Error('This token is either invalid or expired.');
         }
-        // 4. Hash their new password
+        // Hash their new password
         const newPassword = await bcrypt.hash(password, 10);
-        // 5. Save the new password to the user and remove resetToken fields.
+        // Save the new password to the user and remove resetToken fields.
         const updatedUser = await context.prisma.user.update({
           where: { email: user.email },
           data: {
@@ -198,15 +242,42 @@ export const UserMutation = mutationType({
             resetTokenExpiry: null,
           },
         });
-        // 3. Genrate a JWT token.
-        const token = jwt.sign({ userId: user.id }, environment.app.secret);
-        // 4. Set the cookie with the token.
+        // Genrate a JWT token.
+        const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+        // Set the cookie with the token.
         context.res.cookie('accessToken', token, {
           httpOnly: true,
           maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
         });
-        // 5. Return the user.
+        // Return the user.
         return updatedUser;
+      },
+    });
+    // ---------- updatePermissions ---------- //
+    t.field('updateUserRole', {
+      type: User,
+      args: {
+        id: nonNull(idArg()),
+        role: nonNull(arg({ type: 'Role' })),
+      },
+      async resolve(_root, { id, role }, context) {
+        // Make sure they are logged in.
+        if (!context.userId) {
+          throw new Error('You must be logged in.');
+        }
+        // Check if the requestor has right permissions.
+        const requestor = await context.prisma.user.findUnique({
+          where: { id: context.userId },
+        });
+        // Prevent them from assigning higher permissions than their current ones.
+        if (!hasPermissions(requestor, role)) {
+          throw new Error(`You don't have sufficient permissions.`);
+        }
+        // Find requested user and update permissions.
+        return context.prisma.user.update({
+          where: { id },
+          data: { role },
+        });
       },
     });
   },

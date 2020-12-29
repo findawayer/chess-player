@@ -4,8 +4,7 @@ import { User } from './users';
 /**
  * Chess player side.
  */
-export interface ChessPlayer extends User {
-  name: string;
+export interface ChessPlayer extends Pick<User, 'name'> {
   // Game score.
   score: number;
   // rating: number;

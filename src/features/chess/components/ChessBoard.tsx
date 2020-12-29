@@ -6,21 +6,22 @@ import { withResizeDetector } from 'react-resize-detector';
 import { NoSsr } from '@material-ui/core';
 
 import { movePiece, playMove } from '~/features/chess/slice';
-import { findLegalMoves, isPromotingPawn, stringifySquare } from '~/helpers';
-import { NUMBER_OF_FILES } from '~/settings/chess-config';
+import { NUMBER_OF_FILES } from '~/settings/chess';
 import {
   ChessPieces,
   ChessSettings,
   ChessSquare,
   ChessSquareName,
 } from '~/types';
-import {
-  DraggedPiece,
-  DragItem,
-  getDropTargetSquare,
-} from '~/vendors/react-dnd';
+import { DraggedPiece, DragItem } from '~/vendors/react-dnd';
 import { AppDispatch } from '~/vendors/redux';
 import { ChessValidatorContext } from '../contexts';
+import {
+  findLegalMoves,
+  getDropTargetSquare,
+  isPromotingPawn,
+  stringifySquare,
+} from '../helpers';
 import { useChessGuides, useChessPromotion } from '../hooks';
 import {
   renderActiveSquare,

@@ -1,7 +1,7 @@
 import update from 'immutability-helper';
 import { useCallback, useEffect, useState } from 'react';
 
-import { getPersistedState, persistState } from '~/helpers';
+import { getPersistedState, persistState } from '~/helpers/react-state';
 import { DEFAULT_CHESS_BOARD_THEME } from '~/settings/preferences';
 import { ChessSettings } from '~/types';
 

@@ -42,15 +42,19 @@
 
 [Issue](https://github.com/motdotla/dotenv/issues/233). Reading environmental setup from `.env` file with `dotenv` library requires the Node.js `fs` module in the context, which is absent in client side. Just use a regular JS/TS code to provide custom variables.
 
-### Nothing can stop MUI from spawning thousands of style tags.
+### Add cors settings into apollo-server-express instance.
 
-[Issue](https://github.com/mui-org/material-ui/issues/16543). Every single usage of `makeStyles` to have all style declarations split, seems to inject new `style` tags synchronously; and a lot of them end up empty. There is no way around for these JSS to be extracted as a seperate CSS file, as of currently.
+Adding `cors` as express middleware does NOT correctly set CORS settings when used inside `apollo-server-express` framework. Use the `cors` option available in `ApolloServer` instance.
+
+### Keep in mind that MUI spawns thousands of style tags synchronosly.
+
+[Issue](https://github.com/mui-org/material-ui/issues/16543). When Material UI theme is customized extensively through `makeStyles`, the framework inject new `style` tags synchronously, causing DOM thrashing. There is no way around for these JSS to be extracted as a seperate CSS file, either.
 
 Conclusion:
 
 - Material UI does not seem best fit for custom modular CSS on top of it.
 - Avoid too much customizations to the default styles.
-- If necessary, think about writing seperate CSS in parallel.
+- Consider using a seperate styling system besides — such as `styled-components` — as the app grows.
 
 ### Fetching theme from client storage causes FOUC, in a SSR based project.
 

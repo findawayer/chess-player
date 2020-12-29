@@ -21,6 +21,7 @@ import {
 } from '@material-ui/icons';
 
 import ServerError from '~/features/common/components/ServerError';
+import { CURRENT_USER_QUERY } from '../queries/user';
 import useStyles from './styles/Signup';
 
 // GraphQL mutation: signup then login
@@ -46,7 +47,7 @@ const Signup: React.FC = () => {
   const { email, name, password, showPassword } = values;
   const [signup, { loading, error }] = useMutation(SIGNUP_MUTATION, {
     variables: { email, name, password },
-    // refetchQueries: [{ query: CURRENT_USER_QUERY }]
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
   const router = useRouter();
   const classes = useStyles();

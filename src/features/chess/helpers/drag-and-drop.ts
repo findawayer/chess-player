@@ -1,8 +1,8 @@
 import { DropTargetMonitor } from 'react-dnd';
 
-import { isValidSquare, stringifySquare } from '~/helpers';
 import { ChessSquareName } from '~/types';
-import { DraggedPiece } from './dragItems';
+import { DraggedPiece } from '~/vendors/react-dnd/dragItems';
+import { isValidSquare, stringifySquare } from './chess-squares';
 
 /**
  * Find the chess board square where the dragged piece is dropped at.

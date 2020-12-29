@@ -1,7 +1,7 @@
 import { ChessInstance, Move } from 'chess.js';
 import uniqBy from 'lodash/uniqBy';
 
-import { NUMBER_OF_RANKS } from '~/settings/chess-config';
+import { NUMBER_OF_RANKS } from '~/settings/chess';
 import {
   ChessLegalMove,
   ChessMoveLog,

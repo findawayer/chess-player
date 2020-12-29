@@ -2,10 +2,10 @@ import clsx from 'clsx';
 import React, { memo } from 'react';
 import { fade, makeStyles, Theme } from '@material-ui/core/styles';
 
-import { squareClass } from '~/helpers';
-import { SQUARE_SIZE } from '~/settings';
+import { SQUARE_SIZE } from '~/settings/chess';
 import { ChessBoardThemeVariant, ChessSquareName } from '~/types';
 import { chessBoardTheme } from '~/vendors/material-ui/themes';
+import { squareClass } from '../helpers';
 
 interface ChessGuideProps {
   color: ChessBoardThemeVariant;

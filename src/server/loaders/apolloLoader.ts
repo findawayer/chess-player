@@ -1,11 +1,9 @@
 import { ApolloServer } from 'apollo-server-express';
-import cors from 'cors';
 import * as express from 'express';
 import { MicroframeworkLoader, MicroframeworkSettings } from 'microframework';
 import { PrismaClient } from '@prisma/client';
 
 import { schema } from '~/database';
-import environment from '../environment';
 
 interface ExpressContext {
   req: express.Request;
@@ -45,15 +43,13 @@ export const apolloLoader: MicroframeworkLoader = (
   const apolloServer = new ApolloServer({
     schema,
     context: createContext,
-    // Trace query resolution stats for benchmark.
-    // tracing: environment.isDevelopment,
   });
   // Configure CORS policy for the apollo server.
   // (For some-reason-god-knows-why, using cors middleware inside the express instnace
   //  did NOT work with the client.)
   const corsOptions = {
     credentials: true,
-    origin: environment.client.endpoint,
+    origin: process.env.CLIENT_ENDPOINT,
   };
   // Integrate express instance to the Apollo Server.
   apolloServer.applyMiddleware({ app: expressApp, cors: corsOptions });

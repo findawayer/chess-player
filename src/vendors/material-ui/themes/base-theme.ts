@@ -56,6 +56,7 @@ export const baseTheme: ThemeOptions = {
           overflow: 'hidden',
         },
         a: {
+          color: 'inherit',
           '&:hover': {
             textDecoration: 'none',
           },

@@ -7,19 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
 model User {
-  id               Int      @id @default(autoincrement())
+  id               String   @id @default(uuid())
   email            String   @unique
   password         String
-  name             String?
+  name             String
   role             Role     @default(USER)
+  verified         Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   resetToken       String?
   resetTokenExpiry Int?
+}
+
+enum Role {
+  SUPERUSER
+  ADMIN
+  USER
 }

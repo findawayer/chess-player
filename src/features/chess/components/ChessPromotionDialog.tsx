@@ -2,12 +2,12 @@ import clsx from 'clsx';
 import React, { useMemo } from 'react';
 import Typography from '@material-ui/core/Typography';
 
-import { getFullPieceVariant, objectifySquare, pieceClass } from '~/helpers';
 import {
   ChessPieceColor,
   ChessPromotionVariant,
   ChessSquareName,
 } from '~/types';
+import { getFullPieceVariant, objectifySquare, pieceClass } from '../helpers';
 import { AbortPromotion, SelectPromotion } from '../hooks';
 import useStyles from './styles/ChessPromotionDialog';
 

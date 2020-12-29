@@ -1,7 +1,6 @@
 import map from 'lodash/map';
 import React from 'react';
 
-import { objectifySquare } from '~/helpers';
 import {
   ChessBoardThemeVariant,
   ChessLegalMove,
@@ -10,6 +9,7 @@ import {
   ChessSquare,
   ChessSquareName,
 } from '~/types';
+import { objectifySquare } from '../../helpers';
 import { AbortPromotion, SelectPromotion } from '../../hooks';
 import ChessGuide from '../ChessGuide';
 import ChessLegalSquare from '../ChessLegalSquare';

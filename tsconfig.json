@@ -12,6 +12,10 @@
       "~/": ["src"],
       "~/*": ["src/*"]
     },
+    "typeRoots": [
+      "./src/typings",
+      "./node_modules/@types"
+    ],
     "skipLibCheck": true,
     "strict": false,
     "module": "commonjs",

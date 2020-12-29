@@ -8,7 +8,7 @@ import {
   NUMBER_OF_RANKS,
   NUMBER_OF_SQUARES,
   SQUARE_SIZE,
-} from '~/settings/chess-config';
+} from '~/settings/chess';
 import { ChessBoardThemeVariant } from '~/types';
 import { chessBoardTheme } from '~/vendors/material-ui/themes';
 

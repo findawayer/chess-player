@@ -3,6 +3,6 @@
 // requires Node.js `fs` module, which is not present in browser environment.
 
 /** GraphQL server endpoint for production */
-export const SERVER_ENDPOINT = '';
+export const SERVER_ENDPOINT = 'http://localhost:4000/graphql';
 /** GraphQL server endpoint for development */
 export const SERVER_ENDPOINT_DEVELOPMENT = 'http://localhost:4000/graphql';

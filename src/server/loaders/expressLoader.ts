@@ -1,9 +1,7 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { MicroframeworkLoader, MicroframeworkSettings } from 'microframework';
-
-import environment from '../environment';
 
 export const expressLoader: MicroframeworkLoader = (
   settings: MicroframeworkSettings | undefined,
@@ -25,7 +23,7 @@ export const expressLoader: MicroframeworkLoader = (
     next();
   });
   // Run the app to listen on given port.
-  expressApp.listen(environment.server.port);
+  expressApp.listen(process.env.SERVER_PORT);
   // Cache the created app as the microframework's internal data.
   settings.setData('expressServer', expressApp);
 };

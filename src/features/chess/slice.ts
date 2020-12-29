@@ -1,6 +1,15 @@
 import { Move } from 'chess.js';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { SCORE_DRAW, SCORE_WIN } from '~/settings/chess';
+import {
+  ChessBoardData,
+  ChessGameOverType,
+  ChessMove,
+  ChessPieceColor,
+  ChessPlayer,
+  ChessSquareName,
+} from '~/types';
 import {
   createPieces,
   invertPieceColor,
@@ -8,16 +17,7 @@ import {
   isEnPassant,
   isQueenSideSquare,
   shiftSquareName,
-} from '~/helpers';
-import { SCORE_DRAW, SCORE_WIN } from '~/settings';
-import {
-  ChessBoardData,
-  ChessGameOverType,
-  ChessMove,
-  ChessPieceColor,
-  ChessSquareName,
-  User,
-} from '~/types';
+} from './helpers';
 import { initializeChessState } from './state';
 
 // Action types
@@ -210,7 +210,10 @@ const chessSlice = createSlice({
     // setPlayers
     [ChessActionType.SetPlayers]: (
       chess,
-      action: PayloadAction<Record<ChessPieceColor, User>, ChessActionType>,
+      action: PayloadAction<
+        Record<ChessPieceColor, ChessPlayer>,
+        ChessActionType
+      >,
     ) => {
       const players = action.payload;
       Object.assign(chess.players.w, players.w);

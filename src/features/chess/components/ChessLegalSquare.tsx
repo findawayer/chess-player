@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
-import { squareClass } from '~/helpers';
-import { SQUARE_SIZE } from '~/settings';
+import { SQUARE_SIZE } from '~/settings/chess';
 import { ChessLegalMove, ChessSquare } from '~/types';
+import { squareClass } from '../helpers';
 
 interface ChessLegalSquareProps extends ChessLegalMove {
   showLegalMoves: boolean;

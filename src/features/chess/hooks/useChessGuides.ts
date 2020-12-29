@@ -1,8 +1,8 @@
 import update from 'immutability-helper';
 import { useCallback, useState } from 'react';
 
-import { stringifySquare } from '~/helpers';
 import { ChessGuides, ChessLegalMove, ChessSquare } from '~/types';
+import { stringifySquare } from '../helpers';
 
 export type SetActive = (
   activeSquare: ChessSquare | null,

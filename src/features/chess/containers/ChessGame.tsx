@@ -19,13 +19,7 @@ import {
   timeout,
 } from '~/features/chess/slice';
 import { ChessState } from '~/features/chess/state';
-import {
-  createComputers,
-  createHumanAndComputer,
-  getRecentMovePath,
-  invertPieceColor,
-} from '~/helpers';
-import { STOCKFISH_FILE_PATH } from '~/settings';
+import { STOCKFISH_FILE_PATH } from '~/settings/chess';
 import { ChessPieceColor, ChessSettings } from '~/types';
 import { AppDispatch, AppState } from '~/vendors/redux';
 import ChessBoard from '../components/ChessBoard';
@@ -33,6 +27,12 @@ import ChessGameOverDialog from '../components/ChessGameOverDialog';
 import ChessPlayer from '../components/ChessPlayer';
 import { ChessValidatorContext } from '../contexts';
 // import { FEN_WHITE_EN_PASSANT, STOCKFISH_FILE_PATH } from '../debug/fen';
+import {
+  createComputers,
+  createHumanAndComputer,
+  getRecentMovePath,
+  invertPieceColor,
+} from '../helpers';
 import { useChessClock, useStockfish } from '../hooks';
 
 interface ChessGameProps {
