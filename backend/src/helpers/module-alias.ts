@@ -12,24 +12,31 @@
 
 import moduleAlias from 'module-alias';
 import path from 'path';
-import tsConfig from '../../tsconfig.json';
+// import tsConfig from '../../tsconfig.json';
 
 /** Create a dynamic aliases map for `ts-node-dev` used for server side compilation. */
-const createAliasMap = () => {
-  const {
-    compilerOptions: { paths },
-  } = tsConfig;
-  return Object.keys(paths)
-    .filter(key => !/\/\*$/.test(key))
-    .reduce((output, key) => {
-      const value = paths[key];
-      // Remove '/' at the end from the key.
-      const alias = key.replace(/\/$/, '');
-      // Resolve the path from the root directory.
-      const target = path.resolve(process.cwd(), value[0]);
-      output[alias] = target;
-      return output;
-    }, {});
-};
+// const createAliasMap = () => {
+//   const {
+//     compilerOptions: { paths },
+//   } = tsConfig;
+//   return (
+//     Object.keys(paths)
+//       // Exclude paths ending with `/*`
+//       .filter(key => !/\/\*$/.test(key))
+//       // Format to comply with `module-alias` package's API.
+//       .reduce((output, key) => {
+//         const value = paths[key];
+//         // Remove '/' at the end from the key.
+//         const alias = key.replace(/\/$/, '');
+//         // Resolve the path from the root directory.
+//         const target = path.resolve(process.cwd(), value[0]);
+//         output[alias] = target;
+//         return output;
+//       }, {})
+//   );
+// };
 
-moduleAlias.addAliases(createAliasMap());
+// moduleAlias.addAliases(createAliasMap());
+moduleAlias.addAliases({
+  '~': path.resolve(process.cwd(), 'src'),
+});

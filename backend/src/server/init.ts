@@ -6,7 +6,7 @@ import { expressLoader } from './loaders/expressLoader';
 import { prismaLoader } from './loaders/prismaLoader';
 
 // Initiate the server
-export function init() {
+export default function init() {
   bootstrapMicroframework({
     /**
      * Loader is a place where you can configure all your modules during microframework
