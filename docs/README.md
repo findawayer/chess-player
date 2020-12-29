@@ -6,10 +6,10 @@ Chess Player is an implementation of [chess game](https://en.wikipedia.org/wiki/
   <tbody>
     <tr>
       <td>
-        <img src="./assets/chess-player-preview-1.png" alt="chess-player-preview" width="250" />
+        <img src="./assets/chess-player-preview-1.png" alt="Chess Player preview" width="250" style="vertical-align: top;" />
       </td>
       <td>
-        <img src="./assets/chess-player-preview-2.png" alt="" width="250" />
+        <img src="./assets/chess-player-preview-2.png" alt="" width="250" style="vertical-align: top;" />
       </td>
     </tr>
   </tbody>

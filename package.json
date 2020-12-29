@@ -83,6 +83,7 @@
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
+    "@prisma/cli": "^2.13.1",
     "@types/bcryptjs": "^2.4.2",
     "@types/chess.js": "^0.10.1",
     "@types/cookie-parser": "^1.4.2",
