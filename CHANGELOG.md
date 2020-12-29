@@ -1,6 +1,18 @@
-## 0.1.0 (2020-12-21)
+## 1.0.0-alpha.0 (2020-12-29)
 
-- First beta build.
+- Integrate backend.
+  - PostgreSQL server hosted by AWS RDS.
+  - GraphQL server powered by Apollo Express Server.
+  - Prisma for GraphQL query builder.
+  - Nexus for GraphQL schema and type definitions builder.
+- Add user account, auth logic and example admin page.
+
+## 0.2.1 (2020-12-24)
+
+### Bug fix
+
+- Handle en passant moves on board.
+- Double-check for illegal moves when a move is submitted.
 
 ## 0.2.0 (2020-12-23)
 
@@ -30,9 +42,6 @@
 
 - Reset the game turn on unmounting.
 
-## 0.2.1 (2020-12-24)
+## 0.1.0 (2020-12-21)
 
-### Bug fix
-
-- Handle en passant moves on board.
-- Double-check for illegal moves when a move is submitted.
+- First beta build.

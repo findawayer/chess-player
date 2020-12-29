@@ -6,79 +6,131 @@ Chess Player is an implementation of [chess game](https://en.wikipedia.org/wiki/
   <tbody>
     <tr>
       <td>
-        <img src="./assets/chess-player-preview-1.png" alt="chess-player-preview" width="250" />
+        <img src="./assets/chess-player-preview-1.png" alt="Chess Player preview" width="250" style="vertical-align: top;" />
       </td>
       <td>
-        <img src="./assets/chess-player-preview-2.png" alt="" width="250" />
+        <img src="./assets/chess-player-preview-2.png" alt="" width="250" style="vertical-align: top;" />
       </td>
     </tr>
   </tbody>
 </table>
 
-The app utilizes [Stockfish](https://github.com/official-stockfish/Stockfish) engine as move generator and evaluator.
-
-## Live demo
-
-Please visit [demo page](https://chess-player.vercel.app/) to visualize chess-player's operation.
+Please visit the [demo page](https://chess-player.vercel.app/) to visualize chess-player's operation.
 
 ## Installation
+
+### Clone repository
 
 ```
 $ git clone https://github.com/findawayer/chess-player.git
 $ cd chess-player
-$ npm install
-$ npm run start
 ```
 
-## Structure
+### Backend
 
-### Tools
+```
+$ cd backend
+$ yarn install
+$ yarn build
+$ yarn start
+```
+
+- `yarn install` — Install node packages.
+- `yarn build` — Generate database schema and type definitions.
+- `yarn start` — Start the server.
+
+### Frontend
+
+```
+$ cd frontend
+$ yarn install
+$ yarn build
+$ yarn start
+```
+
+- `yarn install` — Install node packages.
+- `yarn build` — Generate next static build.
+- `yarn start` — Start the next app.
+
+## Tools
+
+### Authoring
 
 - [TypeScript](https://github.com/microsoft/TypeScript) as Authoring language.
 - [Babel](https://github.com/babel/babel) as Code transpiler.
+- [Eslint](https://github.com/eslint/eslint) as Code linter.
+- [Prettier](https://github.com/prettier/prettier) as Code formatter.
+
+### Frontend
+
 - [React](https://github.com/facebook/react) as Frontend framework.
+- [Apollo Client](https://github.com/apollographql/apollo-client) as Frontend GraphQL framework.
 - [Next.js](https://github.com/vercel/next.js/) as React framework.
 - [Redux](https://github.com/reduxjs/redux) as React state manager.
-- [Redux-Toolkit](https://github.com/reduxjs/redux-toolkit) as Redux authoring template.
-- [React-Redux](https://github.com/reduxjs/react-redux) as Redux binder to React.
-- [Eslint](https://github.com/eslint/eslint) as Code linter.
-- [Material-UI](https://github.com/mui-org/material-ui) as Design framework.
+- [Redux Toolkit](https://github.com/reduxjs/redux-toolkit) as Redux authoring template.
+- [React Redux](https://github.com/reduxjs/react-redux) as Redux binder to React.
+- [Material UI](https://github.com/mui-org/material-ui) as Design framework.
 - [Chess.js](https://github.com/jhlywa/chess.js) as Chess move validator.
 - [Stockfish-js](https://github.com/exoticorn/stockfish-js) as Chess move generator &amp; evaluator.
-- [React-Dnd](https://github.com/react-dnd/react-dnd) as Drag-and-drop helper.
+- [React DnD](https://github.com/react-dnd/react-dnd) as Drag-and-drop helper.
 
-### Folders
+### Backend
 
-```
+- [Express](https://github.com/expressjs/express) as Server framework.
+- [Apollo-server-express](https://www.npmjs.com/package/apollo-server-express) as Express-GraphQL server framework.
+- [PostgreSQL](https://www.postgresql.org/) as Database provider.
+- [GraphQL](https://github.com/graphql) as Database query interface.
+- [Prisma](https://github.com/prisma/prisma) as GraphQL database interface.
+- [Nexus](https://github.com/graphql-nexus/nexus) as GraphQL schema generator.
+- [W3Tec Microframework](https://www.npmjs.com/package/microframework-w3tec) as Node.js framework.
+
+### Others
+
+- [Chess piece graphics](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces) by Colin M.L.Burnett
+
+## Structure
+
+<pre>
 📦chess-player
- ┣ 📂.vscode ── VS Code editor configurations
- ┣ 📂docs ── READMEs and related assets
- ┣ 📂public ── Static files
- ┃ ┣ 📂stockfish ── Chess engine library
- ┃ ┗ 📂svg ── Chess piece vector graphics
- ┣ 📂scripts ── Node scripts
- ┣ 📂src ── Source code
- ┃ ┣ 📂components ── Presentational React components
- ┃ ┣ 📂containers ── React components with Redux data bindings
- ┃ ┣ 📂contexts ── React contexts
- ┃ ┣ 📂helpers ── Utility functions
- ┃ ┣ 📂hooks ── React hooks
- ┃ ┣ 📂pages ── Next.js pages
- ┃ ┗ 📜_app.tsx ── Client side markup
- ┃ ┗ 📜_document.tsx ── Server side markup
- ┃ ┣ 📂settings ── App configuration constants
- ┃ ┣ 📂slices ── Redux toolkit slices and state schema
- ┃ ┣ 📂types ── TypeScript type references
- ┃ ┗ 📂vendors ── Library specific resources
- ┃ ┃ ┣ 📂material-ui ── Material UI themes
- ┃ ┃ ┣ 📂react-dnd ── React-Dnd setup
- ┃ ┃ ┗ 📂redux ── Redux store & reducers
-```
+ ┣ 📂.vscode ── VS Code editor specific setup
+ ┣ 📂docs ── Documentations
+ ┣ 📂backend ── Database, server and mailing service.
+ ┃ ┗ 📂src ── Source code
+ ┃   ┣ 📂database ── Database components
+ ┃   ┃ ┣ 📂generated ── Auto generated GraphQL schema & Nexus type definitions
+ ┃   ┃ ┣ 📂nexus ── JavaScript based type definitions and GraphQL schema
+ ┃   ┃ ┗ 📂prisma ── Database Configurations & Prisma data model
+ ┃   ┃ ┃ ┗ 📂migrations ── SQL queries generated by Prisma
+ ┃   ┣ 📂helpers ── Globally used utility variables and functions
+ ┃   ┣ 📂mails ── Mailiing service
+ ┃   ┣ 📂server ── Backend resources
+ ┃   ┃ ┗ 📂loaders ── Microframework loaders
+ ┃   ┣ 📂typings ── Type definitions including global augmentations
+ ┃   ┗ 📜index.ts ── Entry point
+ ┣ 📂frontend ── React/Next client app.
+   ┣ 📂public ── Static files
+   ┃ ┣ 📂graphics ── Chess piece vector graphics
+   ┃ ┗ 📂stockfish ── Chess engine library
+   ┗ 📂src ── Source code
+     ┣ 📂config ── App configuration constants
+     ┣ 📂features ── Resources per features: React components, GraphQL queries, etc.
+     ┣ 📂helpers ── Globally used utility variables and functions
+     ┣ 📂pages ── Next.js pages
+     ┃ ┗ 📜_app.tsx ── Client side markup
+     ┃ ┗ 📜_document.tsx ── Server side markup
+     ┣ 📂typings ── Type definitions including global augmentations
+     ┗ 📂vendors ── Library specific resources
+       ┣ 📂apollo-client ── Apollo client setup
+       ┣ 📂material-ui ── Material UI themes
+       ┣ 📂react-dnd ── React-Dnd setup
+       ┗ 📂redux ── Redux store & reducers
+</pre>
 
 ## Next to come
 
 Features under development or planned for future.
 
+- Member-specific features.
 - Visualization of move evaluations.
 - CLI for move submissions.
 
@@ -91,9 +143,3 @@ Latest ✅ | Latest ✅ | Latest ✅
 <!-- prettier-ignore-end -->
 
 The app makes use of Web Worker API available in modern browsers, check out [the compatibility chart](https://caniuse.com/webworkers).
-
-## Special credits
-
-- [Jeff Hlywa](https://github.com/jhlywa/chess.js) &mdash; Author of game validator `chess.js`.
-- [Stockfish](https://github.com/official-stockfish) &mdash; Stockfish chess engine developer team.
-- [Colin M.L.Burnett](https://en.wikipedia.org/wiki/User:Cburnett) &mdash; Designer of chess piece graphics.
