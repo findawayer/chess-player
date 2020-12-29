@@ -1,0 +1,10 @@
+# Dependencies
+node_modules
+
+# Static files
+/public
+
+# Auto-generated
+.next
+**/generated
+**/prisma/migrations
