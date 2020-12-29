@@ -18,9 +18,9 @@
     "nexus"
   ],
   "scripts": {
-    "start": "concurrently \"npm run server:start\" \"npm run client:start\"",
-    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
-    "build": "npm run schema:generate && npm run migrate:commit && npm run migrate:push && next build",
+    "start": "concurrently \"yarn server:start\" \"yarn client:start\"",
+    "dev": "concurrently \"yarn server:dev\" \"yarn client:dev\"",
+    "build": "yarn schema:generate && next build",
     "client:start": "next start",
     "client:dev": "next dev",
     "server:start": "nodemon --ext ts,graphql --exec ts-node -- --files ./src/server",

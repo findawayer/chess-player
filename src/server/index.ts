@@ -1,5 +1,6 @@
-import { bootstrapMicroframework } from 'microframework';
 import dotenv from 'dotenv';
+import { bootstrapMicroframework } from 'microframework';
+import path from 'path';
 
 // Load aliases map BEFORE local imports
 import '../moduleAlias';
@@ -11,7 +12,9 @@ import { expressLoader } from './loaders/expressLoader';
 import { prismaLoader } from './loaders/prismaLoader';
 
 // Load environment variables
-dotenv.config({ path: '../../.env' });
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+}
 
 // Initiate the server
 bootstrapMicroframework({
