@@ -16,6 +16,9 @@ export interface Context {
   userId: string | null;
 }
 
+// Environment check.
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 // Use Prisma as GraphQL query builder.
 const prismaClient = new PrismaClient();
 
@@ -33,8 +36,9 @@ const createContext = ({ req, res }: NextApiContext): Context => {
 // Docs: https://www.apollographql.com/docs/apollo-server/
 const apolloServer = new ApolloServer({
   schema,
-  playground: true,
-  introspection: true,
+  playground: isDevelopment,
+  introspection: isDevelopment,
+  // mocks: isDevelopment,
   context: createContext,
 });
 

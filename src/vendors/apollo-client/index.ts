@@ -3,6 +3,8 @@
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
 import { useMemo } from 'react';
+import urlJoin from 'url-join';
+
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { concatPagination } from '@apollo/client/utilities';
 
@@ -17,8 +19,8 @@ function createApolloClient() {
     ssrMode: typeof window === 'undefined',
     // Server URL and CORS settings
     link: new HttpLink({
-      uri: `${process.env.NEXT_PUBLIC_ENDPOINT}/api/graphql`, // must be absolute
-      credentials: 'include', // fetch() options goes into `credentials` or `headers`
+      uri: urlJoin(process.env.NEXT_PUBLIC_ENDPOINT, 'api/graphql'), // must be absolute
+      credentials: 'same-origin', // fetch() options goes into `credentials` or `headers`
     }),
     // Use cache for paginations.
     cache: new InMemoryCache({
