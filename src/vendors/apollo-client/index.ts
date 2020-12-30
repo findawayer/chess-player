@@ -13,16 +13,11 @@ let apolloClient: ApolloClient<unknown>;
 
 // Create apollo client instance.
 function createApolloClient() {
-  const endpoint =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3000'
-      : process.env.ENDPOINT;
-
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     // Server URL and CORS settings
     link: new HttpLink({
-      uri: `${endpoint}/api/graphql`, // must be absolute
+      uri: `${process.env.NEXT_PUBLIC_ENDPOINT}/api/graphql`, // must be absolute
       credentials: 'include', // fetch() options goes into `credentials` or `headers`
     }),
     // Use cache for paginations.

@@ -5,7 +5,6 @@ declare global {
     interface ProcessEnv {
       NODE_ENV?: 'development' | 'production';
       APP_SECRET?: string;
-      PORT?: number;
       ENDPOINT?: string;
       MAIL_HOST?: string;
       MAIL_PORT?: number;
