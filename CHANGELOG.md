@@ -1,3 +1,7 @@
+## 1.0.0-alpha.2 (2020-12-30)
+
+- Merge frontend and backend in a single Next application.
+
 ## 1.0.0-alpha.1 (2020-12-30)
 
 - Bundle backend with webpack.
