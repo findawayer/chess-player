@@ -18,7 +18,7 @@ import isEmail from 'validator/lib/isEmail';
 import '../../../helpers/module-alias';
 // and the local imports works.
 import { setCookie, deleteCookie } from '~/helpers/cookies';
-import { hasPermissions } from '~/helpers/users';
+import { hasPermissions } from '~/helpers/permissions';
 import { sendRecoveryEmail } from '~/features/mailing/recovery';
 
 /** Factor passed to hashing algorithm to make the encrypted output unique. */

@@ -19,38 +19,19 @@ Please visit the [demo page](https://chess-player.vercel.app/) to visualize ches
 
 ## Installation
 
-### Clone repository
-
 ```
 $ git clone https://github.com/findawayer/chess-player.git
 $ cd chess-player
-```
-
-### Backend
-
-```
-$ cd backend
 $ yarn install
 $ yarn build
 $ yarn start
 ```
 
-- `yarn install` — Install node packages.
-- `yarn build` — Generate database schema and type definitions.
-- `yarn start` — Start the server.
+Requires:
 
-### Frontend
-
-```
-$ cd frontend
-$ yarn install
-$ yarn build
-$ yarn start
-```
-
-- `yarn install` — Install node packages.
-- `yarn build` — Generate next static build.
-- `yarn start` — Start the next app.
+- Node.js installed on your machine.
+- Environment variables; see `.env.example` for references.
+- A PostgreSQL database server running.
 
 ## Tools
 
@@ -104,8 +85,7 @@ $ yarn start
    ┃ ┗ 📂mailing — Mailing servive
    ┣ 📂helpers — Globally used utility variables and functions
    ┣ 📂pages — Next.js pages
-   ┃ ┗ 📜_app.tsx — Client side markup
-   ┃ ┗ 📜_document.tsx — Server side markup
+   ┃ ┗ 📂api/graphql — GraphQL server endpoint
    ┣ 📂typings — Shared type definitions across project
    ┗ 📂vendors — Library specific resources
      ┣ 📂apollo-client — Apollo client

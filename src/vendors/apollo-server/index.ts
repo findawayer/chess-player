@@ -33,8 +33,8 @@ const createContext = ({ req, res }: NextApiContext): Context => {
 // Docs: https://www.apollographql.com/docs/apollo-server/
 const apolloServer = new ApolloServer({
   schema,
-  tracing: process.env.NODE_ENV === 'development',
   playground: true,
+  introspection: true,
   context: createContext,
 });
 

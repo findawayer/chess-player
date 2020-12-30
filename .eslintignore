@@ -6,5 +6,5 @@ node_modules
 
 # Auto-generated
 .next
-**/generated
+**/nexus/generated
 **/prisma/migrations
