@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { flipBoard, resign, undoMove } from '~/features/chess/slice';
 import { ChessState } from '~/features/chess/state';
-import { ChessSettings } from '~/typings/preferences';
+import { ChessSettings } from '~/features/chess/types';
 import { AppState } from '~/vendors/redux';
 import ChessControl from '../components/ChessControl';
 import ChessMoveList from '../components/ChessMoveList';

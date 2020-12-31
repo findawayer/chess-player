@@ -2,7 +2,7 @@ import times from 'lodash/times';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { CSSProperties } from '@material-ui/core/styles/withStyles';
 
-import { NUMBER_OF_FILES, NUMBER_OF_RANKS } from '~/config/chess';
+import { NUMBER_OF_FILES, NUMBER_OF_RANKS } from '../../constants';
 import { squareClass } from '../../helpers';
 
 // Generate helper classes for positionning of squares & pieces

@@ -23,8 +23,8 @@ import {
   setIncrement,
   setPlayerColor,
 } from '~/features/chess/slice';
-import { ChessPieceColor } from '../typings';
 import { AppDispatch } from '~/vendors/redux';
+import { ChessPieceColor } from '../typings';
 
 interface ChessGameSelectProps {
   duration: number;

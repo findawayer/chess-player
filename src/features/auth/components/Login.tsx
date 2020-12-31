@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -20,11 +21,9 @@ import {
   VisibilityOff as VisibilityOffIcon,
 } from '@material-ui/icons';
 
-import ServerError from '~/features/common/components/ServerError';
+import ServerError from '~/theme/components/ServerError';
 import { CURRENT_USER_QUERY, SIGN_IN_MUTATION } from '../graphql';
-import useStyles from './styles/Signup';
 
-// Component
 const Signin: React.FC = () => {
   const [values, setValues] = useState({
     email: '',
@@ -37,9 +36,8 @@ const Signin: React.FC = () => {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
   const router = useRouter();
-  const classes = useStyles();
 
-  // Handler for input field changes.
+  /** Handler for input field changes. */
   const handleInputChange = (
     key: Exclude<keyof typeof values, 'showPassword'>,
   ) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,10 +46,10 @@ const Signin: React.FC = () => {
       [key]: event.target.value,
     }));
   };
-  // Handler for form submission
+  /** Handler for form submission */
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     let hasError = false;
-    // Prevent native form submission.
+    // Highjack native form submission.
     event.preventDefault();
     // Don't let Next.js display runtime error,
     // to display custom error message to the user.
@@ -70,14 +68,14 @@ const Signin: React.FC = () => {
       router.push('/');
     }
   };
-  // Handler for toggling password value.
+  /** Handler for toggling password value. */
   const handleClickShowPassword = () => {
     setValues(previousValues => ({
       ...previousValues,
       showPassword: !previousValues.showPassword,
     }));
   };
-  // Prevent native click action on password toggler button.
+  /** Prevent native click action on password toggler button. */
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
@@ -88,13 +86,13 @@ const Signin: React.FC = () => {
     <form method="post" onSubmit={handleFormSubmit}>
       <Card component="fieldset" elevation={3} aria-busy={loading}>
         <CardContent>
-          <Typography variant="h4" component="h2" className={classes.title}>
+          <Typography variant="h4" component="h2" align="center" gutterBottom>
             Log in to your account
           </Typography>
-          <div className={classes.formRow}>
+          <Box mb={2}>
             <ServerError error={error} />
-          </div>
-          <FormControl fullWidth className={classes.formRow}>
+          </Box>
+          <FormControl component={Box} fullWidth mb={2}>
             <TextField
               id="userEmail"
               name="userEmail"
@@ -104,7 +102,7 @@ const Signin: React.FC = () => {
               label="Email"
             />
           </FormControl>
-          <FormControl fullWidth className={classes.formRow}>
+          <FormControl component={Box} fullWidth mb={2}>
             <InputLabel htmlFor="userPassword">
               Password <span aria-hidden="true">*</span>
             </InputLabel>

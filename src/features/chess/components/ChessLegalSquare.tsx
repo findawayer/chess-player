@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
-import { SQUARE_SIZE } from '~/config/chess';
+import { SQUARE_SIZE } from '../constants';
 import { squareClass } from '../helpers';
 import { ChessLegalMove, ChessSquare } from '../typings';
 

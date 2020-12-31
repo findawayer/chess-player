@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -19,9 +20,8 @@ import {
 } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 
-import ServerError from '~/features/common/components/ServerError';
+import ServerError from '~/theme/components/ServerError';
 import { CURRENT_USER_QUERY, RESET_PASSWORD_MUTATION } from '../graphql';
-import useStyles from './styles/Signup';
 
 // Component
 const ResetPassword: React.FC = () => {
@@ -47,9 +47,8 @@ const ResetPassword: React.FC = () => {
     },
   );
   const isSuccessful = called && !loading && !error;
-  const classes = useStyles();
 
-  // Handler for input field changes.
+  /** Handler for input field changes. */
   const handleInputChange = (
     key: Exclude<keyof typeof values, 'showPassword'>,
   ) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,10 +57,10 @@ const ResetPassword: React.FC = () => {
       [key]: event.target.value,
     }));
   };
-  // Handler for form submission
+  /** Handler for form submission */
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     let hasError = false;
-    // Prevent native form submission.
+    // Highjack native form submission.
     event.preventDefault();
     // Don't let Next.js display runtime error,
     // to display custom error message to the user.
@@ -84,7 +83,7 @@ const ResetPassword: React.FC = () => {
       // router.push('/login');
     }
   };
-  // Handler for toggling password value.
+  /** Handler for toggling password value. */
   const handleClickShowPassword = (
     key: 'showPassword' | 'showConfirmPassword',
   ) => () => {
@@ -93,7 +92,7 @@ const ResetPassword: React.FC = () => {
       [key]: !previousValues[key],
     }));
   };
-  // Prevent native click action on password toggler button.
+  /** Prevent native click action on password toggler button. */
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
@@ -104,16 +103,16 @@ const ResetPassword: React.FC = () => {
     <form method="post" onSubmit={handleFormSubmit}>
       <Card component="fieldset" elevation={3} aria-busy={loading}>
         <CardContent>
-          <Typography variant="h4" component="h2" className={classes.title}>
+          <Typography variant="h4" component="h2" align="center" gutterBottom>
             Enter your new password
           </Typography>
-          <div className={classes.formRow}>
+          <Box mb={2}>
             <ServerError error={error} />
             {isSuccessful && (
               <Alert severity="success">Success! Updated your password.</Alert>
             )}
-          </div>
-          <FormControl fullWidth className={classes.formRow}>
+          </Box>
+          <FormControl component={Box} fullWidth mb={2}>
             <InputLabel htmlFor="userPassword">
               Password <span aria-hidden="true">*</span>
             </InputLabel>
@@ -138,7 +137,7 @@ const ResetPassword: React.FC = () => {
               }
             />
           </FormControl>
-          <FormControl fullWidth className={classes.formRow}>
+          <FormControl component={Box} fullWidth mb={2}>
             <InputLabel htmlFor="userConfirmPassword">
               Confirm password <span aria-hidden="true">*</span>
             </InputLabel>

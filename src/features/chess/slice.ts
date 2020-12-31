@@ -1,7 +1,7 @@
 import { Move } from 'chess.js';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { SCORE_DRAW, SCORE_WIN } from '~/config/chess';
+import { SCORE_DRAW, SCORE_WIN } from './constants';
 import {
   createPieces,
   invertPieceColor,

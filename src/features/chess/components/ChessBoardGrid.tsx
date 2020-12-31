@@ -3,14 +3,14 @@ import times from 'lodash/times';
 import React from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
+import { ChessBoardThemeVariant } from '~/features/chess/types';
+import { chessBoardTheme } from '~/features/chess/themes';
 import {
   NUMBER_OF_FILES,
   NUMBER_OF_RANKS,
   NUMBER_OF_SQUARES,
   SQUARE_SIZE,
-} from '~/config/chess';
-import { ChessBoardThemeVariant } from '~/typings/preferences';
-import { chessBoardTheme } from '~/vendors/material-ui/themes';
+} from '../constants';
 
 interface ChessBoardGridProps {
   color: ChessBoardThemeVariant;

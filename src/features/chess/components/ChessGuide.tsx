@@ -2,11 +2,11 @@ import clsx from 'clsx';
 import React, { memo } from 'react';
 import { fade, makeStyles, Theme } from '@material-ui/core/styles';
 
-import { SQUARE_SIZE } from '~/config/chess';
-import { ChessBoardThemeVariant } from '~/typings/preferences';
-import { ChessSquareName } from '../typings';
-import { chessBoardTheme } from '~/vendors/material-ui/themes';
+import { ChessBoardThemeVariant } from '~/features/chess/types';
+import { SQUARE_SIZE } from '../constants';
 import { squareClass } from '../helpers';
+import { chessBoardTheme } from '../themes';
+import { ChessSquareName } from '../typings';
 
 interface ChessGuideProps {
   color: ChessBoardThemeVariant;

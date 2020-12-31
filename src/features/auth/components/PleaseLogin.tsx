@@ -4,8 +4,8 @@ import { useQuery } from '@apollo/client';
 import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
-import { hasPermissions } from '~/helpers/permissions';
-import { UserPayload, UserRole } from '~/typings/users';
+import { AuthUser, UserRole } from '~/server/typedefs/users';
+import { hasPermissions } from '~/utils';
 import { CURRENT_USER_QUERY } from '../graphql';
 
 interface PleaseLoginProps {
@@ -30,7 +30,7 @@ const PleaseLogin: React.FC<PleaseLoginProps> = ({
   children,
   requiredRole,
 }) => {
-  const { loading, data } = useQuery<{ me: UserPayload } | null>(
+  const { loading, data } = useQuery<{ me: AuthUser } | null>(
     CURRENT_USER_QUERY,
   );
 

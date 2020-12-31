@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { DragItem } from '~/vendors/react-dnd';
+import { DragItem } from '~/features/chess/react-dnd';
 import { ChessPieceColor, ChessPieceVariant, ChessSquare } from '../typings';
 import { pieceClass, squareClass } from '../helpers';
 

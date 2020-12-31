@@ -1,4 +1,4 @@
-import { DragItem } from '~/vendors/react-dnd';
+import { DragItem } from '../react-dnd';
 import { ChessPiece } from './pieces';
 
 /**

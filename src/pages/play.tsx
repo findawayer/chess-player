@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ChessGame from '~/features/chess/containers/ChessGame';
 import ChessSidebar from '~/features/chess/containers/ChessSidebar';
 import { useChessSettings } from '~/features/chess/hooks';
-import { createBackendOptions } from '~/vendors/react-dnd';
+import { createBackendOptions } from '~/features/chess/react-dnd';
 
 /** Customize Material UI components */
 const useStyles = makeStyles({

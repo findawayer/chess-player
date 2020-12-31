@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -11,9 +12,8 @@ import {
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
-import ErrorMessage from '~/features/common/components/ServerError';
+import ErrorMessage from '~/theme/components/ServerError';
 import { RECOVER_PASSWORD_MUTATION } from '../graphql';
-import useStyles from './styles/Signup';
 
 // Component
 const Recover: React.FC = () => {
@@ -24,18 +24,17 @@ const Recover: React.FC = () => {
       variables: { email },
     },
   );
-  const classes = useStyles();
 
-  // Handler for input field changes.
+  /** Handler for input field changes. */
   const handleEmailInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setEmail(event.target.value);
   };
-  // Handler for form submission
+  /** Handler for form submission */
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     let hasError = false;
-    // Prevent native form submission.
+    // Highjack native form submission.
     event.preventDefault();
     // Don't let Next.js display runtime error,
     // to display custom error message to the user.
@@ -56,18 +55,18 @@ const Recover: React.FC = () => {
     <form method="post" onSubmit={handleFormSubmit}>
       <Card component="fieldset" elevation={3} aria-busy={loading}>
         <CardContent>
-          <Typography variant="h4" component="h2" className={classes.title}>
+          <Typography variant="h4" component="h2" align="center" gutterBottom>
             Reset my password
           </Typography>
-          <div className={classes.formRow}>
+          <Box mb={2}>
             <ErrorMessage error={error} />
             {!error && !loading && called && (
               <Alert severity="success">
                 Success! Check your email for a reset link.
               </Alert>
             )}
-          </div>
-          <FormControl fullWidth className={classes.formRow}>
+          </Box>
+          <FormControl component={Box} fullWidth mb={2}>
             <TextField
               id="userEmail"
               name="userEmail"

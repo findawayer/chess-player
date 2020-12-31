@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-import { ChessBoardThemeVariant, ChessSettings } from '~/typings/preferences';
+import { ChessBoardThemeVariant, ChessSettings } from '~/features/chess/types';
 
 interface ChessSettingsDialogProps {
   isOpen: boolean;

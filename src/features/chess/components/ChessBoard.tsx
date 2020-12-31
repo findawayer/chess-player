@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import { withResizeDetector } from 'react-resize-detector';
 import { NoSsr } from '@material-ui/core';
 
+import { DragItem } from '~/features/chess/react-dnd';
 import { movePiece, playMove } from '~/features/chess/slice';
-import { NUMBER_OF_FILES } from '~/config/chess';
-import { ChessSettings } from '~/typings/preferences';
-import { DragItem } from '~/vendors/react-dnd';
+import { ChessSettings } from '~/features/chess/types';
 import { AppDispatch } from '~/vendors/redux';
+import { NUMBER_OF_FILES } from '../constants';
 import { ChessValidatorContext } from '../contexts';
 import {
   findLegalMoves,

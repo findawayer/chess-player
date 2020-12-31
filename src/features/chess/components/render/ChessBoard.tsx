@@ -1,7 +1,7 @@
 import map from 'lodash/map';
 import React from 'react';
 
-import { ChessBoardThemeVariant } from '~/typings/preferences';
+import { ChessBoardThemeVariant } from '~/features/chess/types';
 import { objectifySquare } from '../../helpers';
 import { AbortPromotion, SelectPromotion } from '../../hooks';
 import {

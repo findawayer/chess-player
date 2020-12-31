@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Box,
   Button,
@@ -20,60 +20,42 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import ServerError from '~/features/common/components/ServerError';
-import { EDITABLE_USER_ROLES } from '~/helpers/permissions';
-import { UserPayload, UserRole } from '~/typings/users';
+import { EDITABLE_USER_ROLES } from '~/server/constants';
+import { AuthUser, UserRole } from '~/server/typedefs/users';
+import ServerError from '~/theme/components/ServerError';
+import { UPDATE_USER_ROLE_MUTATION, USERS_BY_PAGE_QUERY } from '../graphql';
+import { USERS_PER_PAGE } from '../constants';
 
-const DEFAULT_PAGE = 0;
-const DEFAULT_ITEMS_PER_PAGE = 5;
-
-// Query: get users per page (cursor based)
-const USERS_QUERY = gql`
-  query UsersQuery($take: Int = ${DEFAULT_ITEMS_PER_PAGE}, $skip: Int = 0) {
-    users(take: $take, skip: $skip) {
-      id
-      email
-      name
-      verified
-      role
-    }
-  }
-`;
-
-const UPDATE_USER_ROLE_MUTATION = gql`
-  mutation updateUserRole($id: ID!, $role: Role!) {
-    updateUserRole(id: $id, role: $role) {
-      id
-      role
-    }
-  }
-`;
-
-interface UserRowProps {
-  user: UserPayload;
+interface UserTableRowProps {
+  user: AuthUser;
 }
 
-const UserRow: React.FC<UserRowProps> = ({ user }) => {
+/** User table row */
+const UserTableRow: React.FC<UserTableRowProps> = ({ user }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [currentRole, setCurrentRole] = useState(user.role);
   const [updatePermissions, { error }] = useMutation(
     UPDATE_USER_ROLE_MUTATION,
     {
       variables: { id: user.id, role: currentRole },
-      refetchQueries: [{ query: USERS_QUERY }],
+      refetchQueries: [{ query: USERS_BY_PAGE_QUERY }],
     },
   );
+  /** Handler for clicking role button that triggers edit dialog. */
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  /** Handler for role radio button selection. */
   const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentRole((event.target as HTMLInputElement).value as UserRole);
   };
+  /** Handle for closing the edit dialog without submitting. */
   const handleClose = () => {
     setCurrentRole(user.role);
     // Close popover
     setAnchorEl(null);
   };
+  /** Handler for clicking submit button. */
   const handleSubmit = async () => {
     // Update if something changed.
     if (user.role !== currentRole) {
@@ -151,19 +133,22 @@ const UserRow: React.FC<UserRowProps> = ({ user }) => {
   );
 };
 
+/** Permission management table. */
 const Permissions: React.FC = () => {
-  const [page, setPage] = useState(DEFAULT_PAGE);
-  const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ITEMS_PER_PAGE);
-  const { error, data } = useQuery<{ users: UserPayload[] }>(USERS_QUERY, {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(USERS_PER_PAGE);
+  const { error, data } = useQuery<{ users: AuthUser[] }>(USERS_BY_PAGE_QUERY, {
     variables: {
       $take: rowsPerPage,
       skip: (page + 1) * rowsPerPage - rowsPerPage,
     },
   });
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  /** Handler for page selection. */
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
+  /** Handler for rows per change selection. */
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -190,7 +175,7 @@ const Permissions: React.FC = () => {
             </TableHead>
             <TableBody>
               {data?.users.map(user => (
-                <UserRow key={user.id} user={user} />
+                <UserTableRow key={user.id} user={user} />
               ))}
             </TableBody>
           </Table>

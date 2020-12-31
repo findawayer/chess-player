@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-// GraphQL mutation: signup then login
+/** GraphQL: Sign up user then login. */
 export const SIGN_UP_MUTATION = gql`
   mutation Signup($email: String!, $name: String!, $password: String!) {
     signup(data: { email: $email, name: $name, password: $password }) {
@@ -12,7 +12,7 @@ export const SIGN_UP_MUTATION = gql`
   }
 `;
 
-// GraphQL mutation: signup
+/** GraphQL: Sign in user. */
 export const SIGN_IN_MUTATION = gql`
   mutation Signin($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
@@ -21,6 +21,7 @@ export const SIGN_IN_MUTATION = gql`
   }
 `;
 
+/** GraphQL: Sign out user. */
 export const SIGN_OUT_MUTATION = gql`
   mutation SignOutMutation {
     signout {
@@ -29,6 +30,7 @@ export const SIGN_OUT_MUTATION = gql`
   }
 `;
 
+/** GraphQL: Request password reset. */
 export const RECOVER_PASSWORD_MUTATION = gql`
   mutation RecoverPassword($email: String!) {
     recoverPassword(email: $email) {
@@ -37,7 +39,7 @@ export const RECOVER_PASSWORD_MUTATION = gql`
   }
 `;
 
-// GraphQL mutation: signup then login
+/** GraphQL: Assign a new password. */
 export const RESET_PASSWORD_MUTATION = gql`
   mutation ResetPassword(
     $resetToken: String!

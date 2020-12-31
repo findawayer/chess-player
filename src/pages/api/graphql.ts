@@ -1,4 +1,4 @@
-import apolloServer from '~/vendors/apollo-server';
+import apolloServer from '~/server/apollo-server';
 
 // Next.js API route config
 // https://nextjs.org/docs/api-routes/api-middlewares

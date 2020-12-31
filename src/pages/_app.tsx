@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { Provider as ReactReduxProvider } from 'react-redux';
 import { ApolloProvider } from '@apollo/client';
 
-import Layout from '~/features/common/components/Layout';
+import Layout from '~/theme/components/Layout';
 import { useApollo } from '~/vendors/apollo-client';
 import { useStore } from '~/vendors/redux';
 
@@ -13,12 +13,9 @@ import { useStore } from '~/vendors/redux';
 import 'nprogress/nprogress.css';
 
 /** Load progressbar only in the browser. */
-const ProgressBar = dynamic(
-  () => import('~/features/common/components/ProgressBar'),
-  {
-    ssr: false,
-  },
-);
+const ProgressBar = dynamic(() => import('~/theme/components/ProgressBar'), {
+  ssr: false,
+});
 
 /** Custom client-side markup for `next.js` */
 export default function App({ Component, pageProps }: AppProps): JSX.Element {

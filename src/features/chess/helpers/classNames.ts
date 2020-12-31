@@ -1,5 +1,5 @@
 import { ChessPiece, ChessSquare } from '../typings';
-import { stringifySquare } from './chess-squares';
+import { stringifySquare } from './squares';
 
 /** Format a CSS class for chess piece. */
 export function pieceClass({

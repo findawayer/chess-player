@@ -19,12 +19,12 @@ import {
   timeout,
 } from '~/features/chess/slice';
 import { ChessState } from '~/features/chess/state';
-import { STOCKFISH_FILE_PATH } from '~/config/chess';
-import { ChessSettings } from '~/typings/preferences';
+import { ChessSettings } from '~/features/chess/types';
 import { AppDispatch, AppState } from '~/vendors/redux';
 import ChessBoard from '../components/ChessBoard';
 import ChessGameOverDialog from '../components/ChessGameOverDialog';
 import ChessPlayer from '../components/ChessPlayer';
+import { STOCKFISH_FILE_PATH } from '../constants';
 import { ChessValidatorContext } from '../contexts';
 import { ChessPieceColor } from '../typings';
 // import { FEN_WHITE_EN_PASSANT, STOCKFISH_FILE_PATH } from '../debug/fen';
