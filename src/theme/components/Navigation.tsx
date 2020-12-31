@@ -3,8 +3,8 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { Button } from '@material-ui/core';
 
-import LogoutButton from '~/features/auth/components/LogoutButton';
-import { CURRENT_USER_QUERY } from '~/features/auth/graphql';
+import LogoutButton from '~/features/account/components/LogoutButton';
+import { CURRENT_USER_QUERY } from '~/features/account/graphql';
 
 const Navigation: React.FC = () => {
   const { loading, data } = useQuery(CURRENT_USER_QUERY);

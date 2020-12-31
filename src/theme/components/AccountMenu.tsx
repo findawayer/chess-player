@@ -1,35 +1,30 @@
+import Link from 'next/link';
 import React from 'react';
-import { useQuery } from '@apollo/client';
 import { Button } from '@material-ui/core';
 
-import { CURRENT_USER_QUERY } from '~/features/auth/graphql';
+import { useUser } from '~/features/account/hooks';
 
 const AccountMenu: React.FC = () => {
-  const { loading, data } = useQuery(CURRENT_USER_QUERY);
-  // Fetching
-  if (loading) return null;
-  // Anon
-  if (!data?.me) {
-    return (
-      <>
-        <Button color="inherit" href="/join">
-          Join
-        </Button>
-        <Button color="inherit" href="/login">
-          Login
-        </Button>
-      </>
-    );
-  }
-  // Logged in user
-  return (
+  const me = useUser();
+  return !me ? (
+    // Anon
     <>
-      <Button color="inherit" href="/account">
-        My account
-      </Button>
-      <Button color="inherit" href="/logout">
-        Logout
-      </Button>
+      <Link href="/join" passHref>
+        <Button color="inherit">Join</Button>
+      </Link>
+      <Link href="/login" passHref>
+        <Button color="inherit">Login</Button>
+      </Link>
+    </>
+  ) : (
+    // Logged in user
+    <>
+      <Link href="/account" passHref>
+        <Button color="inherit">Account</Button>
+      </Link>
+      <Link href="/logout" passHref>
+        <Button color="inherit">Logout</Button>
+      </Link>
     </>
   );
 };

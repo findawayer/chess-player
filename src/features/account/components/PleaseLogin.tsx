@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import React from 'react';
-import { useQuery } from '@apollo/client';
-import { Box, Button, CircularProgress, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
-import { AuthUser, UserRole } from '~/server/typedefs/users';
+import { UserRole } from '~/server/typedefs/users';
 import { hasPermissions } from '~/utils';
-import { CURRENT_USER_QUERY } from '../graphql';
+import { useUser } from '../hooks/useUser';
 
 interface PleaseLoginProps {
   children: React.ReactNode;
@@ -30,16 +29,9 @@ const PleaseLogin: React.FC<PleaseLoginProps> = ({
   children,
   requiredRole,
 }) => {
-  const { loading, data } = useQuery<{ me: AuthUser } | null>(
-    CURRENT_USER_QUERY,
-  );
-
-  // Loading...
-  if (loading) {
-    return <CircularProgress />;
-  }
+  const me = useUser();
   // Not logged in!
-  if (!data?.me) {
+  if (!me) {
     return (
       <Box textAlign="center">
         <Typography variant="h2">Please log in before continuing.</Typography>
@@ -60,7 +52,7 @@ const PleaseLogin: React.FC<PleaseLoginProps> = ({
     );
   }
   // Specific permissions are required and current user does not have it.
-  if (requiredRole && !hasPermissions(data.me, requiredRole)) {
+  if (requiredRole && !hasPermissions(me, requiredRole)) {
     return (
       <Alert severity="error" variant="filled">
         You do not have enough permissions to access this page.

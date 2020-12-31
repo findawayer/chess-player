@@ -1,18 +1,15 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useQuery } from '@apollo/client';
 import { Container } from '@material-ui/core';
 
-import Login from '~/features/auth/components/Login';
-import { CURRENT_USER_QUERY } from '~/features/auth/graphql';
+import Login from '~/features/account/components/Login';
+import { useUser } from '~/features/account/hooks';
 
 const LoginPage: React.FC = () => {
-  const { loading, data } = useQuery(CURRENT_USER_QUERY);
+  const me = useUser();
   const router = useRouter();
-  // Loading...
-  if (loading) return null;
   // Redirect to home page if the user is already logged in.
-  if (data?.me) {
+  if (me) {
     router.push('/');
   }
   // Show the login page otherwise.
