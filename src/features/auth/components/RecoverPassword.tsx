@@ -18,12 +18,10 @@ import { RECOVER_PASSWORD_MUTATION } from '../graphql';
 // Component
 const Recover: React.FC = () => {
   const [email, setEmail] = useState('');
-  const [recoverPassword, { loading, error, called }] = useMutation(
-    RECOVER_PASSWORD_MUTATION,
-    {
-      variables: { email },
-    },
-  );
+  const [
+    recoverPassword,
+    { loading, error, called },
+  ] = useMutation(RECOVER_PASSWORD_MUTATION, { variables: { email } });
 
   /** Handler for input field changes. */
   const handleEmailInputChange = (
@@ -66,16 +64,18 @@ const Recover: React.FC = () => {
               </Alert>
             )}
           </Box>
-          <FormControl component={Box} fullWidth mb={2}>
-            <TextField
-              id="userEmail"
-              name="userEmail"
-              value={email}
-              required
-              onChange={handleEmailInputChange}
-              label="Email"
-            />
-          </FormControl>
+          <Box mb={2}>
+            <FormControl fullWidth>
+              <TextField
+                id="userEmail"
+                name="userEmail"
+                value={email}
+                required
+                onChange={handleEmailInputChange}
+                label="Email"
+              />
+            </FormControl>
+          </Box>
         </CardContent>
         <CardActions>
           <Button

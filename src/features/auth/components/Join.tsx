@@ -92,55 +92,65 @@ const Signup: React.FC = () => {
           <Box mb={2}>
             <ServerError error={error} />
           </Box>
-          <FormControl component={Box} fullWidth mb={2}>
-            <TextField
-              id="userEmail"
-              value={email}
-              required
-              onChange={handleInputChange('email')}
-              label="Email"
-            />
-          </FormControl>
-          <FormControl component={Box} fullWidth mb={2}>
-            <TextField
-              id="userName"
-              value={name}
-              required
-              onChange={handleInputChange('name')}
-              label="Name"
-            />
-          </FormControl>
-          <FormControl component={Box} fullWidth mb={2}>
-            <InputLabel htmlFor="userPassword">
-              Password <span aria-hidden="true">*</span>
-            </InputLabel>
-            <Input
-              id="userPassword"
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              disabled={loading}
-              required
-              onChange={handleInputChange('password')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="Toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <p>
+          <Box mb={2}>
+            <FormControl fullWidth>
+              <TextField
+                id="userEmail"
+                value={email}
+                required
+                onChange={handleInputChange('email')}
+                label="Email"
+              />
+            </FormControl>
+          </Box>
+          <Box mb={2}>
+            <FormControl fullWidth>
+              <TextField
+                id="userName"
+                value={name}
+                required
+                onChange={handleInputChange('name')}
+                label="Name"
+              />
+            </FormControl>
+          </Box>
+          <Box mb={2}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="userPassword">
+                Password <span aria-hidden="true">*</span>
+              </InputLabel>
+              <Input
+                id="userPassword"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                disabled={loading}
+                required
+                onChange={handleInputChange('password')}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Box>
+          <Box mt={3}>
             <Link href="/login" passHref>
               <Typography component="a" color="inherit">
                 Already have an account?
               </Typography>
             </Link>
-          </p>
+          </Box>
         </CardContent>
         <CardActions>
           <Button

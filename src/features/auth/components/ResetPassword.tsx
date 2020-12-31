@@ -112,60 +112,68 @@ const ResetPassword: React.FC = () => {
               <Alert severity="success">Success! Updated your password.</Alert>
             )}
           </Box>
-          <FormControl component={Box} fullWidth mb={2}>
-            <InputLabel htmlFor="userPassword">
-              Password <span aria-hidden="true">*</span>
-            </InputLabel>
-            <Input
-              id="userPassword"
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              disabled={isSuccessful}
-              required
-              onChange={handleInputChange('password')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="Toggle password visibility"
-                    disabled={isSuccessful}
-                    onClick={handleClickShowPassword('showPassword')}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <FormControl component={Box} fullWidth mb={2}>
-            <InputLabel htmlFor="userConfirmPassword">
-              Confirm password <span aria-hidden="true">*</span>
-            </InputLabel>
-            <Input
-              id="userConfirmPassword"
-              type={showConfirmPassword ? 'text' : 'password'}
-              value={confirmPassword}
-              disabled={isSuccessful}
-              required
-              onChange={handleInputChange('confirmPassword')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="Toggle password visibility"
-                    disabled={isSuccessful}
-                    onClick={handleClickShowPassword('showConfirmPassword')}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showConfirmPassword ? (
-                      <VisibilityIcon />
-                    ) : (
-                      <VisibilityOffIcon />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
+          <Box mb={2}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="userPassword">
+                Password <span aria-hidden="true">*</span>
+              </InputLabel>
+              <Input
+                id="userPassword"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                disabled={isSuccessful}
+                required
+                onChange={handleInputChange('password')}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      disabled={isSuccessful}
+                      onClick={handleClickShowPassword('showPassword')}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Box>
+          <Box mb={2}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="userConfirmPassword">
+                Confirm password <span aria-hidden="true">*</span>
+              </InputLabel>
+              <Input
+                id="userConfirmPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                value={confirmPassword}
+                disabled={isSuccessful}
+                required
+                onChange={handleInputChange('confirmPassword')}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      disabled={isSuccessful}
+                      onClick={handleClickShowPassword('showConfirmPassword')}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showConfirmPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Box>
         </CardContent>
         <CardActions>
           <Button

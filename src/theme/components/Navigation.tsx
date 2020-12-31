@@ -27,7 +27,7 @@ const Navigation: React.FC = () => {
   return (
     <>
       <Link href="/account" passHref>
-        <Button color="inherit">My account</Button>
+        <Button color="inherit">Account</Button>
       </Link>
       <LogoutButton />
     </>
