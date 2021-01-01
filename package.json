@@ -22,11 +22,11 @@
     "dev": "next dev",
     "build": "yarn -s generate && next build",
     "generate": "prisma generate && yarn schema:build",
-    "schema:build": "ts-node --transpile-only src/server/schemas/index.ts",
-    "schema:watch": "ts-node-dev --no-notify --respawn --transpile-only src/server/schemas/index.ts",
     "migrate:save": "prisma migrate dev --preview-feature",
     "migrate:deploy": "prisma migrate deploy --preview-feature",
     "database": "prisma studio",
+    "schema:build": "ts-node --transpile-only src/server/nexus.ts",
+    "schema:dev": "ts-node-dev --no-notify --respawn --transpile-only src/server/nexus.ts",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts,.tsx ."
   },
@@ -45,6 +45,7 @@
     "cookie": "^0.4.1",
     "deepmerge": "^4.2.2",
     "email-validator": "^2.0.4",
+    "formik": "^2.2.6",
     "graphql": "^15.4.0",
     "immutability-helper": "^3.1.1",
     "jsonwebtoken": "^8.5.1",
@@ -113,7 +114,7 @@
     "yarn": ">1.0.0"
   },
   "prisma": {
-    "schema": "src/server/datamodel/schema.prisma"
+    "schema": "src/models/schema.prisma"
   },
   "_moduleAliases": {
     "~": "src"

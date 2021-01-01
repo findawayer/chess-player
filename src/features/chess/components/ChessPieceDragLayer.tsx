@@ -1,6 +1,6 @@
+import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
-import { makeStyles } from '@material-ui/core/styles';
 
 import ChessPieceDragPreview from './ChessPieceDragPreview';
 

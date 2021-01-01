@@ -21,7 +21,7 @@ declare global {
   /** Extract element type from array type */
   type ArrayElement<E> = E extends readonly (infer T)[] ? T : never;
 
-  /** Not-yet-defined `TODO` type to bypass eslint warnings */
+  /** Not-yet-defined `TODO` type that bypasses eslint warnings */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type TODO = any;
 }

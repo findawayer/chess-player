@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import {
   Box,
@@ -19,27 +18,26 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core';
+import { Role } from '@prisma/client';
+import React, { useState } from 'react';
 
-import { EDITABLE_USER_ROLES } from '~/server/constants';
-import { AuthUser, UserRole } from '~/server/typedefs/users';
-import ServerError from '~/theme/components/ServerError';
-import { UPDATE_USER_ROLE_MUTATION, USERS_BY_PAGE_QUERY } from '../graphql';
-import { USERS_PER_PAGE } from '../constants';
+import ErrorMessage from '~/components/ErrorMessage';
+import {
+  PaginatedUser,
+  UPDATE_USER_ROLE_MUTATION,
+  UpdateUserRole as UpdateUserRoleMethod,
+  USERS_QUERY,
+} from '../graphql';
 
-interface UserTableRowProps {
-  user: AuthUser;
-}
+/** Number of users to display in a paginated user list. */
+const USERS_PER_PAGE = 10;
 
 /** User table row */
-const UserTableRow: React.FC<UserTableRowProps> = ({ user }) => {
+const UserTableRow: React.FC<{ user: PaginatedUser }> = ({ user }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [currentRole, setCurrentRole] = useState(user.role);
-  const [updatePermissions, { error }] = useMutation(
+  const [updateUserRole, { error }] = useMutation<UpdateUserRoleMethod>(
     UPDATE_USER_ROLE_MUTATION,
-    {
-      variables: { id: user.id, role: currentRole },
-      refetchQueries: [{ query: USERS_BY_PAGE_QUERY }],
-    },
   );
   /** Handler for clicking role button that triggers edit dialog. */
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -47,7 +45,7 @@ const UserTableRow: React.FC<UserTableRowProps> = ({ user }) => {
   };
   /** Handler for role radio button selection. */
   const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentRole((event.target as HTMLInputElement).value as UserRole);
+    setCurrentRole((event.target as HTMLInputElement).value as Role);
   };
   /** Handle for closing the edit dialog without submitting. */
   const handleClose = () => {
@@ -60,8 +58,11 @@ const UserTableRow: React.FC<UserTableRowProps> = ({ user }) => {
     // Update if something changed.
     if (user.role !== currentRole) {
       try {
-        await updatePermissions();
-      } catch (e) {
+        await updateUserRole({
+          variables: { role: currentRole },
+          refetchQueries: [{ query: USERS_QUERY }],
+        });
+      } catch (error) {
         // Don't let Next.js display error to the user.
         return;
       }
@@ -97,9 +98,9 @@ const UserTableRow: React.FC<UserTableRowProps> = ({ user }) => {
           onClose={handleClose}
         >
           <Box p={2} style={{ width: 300 }}>
-            <ServerError error={error} />
+            <ErrorMessage error={error} />
             <List dense>
-              {EDITABLE_USER_ROLES.map(role => (
+              {Object.keys(Role).map(role => (
                 <ListItem key={role}>
                   <ListItemIcon>
                     <Radio
@@ -137,7 +138,7 @@ const UserTableRow: React.FC<UserTableRowProps> = ({ user }) => {
 const Permissions: React.FC = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(USERS_PER_PAGE);
-  const { error, data } = useQuery<{ users: AuthUser[] }>(USERS_BY_PAGE_QUERY, {
+  const { error, data } = useQuery<{ users: PaginatedUser[] }>(USERS_QUERY, {
     variables: {
       $take: rowsPerPage,
       skip: (page + 1) * rowsPerPage - rowsPerPage,
@@ -161,7 +162,7 @@ const Permissions: React.FC = () => {
       <Typography variant="h2" align="center" style={{ marginBottom: 50 }}>
         Manage User Permissions
       </Typography>
-      <ServerError error={error} />
+      <ErrorMessage error={error} />
       <Paper>
         <TableContainer>
           <Table>

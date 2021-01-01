@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
   Box,
@@ -11,24 +10,27 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import React, { useState } from 'react';
 
-import ErrorMessage from '~/theme/components/ServerError';
-import { RECOVER_PASSWORD_MUTATION } from '../graphql';
+import ErrorMessage from '~/components/ErrorMessage';
+import {
+  RECOVER_PASSWORD_MUTATION,
+  RecoverPassword as RecoverPasswordMethod,
+} from '../graphql';
 
 // Component
-const Recover: React.FC = () => {
+const RecoverPassword: React.FC = () => {
   const [email, setEmail] = useState('');
   const [
     recoverPassword,
     { loading, error, called },
-  ] = useMutation(RECOVER_PASSWORD_MUTATION, { variables: { email } });
+  ] = useMutation<RecoverPasswordMethod>(RECOVER_PASSWORD_MUTATION, {
+    variables: { email },
+  });
 
   /** Handler for input field changes. */
-  const handleEmailInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleEmailInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setEmail(event.target.value);
-  };
   /** Handler for form submission */
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     let hasError = false;
@@ -93,4 +95,4 @@ const Recover: React.FC = () => {
   );
 };
 
-export default Recover;
+export default RecoverPassword;

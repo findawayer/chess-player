@@ -19,28 +19,23 @@ import {
   timeout,
 } from '~/features/chess/slice';
 import { ChessState } from '~/features/chess/state';
-import { ChessSettings } from '~/features/chess/types';
 import { AppDispatch, AppState } from '~/vendors/redux';
 import ChessBoard from '../components/ChessBoard';
 import ChessGameOverDialog from '../components/ChessGameOverDialog';
 import ChessPlayer from '../components/ChessPlayer';
 import { STOCKFISH_FILE_PATH } from '../constants';
 import { ChessValidatorContext } from '../contexts';
-import { ChessPieceColor } from '../typings';
 // import { FEN_WHITE_EN_PASSANT, STOCKFISH_FILE_PATH } from '../debug/fen';
 import {
   createComputers,
   createHumanAndComputer,
   getRecentMovePath,
   invertPieceColor,
-} from '../helpers';
-import { useChessClock, useStockfish } from '../hooks';
+} from '../utils';
+import { useChessClock, useChessSettings, useStockfish } from '../hooks';
+import { ChessPieceColor } from '../types';
 
-interface ChessGameProps {
-  settings: ChessSettings;
-}
-
-const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
+const ChessGame: React.FC = () => {
   /** chess game validator. */
   const validator = useContext(ChessValidatorContext);
   // Extract chess-related state from Redux store.
@@ -68,12 +63,13 @@ const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
     resetClock,
   } = useChessClock({ duration, increment });
   // Local state: Use Stockfish as chess move generator & evaluator.
-  const [engineMove, findMove] = useStockfish({
+  const { move: engineMove, findMove } = useStockfish({
     duration,
     increment,
     skillLevel: engineLevel,
     filepath: STOCKFISH_FILE_PATH,
   });
+  const [{ autoQueen, boardColor, showLegal, showRecent }] = useChessSettings();
   /**
    * Board element that we want to monitor the size with `react-resize-detector.
    * @api https://www.npmjs.com/package/react-resize-detector
@@ -207,7 +203,10 @@ const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
         isFlipped={isFlipped}
         isFrozen={isFrozen}
         isGameOver={!!gameOver}
-        settings={settings}
+        autoQueen={autoQueen}
+        boardColor={boardColor}
+        showLegal={showLegal}
+        showRecent={showRecent}
       />
       <ChessPlayer
         player={players[bottomPlayerColor]}

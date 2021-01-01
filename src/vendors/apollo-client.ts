@@ -1,11 +1,12 @@
 // Bootstrapped from: https://github.com/vercel/next.js/blob/canary/examples/with-apollo-and-redux/lib/apollo.js
 /* eslint-disable no-underscore-dangle */
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+import { concatPagination } from '@apollo/client/utilities';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
 import { useMemo } from 'react';
 import urlJoin from 'url-join';
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import { concatPagination } from '@apollo/client/utilities';
 
 export type ApolloState = Record<string, unknown>;
 
@@ -14,13 +15,26 @@ let apolloClient: ApolloClient<unknown>;
 
 // Create apollo client instance.
 function createApolloClient() {
+  const link = new HttpLink({
+    uri: urlJoin(process.env.NEXT_PUBLIC_ENDPOINT, 'api/graphql'), // must be absolute
+    credentials: 'same-origin', // fetch() options goes into `credentials` or `headers`
+  });
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.map(({ message, locations, path }) =>
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
+            locations,
+          )}, Path: ${path}`,
+        ),
+      );
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+  });
+
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     // Server URL and CORS settings
-    link: new HttpLink({
-      uri: urlJoin(process.env.NEXT_PUBLIC_ENDPOINT, 'api/graphql'), // must be absolute
-      credentials: 'same-origin', // fetch() options goes into `credentials` or `headers`
-    }),
+    link: errorLink.concat(link),
     // Use cache for paginations.
     cache: new InMemoryCache({
       typePolicies: {

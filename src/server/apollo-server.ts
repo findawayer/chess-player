@@ -1,7 +1,7 @@
 import { ApolloServer } from 'apollo-server-micro';
 
-import { createContext } from './context/graphql-context';
-import { schema } from './schemas';
+import { createContext } from './graphql-context';
+import { schema } from './nexus';
 
 // Environment check.
 const isDevelopment = process.env.NODE_ENV === 'development';

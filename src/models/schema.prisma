@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URI")
+}
+
+model User {
+  id               Int             @id @default(autoincrement())
+  /// Credentials
+  email            String          @unique
+  password         String
+  /// Information
+  name             String
+  role             Role            @default(MEMBER)
+  verified         Boolean         @default(false)
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+  /// Password recovery
+  resetToken       String?         @map("reset_token")
+  resetTokenExpiry Int?            @map("reset_token_expiry")
+  /// Chess game settings
+  chessAutoQueen   Boolean         @default(false) @map("auto_queen")
+  chessBoardColor  ChessBoardColor @default(ARCTIC) @map("board_color")
+  chessShowLegal   Boolean         @default(true) @map("show_legal")
+  chessShowRecent  Boolean         @default(true) @map("show_recent")
+  /// App's theme color
+  colorMode        ColorMode       @default(DARK) @map("color_mode")
+
+  @@map("users")
+}
+
+enum Role {
+  MEMBER  @map("member")
+  ADMIN   @map("admin")
+
+  @@map("roles")
+}
+
+enum ColorMode {
+  DARK   @map("dark")
+  LIGHT  @map("light")
+
+  @@map("color_modes")
+}
+
+enum ChessBoardColor {
+  ARCTIC  @map("arctic")
+  GOLDEN  @map("golden")
+  LOYAL   @map("loyal")
+
+  @@map("chess_board_color")
+}

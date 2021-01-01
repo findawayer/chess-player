@@ -1,12 +1,12 @@
 // Bootstrapped from: https://github.com/vercel/next.js/blob/canary/examples/with-apollo-and-redux/lib/redux.js
-/* eslint-disable no-underscore-dangle */
-import { useMemo } from 'react';
 import {
   combineReducers,
   configureStore,
   DeepPartial,
   EnhancedStore,
 } from '@reduxjs/toolkit';
+/* eslint-disable no-underscore-dangle */
+import { useMemo } from 'react';
 
 import { chessReducer } from '~/features/chess/slice';
 import { ChessState } from '~/features/chess/state';

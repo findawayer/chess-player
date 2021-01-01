@@ -1,9 +1,9 @@
-import times from 'lodash/times';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { CSSProperties } from '@material-ui/core/styles/withStyles';
+import times from 'lodash/times';
 
 import { NUMBER_OF_FILES, NUMBER_OF_RANKS } from '../../constants';
-import { squareClass } from '../../helpers';
+import { squareClass } from '../../utils';
 
 // Generate helper classes for positionning of squares & pieces
 export const createSquareCSS = (): CSSProperties => {
@@ -32,18 +32,15 @@ export const createSquareCSS = (): CSSProperties => {
   return css;
 };
 
-export default makeStyles<Theme>(theme =>
-  createStyles({
-    board: {
-      position: 'relative',
-      width: '70vh',
-      height: '70vh',
-      minWidth: 500,
-      minHeight: 500,
-      overflow: 'hidden',
-      borderRadius: theme.shape.borderRadius,
-      flex: '0 0 auto',
-      ...createSquareCSS(),
-    },
-  }),
-);
+export default makeStyles({
+  board: {
+    position: 'relative',
+    width: '70vh',
+    height: '70vh',
+    minWidth: 500,
+    minHeight: 500,
+    overflow: 'hidden',
+    flex: '0 0 auto',
+    ...createSquareCSS(),
+  },
+});

@@ -1,25 +1,26 @@
-import {
-  ChessBoardTheme,
-  ChessBoardThemeVariant,
-} from '~/features/chess/types';
+import type { ChessBoardColor } from '@prisma/client';
 
-export const chessBoardTheme: Record<
-  ChessBoardThemeVariant,
-  ChessBoardTheme
-> = {
-  arctic: {
+export type ChessBoardTheme = {
+  lightSquare: string;
+  darkSquare: string;
+  highlight: string;
+  hover: string;
+};
+
+export const chessBoardTheme: Record<ChessBoardColor, ChessBoardTheme> = {
+  ARCTIC: {
     lightSquare: '#fff',
     darkSquare: '#97b2ce',
     highlight: '#ffff32',
     hover: '#fff',
   },
-  loyal: {
+  LOYAL: {
     lightSquare: '#dcd0c2',
     darkSquare: '#376c57',
     highlight: '#ffff32',
     hover: '#fff',
   },
-  golden: {
+  GOLDEN: {
     lightSquare: '#f5e1a2',
     darkSquare: '#6b6c6e',
     highlight: '#ffff32',

@@ -1,9 +1,9 @@
-import prettyMilliseconds from 'pretty-ms';
-import React from 'react';
 import { Box } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import prettyMilliseconds from 'pretty-ms';
+import React from 'react';
 
-import { ChessPlayer as ChessPlayerType } from '../typings';
+import { ChessPlayer as ChessPlayerType } from '../types';
 
 interface PlayerProps {
   player: ChessPlayerType;

@@ -1,9 +1,9 @@
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { ChessBoardColor } from '@prisma/client';
 import clsx from 'clsx';
 import times from 'lodash/times';
 import React from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
 
-import { ChessBoardThemeVariant } from '~/features/chess/types';
 import { chessBoardTheme } from '~/features/chess/themes';
 import {
   NUMBER_OF_FILES,
@@ -13,7 +13,7 @@ import {
 } from '../constants';
 
 interface ChessBoardGridProps {
-  color: ChessBoardThemeVariant;
+  color: ChessBoardColor;
   handleBlur(): void;
 }
 

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import {
   Button,
   Dialog,
@@ -7,9 +6,10 @@ import {
   Typography,
 } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
 
-import { ChessGameOver, ChessGameOverType, ChessPieceColor } from '../typings';
-import { getFullPieceColor } from '../helpers';
+import { getFullPieceColor } from '../utils';
+import { ChessGameOver, ChessGameOverType, ChessPieceColor } from '../types';
 
 interface ChessGameOverDialogProps {
   gameOver: ChessGameOver | false;

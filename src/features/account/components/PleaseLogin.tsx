@@ -1,15 +1,15 @@
-import Link from 'next/link';
-import React from 'react';
 import { Box, Button, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import type { Role } from '@prisma/client';
+import Link from 'next/link';
+import React from 'react';
 
-import { UserRole } from '~/server/typedefs/users';
-import { hasPermissions } from '~/utils';
-import { useUser } from '../hooks/useUser';
+import { useUser } from '~/hooks/useUser';
+import { hasRole } from '~/utils/roles';
 
 interface PleaseLoginProps {
   children: React.ReactNode;
-  requiredRole?: UserRole;
+  requiredRole?: Role;
 }
 
 /**
@@ -52,7 +52,7 @@ const PleaseLogin: React.FC<PleaseLoginProps> = ({
     );
   }
   // Specific permissions are required and current user does not have it.
-  if (requiredRole && !hasPermissions(me, requiredRole)) {
+  if (requiredRole && !hasRole(me, requiredRole)) {
     return (
       <Alert severity="error" variant="filled">
         You do not have enough permissions to access this page.

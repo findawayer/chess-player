@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import {
   Box,
@@ -9,9 +7,9 @@ import {
   CardContent,
   FormControl,
   IconButton,
+  Input,
   InputAdornment,
   InputLabel,
-  Input,
   Typography,
 } from '@material-ui/core';
 import {
@@ -19,9 +17,15 @@ import {
   VisibilityOff as VisibilityOffIcon,
 } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
-import ServerError from '~/theme/components/ServerError';
-import { CURRENT_USER_QUERY, RESET_PASSWORD_MUTATION } from '../graphql';
+import ErrorMessage from '~/components/ErrorMessage';
+import { CURRENT_USER_QUERY } from '~/graphql';
+import {
+  RESET_PASSWORD_MUTATION,
+  ResetPassword as ResetPasswordMethod,
+} from '../graphql';
 
 // Component
 const ResetPassword: React.FC = () => {
@@ -39,13 +43,13 @@ const ResetPassword: React.FC = () => {
   } = values;
   const router = useRouter();
   const { resetToken } = router.query;
-  const [resetPassword, { loading, error, called }] = useMutation(
-    RESET_PASSWORD_MUTATION,
-    {
-      variables: { resetToken, password, confirmPassword },
-      refetchQueries: [{ query: CURRENT_USER_QUERY }],
-    },
-  );
+  const [
+    resetPassword,
+    { loading, error, called },
+  ] = useMutation<ResetPasswordMethod>(RESET_PASSWORD_MUTATION, {
+    variables: { resetToken, password, confirmPassword },
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  });
   const isSuccessful = called && !loading && !error;
 
   /** Handler for input field changes. */
@@ -107,7 +111,7 @@ const ResetPassword: React.FC = () => {
             Enter your new password
           </Typography>
           <Box mb={2}>
-            <ServerError error={error} />
+            <ErrorMessage error={error} />
             {isSuccessful && (
               <Alert severity="success">Success! Updated your password.</Alert>
             )}

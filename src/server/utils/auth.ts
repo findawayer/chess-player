@@ -1,14 +1,16 @@
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-import { NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
+import { NextApiResponse } from 'next';
 import { promisify } from 'util';
+import { User } from '@prisma/client';
 
 import { ACCESS_TOKEN_KEY, SALT_ROUNDS } from '../constants';
 import { deleteCookie, setCookie } from './cookies';
-import { AuthUser, UserAccessPayload } from '../typedefs/users';
 
-export const createAccessToken = (payload: UserAccessPayload): string => {
+export type UserAuthPayload = Pick<User, 'id'>;
+
+export const createAccessToken = (payload: UserAuthPayload): string => {
   // Encrypt access token.
   const token = jwt.sign(payload, process.env.APP_SECRET);
   return token;
@@ -16,12 +18,12 @@ export const createAccessToken = (payload: UserAccessPayload): string => {
 
 export const parseAccessToken = async (
   token?: string,
-): Promise<UserAccessPayload | null> => {
+): Promise<UserAuthPayload | null> => {
   if (!token) return null;
   // Don't display any error to the user while decoding.
   try {
     // Decode access token.
-    return jwt.verify(token, process.env.APP_SECRET) as UserAccessPayload;
+    return jwt.verify(token, process.env.APP_SECRET) as UserAuthPayload;
   } catch (error) {
     console.error(`Auth error`, error);
     return null;
@@ -51,7 +53,7 @@ export const createPasswordResetToken = async (): Promise<{
 
 /** Set user logged in. */
 export const handleSuccessfulLogin = async (
-  user: AuthUser,
+  user: UserAuthPayload,
   res: NextApiResponse,
 ): Promise<void> => {
   // Genrate a JWT token.

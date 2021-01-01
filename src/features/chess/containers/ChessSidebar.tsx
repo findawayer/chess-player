@@ -5,28 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { flipBoard, resign, undoMove } from '~/features/chess/slice';
 import { ChessState } from '~/features/chess/state';
-import { ChessSettings } from '~/features/chess/types';
 import { AppState } from '~/vendors/redux';
 import ChessControl from '../components/ChessControl';
 import ChessMoveList from '../components/ChessMoveList';
 import ChessSettingsDialog from '../components/ChessSettingsDialog';
 import { ChessValidatorContext } from '../contexts';
-import { ApplyChessSettings } from '../hooks';
 
 type ChessSidebarState = Pick<
   ChessState,
   'gameOver' | 'moves' | 'playerColor' | 'turn'
 >;
 
-interface ChessSidebarProps {
-  settings: ChessSettings;
-  applySettings: ApplyChessSettings;
-}
-
-const ChessSidebar: React.FC<ChessSidebarProps> = ({
-  settings,
-  applySettings,
-}) => {
+const ChessSidebar: React.FC = () => {
   /** chess game validator. */
   const validator = useContext(ChessValidatorContext);
   // Fetch state from Redux store.
@@ -42,7 +32,7 @@ const ChessSidebar: React.FC<ChessSidebarProps> = ({
   /** Action dispatcher to Redux store. */
   const dispatch = useDispatch();
   // Local state: Settings dialog's visibility.
-  const [settingsVisibility, setSettingsVisibilty] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   /** Whether the current turn is the user's turn. */
   const isPlayerTurn = turn === playerColor;
   /** List of played moves splitted by their fullmove count. */
@@ -86,12 +76,8 @@ const ChessSidebar: React.FC<ChessSidebarProps> = ({
   /** Concede the game. */
   const handleResign = useCallback(() => dispatch(resign()), [dispatch]);
   /** Close the game settings dialog */
-  const openSettings = useCallback(() => {
-    setSettingsVisibilty(true);
-  }, []);
-  const closeSettings = useCallback(() => {
-    setSettingsVisibilty(false);
-  }, []);
+  const openSettings = useCallback(() => setSettingsOpen(true), []);
+  const closeSettings = useCallback(() => setSettingsOpen(false), []);
 
   return (
     <>
@@ -104,12 +90,7 @@ const ChessSidebar: React.FC<ChessSidebarProps> = ({
         openSettings={openSettings}
       />
       <ChessMoveList moveList={moveList} />
-      <ChessSettingsDialog
-        isOpen={settingsVisibility}
-        settings={settings}
-        applySettings={applySettings}
-        closeSettings={closeSettings}
-      />
+      <ChessSettingsDialog isOpen={settingsOpen} close={closeSettings} />
     </>
   );
 };

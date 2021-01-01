@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, IconButton, Tooltip } from '@material-ui/core';
 import {
   Cached as CachedIcon,
@@ -6,6 +5,7 @@ import {
   Settings as SettingsIcon,
   Undo as UndoIcon,
 } from '@material-ui/icons';
+import React from 'react';
 
 interface ChessControlProps {
   canResign: boolean;

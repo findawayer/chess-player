@@ -4,7 +4,7 @@ import {
   ChessPieceColor,
   ChessPieces,
   ChessPlayers,
-} from './typings';
+} from './types';
 
 /**
  * Blueprint of chess game related states.

@@ -95,7 +95,14 @@ module.exports = {
         'no-unused-expressions': 'off',
         'no-unused-vars': 'off',
         '@typescript-eslint/no-redeclare': 'error',
-        '@typescript-eslint/no-use-before-define': 'error',
+        '@typescript-eslint/no-use-before-define': [
+          'error',
+          {
+            functions: false,
+            enums: false,
+            typedefs: false,
+          },
+        ],
         '@typescript-eslint/no-unused-expressions': 'error',
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/no-non-null-assertion': 'off',

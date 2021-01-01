@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { memo } from 'react';
 
-import { pieceClass } from '../helpers';
-import { ChessPieceColor, ChessPieceVariant } from '../typings';
+import { pieceClass } from '../utils';
+import { ChessPieceColor, ChessPieceVariant } from '../types';
 import useStyles from './styles/ChessPiece';
 
 interface ChessPieceDragPreviewProps {

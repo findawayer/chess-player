@@ -1,15 +1,15 @@
+import { fade, makeStyles, Theme } from '@material-ui/core/styles';
+import { ChessBoardColor } from '@prisma/client';
 import clsx from 'clsx';
 import React, { memo } from 'react';
-import { fade, makeStyles, Theme } from '@material-ui/core/styles';
 
-import { ChessBoardThemeVariant } from '~/features/chess/types';
 import { SQUARE_SIZE } from '../constants';
-import { squareClass } from '../helpers';
+import { squareClass } from '../utils';
 import { chessBoardTheme } from '../themes';
-import { ChessSquareName } from '../typings';
+import { ChessSquareName } from '../types';
 
 interface ChessGuideProps {
-  color: ChessBoardThemeVariant;
+  color: ChessBoardColor;
   variant: 'active' | 'hover' | 'recent';
   square: ChessSquareName;
 }

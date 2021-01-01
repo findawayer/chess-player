@@ -1,40 +1,40 @@
+import { NoSsr } from '@material-ui/core';
+import { ChessBoardColor } from '@prisma/client';
 import clsx from 'clsx';
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { withResizeDetector } from 'react-resize-detector';
-import { NoSsr } from '@material-ui/core';
 
-import { DragItem } from '~/features/chess/react-dnd';
-import { movePiece, playMove } from '~/features/chess/slice';
-import { ChessSettings } from '~/features/chess/types';
 import { AppDispatch } from '~/vendors/redux';
 import { NUMBER_OF_FILES } from '../constants';
 import { ChessValidatorContext } from '../contexts';
-import {
-  findLegalMoves,
-  getDropTargetSquare,
-  isPromotingPawn,
-  stringifySquare,
-} from '../helpers';
 import { useChessGuides, useChessPromotion } from '../hooks';
+import { DragItem } from '../react-dnd';
+import { movePiece, playMove } from '../slice';
 import {
   ChessPieces,
   ChessSquare,
   ChessSquareName,
   DraggedPiece,
-} from '../typings';
+} from '../types';
+import {
+  findLegalMoves,
+  getDropTargetSquare,
+  isPromotingPawn,
+  stringifySquare,
+} from '../utils';
+import ChessBoardGrid from './ChessBoardGrid';
+import ChessPieceDragLayer from './ChessPieceDragLayer';
+import ChessPromotionDialog from './ChessPromotionDialog';
 import {
   renderActiveSquare,
   renderHoveredSquare,
   renderLegalSquares,
   renderPieces,
-  renderPromotionDialog,
   renderRecentSquares,
 } from './render/ChessBoard';
 import useStyles from './styles/ChessBoard';
-import ChessBoardGrid from './ChessBoardGrid';
-import ChessPieceDragLayer from './ChessPieceDragLayer';
 
 interface BoardProps {
   // For `react-resize-detector`
@@ -47,7 +47,10 @@ interface BoardProps {
   isFrozen: boolean;
   isGameOver: boolean;
   // Game settings
-  settings: ChessSettings;
+  autoQueen: boolean;
+  boardColor: ChessBoardColor;
+  showLegal: boolean;
+  showRecent: boolean;
 }
 
 const ChessBoard: React.FC<BoardProps> = ({
@@ -58,7 +61,10 @@ const ChessBoard: React.FC<BoardProps> = ({
   isFlipped,
   isFrozen,
   isGameOver,
-  settings,
+  autoQueen,
+  boardColor,
+  showLegal,
+  showRecent,
 }) => {
   /** Chess game validotor */
   const validator = useContext(ChessValidatorContext);
@@ -67,29 +73,22 @@ const ChessBoard: React.FC<BoardProps> = ({
   /** The size of a single square. */
   const squareSize = useMemo(() => width / NUMBER_OF_FILES, [width]);
   // Local state: Highlights on user interacted sqaures.
-  const [
-    activeSquare,
-    hoveredSquare,
-    legalMoves,
+  const {
+    active: activeSquare,
+    hover: hoveredSquare,
+    legal: legalMoves,
     setActive,
     setHover,
-  ] = useChessGuides();
+  } = useChessGuides();
   // Pawn promotion confirm dialog.
-  const [
+  const {
     promotion,
     promptPromotion,
     selectPromotion,
     abortPromotion,
-  ] = useChessPromotion();
+  } = useChessPromotion();
   /** CSS classes created via Material-UI. */
   const classes = useStyles();
-  // Shorten game setting variables
-  const {
-    autoPromoteToQueen,
-    boardColor,
-    highlightMoves,
-    showLegalMoves,
-  } = settings;
 
   /** Handle click event on a piece. */
   const handlePieceSelect = useCallback(
@@ -127,7 +126,7 @@ const ChessBoard: React.FC<BoardProps> = ({
         const activePiece = pieces.byId[activePieceId];
         const isPromotion = isPromotingPawn(activePiece, to);
         // Prompt promotion confirm dialog
-        if (isPromotion && !autoPromoteToQueen) {
+        if (isPromotion && !autoQueen) {
           dispatch(movePiece({ from, to }));
           promptPromotion({ color: activePiece.color, from, to });
         } else {
@@ -148,7 +147,7 @@ const ChessBoard: React.FC<BoardProps> = ({
     },
     [
       activeSquare,
-      autoPromoteToQueen,
+      autoQueen,
       dispatch,
       isFrozen,
       legalMoves,
@@ -218,8 +217,8 @@ const ChessBoard: React.FC<BoardProps> = ({
           className={clsx(classes.board, isFlipped && 'is-flipped')}
         >
           <ChessBoardGrid color={boardColor} handleBlur={handleBlur} />
-          {highlightMoves && renderRecentSquares(recentMovePath, boardColor)}
-          {highlightMoves && renderActiveSquare(activeSquare, boardColor)}
+          {showRecent && renderRecentSquares(recentMovePath, boardColor)}
+          {renderActiveSquare(activeSquare, boardColor)}
           {renderHoveredSquare(hoveredSquare, boardColor)}
           {renderPieces(pieces, {
             size: squareSize,
@@ -227,13 +226,17 @@ const ChessBoard: React.FC<BoardProps> = ({
             handleSelect: handlePieceSelect,
           })}
           {renderLegalSquares(legalMoves, {
-            showLegalMoves,
+            isVisible: showLegal,
             handleSelect: handleSquareSelect,
           })}
-          {renderPromotionDialog(promotion, {
-            abortPromotion,
-            selectPromotion,
-          })}
+          {promotion && !promotion.variant ? (
+            <ChessPromotionDialog
+              color={promotion.color}
+              square={promotion.to}
+              abortPromotion={abortPromotion}
+              selectPromotion={selectPromotion}
+            />
+          ) : null}
         </div>
         <ChessPieceDragLayer />
       </div>

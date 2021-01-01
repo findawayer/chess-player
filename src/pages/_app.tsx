@@ -1,19 +1,19 @@
+// Use Nprogress built-in CSS
+import 'nprogress/nprogress.css';
+
+import { ApolloProvider } from '@apollo/client';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import { Provider as ReactReduxProvider } from 'react-redux';
-import { ApolloProvider } from '@apollo/client';
 
-import Layout from '~/theme/components/Layout';
+import Layout from '~/components/Layout';
 import { useApollo } from '~/vendors/apollo-client';
 import { useStore } from '~/vendors/redux';
 
-// Use Nprogress built-in CSS
-import 'nprogress/nprogress.css';
-
 /** Load progressbar only in the browser. */
-const ProgressBar = dynamic(() => import('~/theme/components/ProgressBar'), {
+const ProgressBar = dynamic(() => import('~/components/ProgressBar'), {
   ssr: false,
 });
 

@@ -1,83 +1,64 @@
-import update from 'immutability-helper';
-import { useCallback, useEffect, useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { User } from '@prisma/client';
+import { useEffect, useState } from 'react';
 
-import { DEFAULT_CHESS_BOARD_THEME } from '~/features/chess/constants';
-import { ChessSettings } from '~/features/chess/types';
-import { getPersistedState, persistState } from '~/utils';
+import { CURRENT_USER_QUERY } from '~/graphql';
+import { useUser } from '~/hooks';
+import {
+  DEFAULT_AUTO_QUEEN,
+  DEFAULT_BOARD_COLOR,
+  DEFAULT_SHOW_LEGAL,
+  DEFAULT_SHOW_RECENT,
+} from '../constants';
+import { UPDATE_CHESS_SETTINGS_MUTATION } from '../graphql';
 
-export type ApplyChessSettings = (diff: Partial<ChessSettings>) => void;
+type ChessPreferences = Pick<
+  User,
+  'chessAutoQueen' | 'chessBoardColor' | 'chessShowLegal' | 'chessShowRecent'
+>;
 
-/** Key for localStorage cache. */
-const CHESS_SETTINGS_CACHE_KEY = 'ChessSettings';
-
-/** Default chess game settings. Used in server-side rendering. */
-export const defaultChessSettings: ChessSettings = {
-  boardColor: DEFAULT_CHESS_BOARD_THEME,
-  highlightMoves: true,
-  showLegalMoves: true,
-  autoPromoteToQueen: false,
-};
-
-/** Create initial game settings state */
-const initializeChessSettings = () =>
-  getPersistedState<ChessSettings>(CHESS_SETTINGS_CACHE_KEY) ||
-  defaultChessSettings;
+const mapPreferences = ({
+  chessAutoQueen,
+  chessBoardColor,
+  chessShowLegal,
+  chessShowRecent,
+}: ChessPreferences) => ({
+  autoQueen: chessAutoQueen,
+  boardColor: chessBoardColor,
+  showLegal: chessShowLegal,
+  showRecent: chessShowRecent,
+});
 
 /**
- * Create local React state reflecting user preferences on the chess game settings,
- * and try to store them in user's local storage to be able to retrieve them later.
- *
- * @returns Array containing:
- * - settings: Current color mode of the theme.
- * - rehydrate: Retrieve cached color mode from `localStorage`.
- * - apply: Merge updated portion of the chess settings.
- * - canUseLocalStorage: Whether user allowed `localStorage` access.
+ * This hook provides user preferences over chess game settings with fallbacks.
  */
-export const useChessSettings = (): [
-  ChessSettings,
-  () => void,
-  ApplyChessSettings,
-  boolean,
-] => {
-  // Merged state of chess game settings + user interaction status.
-  const [{ chessSettings, interacted }, setStatus] = useState({
-    chessSettings: defaultChessSettings,
-    interacted: false,
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const useChessSettings = () => {
+  // Require the authenticated user.
+  const me = useUser();
+  // Create default settings.
+  const [settings, setSettings] = useState({
+    autoQueen: DEFAULT_AUTO_QUEEN,
+    boardColor: DEFAULT_BOARD_COLOR,
+    showLegal: DEFAULT_SHOW_LEGAL,
+    showRecent: DEFAULT_SHOW_RECENT,
   });
-  // Whether user allowed `localStorage` access.
-  const [canUseLocalStorage, setCanUseLocalStorage] = useState(true);
+  // Update chess settings.
+  const [updateSettings] = useMutation(UPDATE_CHESS_SETTINGS_MUTATION, {
+    variables: {
+      id: me?.id,
+      chessAutoQueen: settings.autoQueen,
+      chessBoardColor: settings.boardColor,
+      chessShowLegal: settings.showLegal,
+      chessShowRecent: settings.showRecent,
+    },
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  });
 
-  /** Re-initialize chess settings from the persisted state in `localStorage. */
-  const rehydrate = useCallback(() => {
-    setStatus(previousStatus =>
-      update(previousStatus, {
-        chessSettings: { $set: initializeChessSettings() },
-      }),
-    );
-  }, []);
-  /** Merge updated portion of the chess settings. */
-  const applySettings = useCallback<ApplyChessSettings>(diff => {
-    setStatus(previousStatus =>
-      update(previousStatus, {
-        chessSettings: { $merge: diff },
-        interacted: { $set: true },
-      }),
-    );
-  }, []);
-
-  // Rewrite game settings cache in user's `localStorage` when it updates.
+  // Reflect user preferences to the settings.
   useEffect(() => {
-    if (canUseLocalStorage && interacted) {
-      const success = persistState<ChessSettings>(
-        chessSettings,
-        CHESS_SETTINGS_CACHE_KEY,
-      );
-      // If the use of localStorage is blocked by user's privacy settings,
-      // do NOT try this process again.
-      // TODO: send a notification to the user.
-      if (!success) setCanUseLocalStorage(false);
-    }
-  }, [chessSettings, canUseLocalStorage, interacted]);
+    if (me) setSettings(mapPreferences(me));
+  }, [me]);
 
-  return [chessSettings, rehydrate, applySettings, canUseLocalStorage];
+  return [settings, updateSettings] as const;
 };

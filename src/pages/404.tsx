@@ -1,6 +1,6 @@
+import { Box, Button, Typography } from '@material-ui/core';
 import Link from 'next/link';
 import React from 'react';
-import { Button, Box, Typography } from '@material-ui/core';
 
 const NotFound: React.FC = () => (
   <Box mt={5} textAlign="center">

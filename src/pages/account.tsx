@@ -1,10 +1,12 @@
+import { Container } from '@material-ui/core';
 import React from 'react';
-import { Box } from '@material-ui/core';
 
-const NotFound: React.FC = () => (
-  <Box mt={5} textAlign="center">
-    <div />
-  </Box>
+import MyAccount from '~/features/account/components/MyAccount';
+
+const Account: React.FC = () => (
+  <Container maxWidth="md">
+    <MyAccount />
+  </Container>
 );
 
-export default NotFound;
+export default Account;
