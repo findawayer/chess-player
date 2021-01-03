@@ -1,27 +1,31 @@
+// Use Nprogress built-in CSS
+import 'nprogress/nprogress.css';
+
+import { ApolloProvider } from '@apollo/client';
+// import { ColorMode } from '@prisma/client';
+// import App, { AppContext, AppProps } from 'next/app';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import { Provider as ReactReduxProvider } from 'react-redux';
-import { ApolloProvider } from '@apollo/client';
+// import CookieHandler from 'universal-cookie';
 
-import Layout from '~/features/common/components/Layout';
+import Layout from '~/components/Layout';
 import { useApollo } from '~/vendors/apollo-client';
 import { useStore } from '~/vendors/redux';
 
-// Use Nprogress built-in CSS
-import 'nprogress/nprogress.css';
-
 /** Load progressbar only in the browser. */
-const ProgressBar = dynamic(
-  () => import('~/features/common/components/ProgressBar'),
-  {
-    ssr: false,
-  },
-);
+const ProgressBar = dynamic(() => import('~/components/ProgressBar'), {
+  ssr: false,
+});
+
+// interface MyAppProps extends AppProps {
+//   initialColorMode: ColorMode;
+// }
 
 /** Custom client-side markup for `next.js` */
-export default function App({ Component, pageProps }: AppProps): JSX.Element {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   // Create Redux store
   const store = useStore(pageProps.initialReduxState);
   // Create Apollo Client
@@ -73,4 +77,21 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
       </ReactReduxProvider>
     </>
   );
-}
+};
+
+// MyApp.getInitialProps = async (appContext: AppContext) => {
+//   // Simulate the default behavior.
+//   const defaultProps = await App.getInitialProps(appContext);
+
+//   // Retrieve color mode from cookies, to prevent FOUC by client side re-render.
+//   const cookies = new CookieHandler(appContext.ctx.req?.headers?.cookie);
+//   const initialColorMode =
+//     cookies.get(COLOR_MODE_CACHE_KEY) || DEFAULT_COLOR_MODE;
+
+//   return {
+//     ...defaultProps,
+//     initialColorMode,
+//   };
+// };
+
+export default MyApp;

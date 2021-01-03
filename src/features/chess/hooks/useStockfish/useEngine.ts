@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { CommandEngine, SetMessageHandler } from './types';
-
 /**
  * Load Stockfish engine with Web Worker API.
  *
@@ -10,10 +8,8 @@ import { CommandEngine, SetMessageHandler } from './types';
  * - setMessageHandler: Set `onmessage` handler to the worker.
  * - comamndEngine: Send a UCI command to the worker.
  */
-export const useEngine = (
-  filepath = 'stockfish.js',
-): [SetMessageHandler, CommandEngine] => {
-  // Stockfish engine object; `useRef` is used to make the object static.
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const useEngine = (filepath = 'stockfish.js') => {
   const engine = useRef<Worker>();
 
   // Save stockfish instance.
@@ -21,18 +17,18 @@ export const useEngine = (
     engine.current = new Worker(filepath);
   }, [filepath]);
 
-  // Add `onmessage` handler to the engine asynchronously.
-  // (The engine delivers the output by posting a message —
-  // we need to add `onmessage` handler to receive it.)
-  const setMessageHandler = useCallback<SetMessageHandler>(handler => {
+  /**
+   * Add `onmessage` handler to the engine. (The engine emits output
+   * by posting a message; we need to set `onmessage` handler to receive it.)
+   */
+  const setHandler = useCallback((handler: (event: MessageEvent) => void) => {
     // We are assuming `engine.current` is set when this callback is invoked.
     if (engine.current) engine.current.onmessage = handler;
   }, []);
-
-  // Send a UCI command to the engine.
-  const commandEngine = useCallback<CommandEngine>(command => {
+  /** Send a UCI command to Stockfish. */
+  const command = useCallback((command: string) => {
     engine.current?.postMessage(command);
   }, []);
 
-  return [setMessageHandler, commandEngine];
+  return { setHandler, command };
 };

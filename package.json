@@ -1,7 +1,7 @@
 {
   "name": "chess-player",
-  "version": "1.0.0-alpha.2",
-  "description": "In-browser chess game and simulation built with React.",
+  "version": "1.0.0-alpha.3",
+  "description": "In-browser chess game built with React and Next.js.",
   "repository": "git@github.com:findawayer/chess-player.git",
   "homepage": "https://chess-player.vercel.app/",
   "author": "Tae Sung, Lim <findawayer@gmail.com>",
@@ -15,20 +15,18 @@
     "graphql",
     "apollo",
     "prisma",
-    "nexus"
+    "type-graphql"
   ],
   "scripts": {
     "start": "next start",
     "dev": "next dev",
     "build": "yarn generate && next build",
-    "generate": "prisma generate && yarn schema:build",
-    "schema:build": "ts-node --transpile-only ./src/vendors/nexus",
-    "schema:watch": "ts-node-dev --no-notify --respawn --transpile-only ./src/vendors/nexus",
+    "generate": "prisma generate",
+    "migrate:save": "prisma migrate dev --preview-feature",
+    "migrate:deploy": "prisma migrate deploy --preview-feature",
     "database": "prisma studio",
-    "database:migrate": "prisma migrate dev --preview-feature",
-    "database:deploy": "prisma migrate deploy --preview-feature",
     "format": "prettier --write .",
-    "lint": "eslint --fix --ext .js,.json,.ts,.tsx ."
+    "lint": "eslint --ext .js,.ts,.tsx ."
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
@@ -41,36 +39,39 @@
     "apollo-server-micro": "^2.19.1",
     "bcryptjs": "^2.4.3",
     "chess.js": "^0.11.0",
+    "class-validator": "^0.12.2",
     "clsx": "^1.1.1",
     "cookie": "^0.4.1",
     "deepmerge": "^4.2.2",
     "email-validator": "^2.0.4",
+    "formik": "^2.2.6",
     "graphql": "^15.4.0",
     "immutability-helper": "^3.1.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
-    "module-alias": "^2.2.2",
     "next": "^10.0.3",
-    "nexus": "^1.0.0",
-    "nexus-plugin-prisma": "^0.27.0",
     "nodemailer": "^6.4.17",
     "nprogress": "^0.2.0",
     "pretty-ms": "^7.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
+    "react-cookie": "^4.0.3",
     "react-dnd": "^11.1.3",
     "react-dnd-html5-backend": "^11.1.3",
     "react-dnd-touch-backend": "^11.1.3",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
     "react-resize-detector": "^5.2.0",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1",
+    "universal-cookie": "^4.0.4",
+    "url-join": "^4.0.1",
     "validator": "^13.5.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
-    "@babel/preset-typescript": "^7.12.7",
     "@prisma/cli": "^2.13.1",
     "@types/bcryptjs": "^2.4.2",
     "@types/chess.js": "^0.10.1",
@@ -86,6 +87,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-redux": "^7.1.12",
     "@types/react-resize-detector": "^5.0.0",
+    "@types/url-join": "^4.0.0",
     "@types/validator": "^13.1.2",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
@@ -103,11 +105,17 @@
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-hooks": "4.0.0",
     "prettier": "^2.2.1",
+    "ts-loader": "^8.0.13",
     "ts-node": "^9.1.1",
     "ts-node-dev": "^1.1.1",
+    "typegraphql-prisma": "^0.9.3",
     "typescript": "^4.1.3"
   },
+  "engines": {
+    "node": ">10.0.0",
+    "yarn": ">1.0.0"
+  },
   "prisma": {
-    "schema": "src/vendors/prisma/schema.prisma"
+    "schema": "src/models/schema.prisma"
   }
 }

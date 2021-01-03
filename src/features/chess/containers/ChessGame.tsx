@@ -1,48 +1,62 @@
+import { Box, Container } from '@material-ui/core';
+import chunk from 'lodash/chunk';
+import times from 'lodash/times';
 import React, {
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
+import { DndProvider } from 'react-dnd';
+import { TouchBackend } from 'react-dnd-touch-backend';
 import { useDispatch, useSelector } from 'react-redux';
 
+import ChessBoard from '~/features/chess/components/ChessBoard';
+import ChessControl from '~/features/chess/components/ChessControl';
+import ChessGameOverDialog from '~/features/chess/components/ChessGameOverDialog';
+import ChessMoveList from '~/features/chess/components/ChessMoveList';
+import ChessPlayer from '~/features/chess/components/ChessPlayer';
+import ChessSettingsDialog from '~/features/chess/components/ChessSettingsDialog';
+import { STOCKFISH_FILE_PATH } from '~/features/chess/constants';
+import { ChessValidatorContext } from '~/features/chess/contexts';
+import {
+  useChessClock,
+  useChessSettings,
+  useStockfish,
+} from '~/features/chess/hooks';
+import { createBackendOptions } from '~/features/chess/react-dnd';
 import {
   checkmate,
+  flipBoard,
   notEnoughMaterial,
   playMove,
   repetition,
   resetGame,
+  resign,
   setPieces,
   setPlayers,
   stalemate,
   timeout,
+  undoMove,
 } from '~/features/chess/slice';
 import { ChessState } from '~/features/chess/state';
-import { STOCKFISH_FILE_PATH } from '~/config/chess';
-import { ChessSettings } from '~/typings/preferences';
-import { AppDispatch, AppState } from '~/vendors/redux';
-import ChessBoard from '../components/ChessBoard';
-import ChessGameOverDialog from '../components/ChessGameOverDialog';
-import ChessPlayer from '../components/ChessPlayer';
-import { ChessValidatorContext } from '../contexts';
-import { ChessPieceColor } from '../typings';
-// import { FEN_WHITE_EN_PASSANT, STOCKFISH_FILE_PATH } from '../debug/fen';
+import { ChessPieceColor } from '~/features/chess/types';
 import {
   createComputers,
   createHumanAndComputer,
   getRecentMovePath,
   invertPieceColor,
-} from '../helpers';
-import { useChessClock, useStockfish } from '../hooks';
+} from '~/features/chess/utils';
+import { useUser } from '~/hooks';
+import { AppDispatch, AppState } from '~/vendors/redux';
 
-interface ChessGameProps {
-  settings: ChessSettings;
-}
+const ChessGame: React.FC = () => {
+  // ---------- From database ---------- //
+  const me = useUser();
 
-const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
-  /** chess game validator. */
-  const validator = useContext(ChessValidatorContext);
+  // ---------- From Redux ---------- //
   // Extract chess-related state from Redux store.
   const {
     duration,
@@ -59,6 +73,14 @@ const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
   } = useSelector<AppState, ChessState>(state => state.chess);
   /** Action dispatcher to Redux store. */
   const dispatch = useDispatch<AppDispatch>();
+  /** List of played moves splitted by their fullmove count. */
+  const moveList = useMemo(() => chunk(moves, 2), [moves]);
+
+  // ---------- From React context ---------- //
+  /** chess game validator. */
+  const validator = useContext(ChessValidatorContext);
+
+  // ---------- React local state ---------- //
   // Local state: Update clock for active player side until one of their time runs out.
   const {
     time,
@@ -68,19 +90,39 @@ const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
     resetClock,
   } = useChessClock({ duration, increment });
   // Local state: Use Stockfish as chess move generator & evaluator.
-  const [engineMove, findMove] = useStockfish({
+  const { move: engineMove, findMove } = useStockfish({
     duration,
     increment,
     skillLevel: engineLevel,
     filepath: STOCKFISH_FILE_PATH,
   });
-  /**
-   * Board element that we want to monitor the size with `react-resize-detector.
-   * @api https://www.npmjs.com/package/react-resize-detector
-   */
+  // Chess settings from currently authenticated user.
+  const [settings, changeSetting] = useChessSettings(me);
+  // Visibility of chess settings dialog.
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  /** Board element that we want to monitor the size with `react-resize-detector. */
   const boardRef = useRef<HTMLDivElement>(null);
   /** Whether the current turn is the user's turn. */
   const isPlayerTurn = turn === playerColor;
+  /**
+   * Figure out whether to allow the player to resign the game.
+   * 1. The game should not be computer vs computer mode.
+   * 2. The game is not over yet.
+   * 3. At least the first move has to be played.
+   */
+  const canResign = !!playerColor && !gameOver && moves.length > 0;
+  /**
+   * Figure out whether to allow the player to request a take back of move.
+   * 1. The game should not be computer vs computer mode.
+   * 2. The game is not over yet.
+   * 3. The player should have played at least 1 move.
+   * 4. It should be the player's turn. (TODO: reconsider this behavior)
+   */
+  const canTakeBack =
+    !!playerColor &&
+    !gameOver &&
+    moves.length > (playerColor === 'w' ? 1 : 0) &&
+    isPlayerTurn;
   /** Flag to boost AI's performance when < 1 minute left. */
   const isShortInTime = time[turn] < 60 * 1000;
   /** Player color for the top user box */
@@ -90,6 +132,21 @@ const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
   /** The source & target squares of the recently played move. */
   const recentMovePath = useMemo(() => getRecentMovePath(moves), [moves]);
 
+  // ---------- For other libraries ---------- //
+  /** React DnD: Create backend options asynchronously to work with SSR. */
+  const backendOptions = useMemo(() => createBackendOptions(), []);
+
+  // ---------- Callbacks ---------- //
+  /** Flip the board direction vertically. */
+  const handleFlipBoard = () => dispatch(flipBoard());
+  /** Request a take back to the opponent. */
+  const handleTakeBack = useCallback(() => {
+    const length = isPlayerTurn ? 2 : 1;
+    // Undo move(s) through the validator first.
+    times(length, () => validator.undo());
+    // Undo move(s) from redux state and restore the board.
+    dispatch(undoMove({ length, board: validator.board() }));
+  }, [dispatch, isPlayerTurn, validator]);
   /** Reset the game data. Swap piece colors when `alternate` is set to true. */
   const rematch = useCallback(
     (alternate: boolean) => {
@@ -99,6 +156,11 @@ const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
     },
     [dispatch, resetClock, validator],
   );
+  /** Concede the game. */
+  const handleResign = () => dispatch(resign());
+  /** Close the game settings dialog */
+  const openSettings = () => setSettingsOpen(true);
+  const closeSettings = () => setSettingsOpen(false);
 
   // Reset the game data on unmount
   useEffect(() => {
@@ -195,30 +257,54 @@ const ChessGame: React.FC<ChessGameProps> = ({ settings }) => {
   }, [dispatch, engineMove, validator]);
 
   return (
-    <>
-      <ChessPlayer
-        player={players[topPlayerColor]}
-        time={time[topPlayerColor]}
-      />
-      <ChessBoard
-        targetRef={boardRef}
-        pieces={pieces}
-        recentMovePath={recentMovePath}
-        isFlipped={isFlipped}
-        isFrozen={isFrozen}
-        isGameOver={!!gameOver}
-        settings={settings}
-      />
-      <ChessPlayer
-        player={players[bottomPlayerColor]}
-        time={time[bottomPlayerColor]}
-      />
-      <ChessGameOverDialog
-        gameOver={gameOver}
-        playerColor={playerColor}
-        rematch={rematch}
-      />
-    </>
+    <Container maxWidth="lg">
+      <Box display="flex" flexWrap="nowrap">
+        <Box flexGrow={1}>
+          <DndProvider backend={TouchBackend} options={backendOptions}>
+            <ChessPlayer
+              player={players[topPlayerColor]}
+              time={time[topPlayerColor]}
+            />
+            <ChessBoard
+              targetRef={boardRef}
+              validator={validator}
+              pieces={pieces}
+              recentMovePath={recentMovePath}
+              isFlipped={isFlipped}
+              isFrozen={isFrozen}
+              isGameOver={!!gameOver}
+              settings={settings}
+            />
+            <ChessPlayer
+              player={players[bottomPlayerColor]}
+              time={time[bottomPlayerColor]}
+            />
+            <ChessGameOverDialog
+              gameOver={gameOver}
+              playerColor={playerColor}
+              rematch={rematch}
+            />
+          </DndProvider>
+        </Box>
+        <Box flexShrink={0} flexBasis={300} ml={10}>
+          <ChessControl
+            canResign={canResign}
+            canTakeBack={canTakeBack}
+            flipBoard={handleFlipBoard}
+            resign={handleResign}
+            takeBack={handleTakeBack}
+            openSettings={openSettings}
+          />
+          <ChessMoveList moveList={moveList} />
+          <ChessSettingsDialog
+            isOpen={settingsOpen}
+            close={closeSettings}
+            settings={settings}
+            changeSetting={changeSetting}
+          />
+        </Box>
+      </Box>
+    </Container>
   );
 };
 

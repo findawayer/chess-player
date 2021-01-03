@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import ChessGameSelect from '../components/ChessGameSelect';
 import { ChessState } from '~/features/chess/state';
 import { AppState } from '~/vendors/redux';
+import ChessGameSelect from '../components/ChessGameSelect';
 
 type SelectGameState = Pick<
   ChessState,

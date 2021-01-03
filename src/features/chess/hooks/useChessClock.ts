@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { ChessPieceColor } from '../typings';
+import { ChessPieceColor } from '../types';
 
 /* Delta time reference for a single player side. */
 interface TimeTrackerSide {
@@ -32,24 +32,6 @@ interface ChessClock {
   w: number;
   /* Time left for black side */
   b: number;
-}
-
-// Start clock.
-type StartClock = () => void;
-// Stop clock.
-type PauseClock = () => void;
-// Change the active side of the clock.
-type SetClockSide = (side: ChessPieceColor) => void;
-// Stop and reset the clock.
-type ResetClock = () => void;
-
-/* Returned values of `useChessClock` hook. */
-interface UseChessClockAPI {
-  time: ChessClock;
-  startClock: StartClock;
-  pauseClock: PauseClock;
-  setClockSide: SetClockSide;
-  resetClock: ResetClock;
 }
 
 /** Create a fresh time tracker with default values. */
@@ -92,13 +74,14 @@ const floorToSecond = (milliseconds: number) =>
  * - setClockSide: Change the active side of the clock to the passed value.
  * - resetClock: Stop and reset the clock to initial settings.
  */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useChessClock = ({
   duration,
   increment,
 }: {
   duration: number;
   increment: number;
-}): UseChessClockAPI => {
+}) => {
   // Time flow data. `useRef` is necessary here because:
   // 1. Tracking delta time should not trigger re-render;
   // 2. The object should be static between re-renders.
@@ -155,21 +138,21 @@ export const useChessClock = ({
     [duration],
   );
   /** Start running the clock. */
-  const startClock = useCallback<StartClock>(() => {
+  const startClock = useCallback(() => {
     if (!requestRef.current) {
       requestRef.current = window.requestAnimationFrame(update);
     }
   }, [update]);
   /** Stop updating the clock. */
-  const pauseClock = useCallback<PauseClock>(() => {
+  const pauseClock = useCallback(() => {
     if (requestRef.current) {
       window.cancelAnimationFrame(requestRef.current);
       requestRef.current = undefined;
     }
   }, []);
   /** Toggle the runnning side of the clock. */
-  const setClockSide = useCallback<SetClockSide>(
-    side => {
+  const setClockSide = useCallback(
+    (side: ChessPieceColor) => {
       const tracker = trackerRef.current;
       const lastSide = tracker.side;
       // Ignore if there is no side change. (might happen by a take-back)
@@ -189,7 +172,7 @@ export const useChessClock = ({
     [increment],
   );
   /** Reset the clock and hold. */
-  const resetClock = useCallback<ResetClock>(() => {
+  const resetClock = useCallback(() => {
     // Stop updating.
     if (requestRef.current) {
       window.cancelAnimationFrame(requestRef.current);

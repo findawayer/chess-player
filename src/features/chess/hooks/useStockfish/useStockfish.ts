@@ -1,26 +1,43 @@
+import { Move, ShortMove } from 'chess.js';
 import clamp from 'lodash/clamp';
 import { useCallback, useEffect, useState } from 'react';
 
+import {
+  calculateDepth,
+  calculateErrorProbability,
+  calculateMaxError,
+  formatMoveString,
+  formatTimeString,
+} from './helpers';
 import {
   ENGINE_IS_LOADED,
   ENGINE_IS_READY,
   FOUND_BEST_MOVE,
   IS_SYSTEM_MESSAGE,
 } from './messages';
-import {
-  calculateDepth,
-  calculateErrorProbability,
-  calculateMaxError,
-  formatTimeString,
-  formatMoveString,
-} from './helpers';
-import {
-  ChessEngineMove,
-  ChessEngineStatus,
-  FindMove,
-  UseStockfishOptions,
-} from './types';
 import { useEngine } from './useEngine';
+
+/** Chess engine's status. */
+export enum ChessEngineStatus {
+  Loading,
+  Loaded,
+  Ready,
+  Running,
+}
+
+/**
+ * Latest chess move found by the chess engine.
+ * `null` means the engine has not been running.
+ */
+export type ChessEngineMove = ShortMove | null;
+
+/** Configurable options for `useStockfish` hook. */
+export interface UseStockfishOptions {
+  duration: number;
+  increment: number;
+  skillLevel?: number;
+  filepath?: string;
+}
 
 /**
  * Make use of `stockfish` chess engine for move generation & evaluation.
@@ -35,16 +52,21 @@ import { useEngine } from './useEngine';
  * - isReady: The engine is ready.
  * - isRunning: The engine is running.
  */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useStockfish = ({
   duration,
   increment,
   skillLevel = 20,
   filepath = 'stockfish.js',
-}: UseStockfishOptions): [ChessEngineMove, FindMove, boolean, boolean] => {
+}: UseStockfishOptions) => {
   // Main engine that generates chess moves.
-  const [setEngineHandler, commandEngine] = useEngine(filepath);
+  const { setHandler: setEngineHandler, command: commandEngine } = useEngine(
+    filepath,
+  );
   // Evaluator.
-  const [setEvalerHandler, commandEvaler] = useEngine(filepath);
+  const { setHandler: setEvalerHandler, command: commandEvaler } = useEngine(
+    filepath,
+  );
   // Load status of the main engine.
   const [status, setStatus] = useState(ChessEngineStatus.Loading);
   // Configuration
@@ -77,9 +99,13 @@ export const useStockfish = ({
     [commandEngine],
   );
 
-  /** Find the best move that the engine can come up with. */
-  const findMove = useCallback<FindMove>(
-    ({ history, accelerate }) => {
+  /**
+   * Find the best move that the engine can come up with.
+   * @param history - Array of all chess moves played.
+   * @param accelerate - Make the engine find the move instantly.
+   */
+  const findMove = useCallback(
+    ({ history, accelerate }: { history: Move[]; accelerate?: boolean }) => {
       if (isRunning) {
         return;
       }
@@ -192,5 +218,5 @@ export const useStockfish = ({
     };
   }, [commandEngine, commandEvaler]);
 
-  return [move, findMove, isReady, isRunning];
+  return { move, findMove, isReady, isRunning };
 };

@@ -1,7 +1,7 @@
-import { Move } from 'chess.js';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Move } from 'chess.js';
 
-import { SCORE_DRAW, SCORE_WIN } from '~/config/chess';
+import { SCORE_DRAW, SCORE_WIN } from './constants';
 import {
   createPieces,
   invertPieceColor,
@@ -9,7 +9,7 @@ import {
   isEnPassant,
   isQueenSideSquare,
   shiftSquareName,
-} from './helpers';
+} from './utils';
 import { initializeChessState } from './state';
 import {
   ChessBoardData,
@@ -18,11 +18,11 @@ import {
   ChessPieceColor,
   ChessPlayer,
   ChessSquareName,
-} from './typings';
+} from './types';
 
 // Action types
 export enum ChessActionType {
-  // Game settings
+  // Game definitions
   SetDuration = 'setDuration',
   SetIncrement = 'setIncrement',
   SetPlayerColor = 'setPlayerColor',
@@ -48,7 +48,6 @@ export enum ChessActionType {
   Repetition = 'repetition',
   ResetGame = 'resetGame',
   FlipBoard = 'flipBoard',
-  // Unsorted (should be empty)
 }
 
 const chessSlice = createSlice({
@@ -56,7 +55,7 @@ const chessSlice = createSlice({
   initialState: initializeChessState(),
   // Note that mutable reducers *ONLY* work inside `createSlice`.
   reducers: {
-    // ---------- Game settings ---------- //
+    // ---------- Game definitions ---------- //
     // setDuration
     [ChessActionType.SetDuration]: (
       chess,
@@ -323,8 +322,6 @@ const chessSlice = createSlice({
     [ChessActionType.FlipBoard]: chess => {
       chess.isFlipped = !chess.isFlipped;
     },
-
-    // ---------- Unsorted (should be empty) ---------- //
   },
 });
 
@@ -354,7 +351,6 @@ export const {
   repetition,
   resetGame,
   flipBoard,
-  // Unsorted (should be empty)
 } = actions;
 
 export { reducer as chessReducer };

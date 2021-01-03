@@ -2,9 +2,13 @@
 node_modules
 
 # Static files
-/public
+public
+
+# logs
+logs
 
 # Auto-generated
 .next
-**/nexus/generated
-**/prisma/migrations
+**/generated/**/*
+**/migrations/**/*
+

@@ -1,83 +1,62 @@
-import update from 'immutability-helper';
-import { useCallback, useEffect, useState } from 'react';
+import { ChessBoardColor } from '@prisma/client';
+import { useEffect, useRef, useState } from 'react';
 
-import { getPersistedState, persistState } from '~/helpers/react-state';
-import { DEFAULT_CHESS_BOARD_THEME } from '~/config/preferences';
-import { ChessSettings } from '~/typings/preferences';
+import {
+  DEFAULT_AUTO_QUEEN,
+  DEFAULT_BOARD_COLOR,
+  DEFAULT_SHOW_LEGAL,
+  DEFAULT_SHOW_RECENT,
+} from '~/features/chess/constants';
+import { CurrentUser } from '~/graphql';
 
-export type ApplyChessSettings = (diff: Partial<ChessSettings>) => void;
+export interface ChessSettings {
+  autoQueen: boolean;
+  boardColor: ChessBoardColor;
+  showLegal: boolean;
+  showRecent: boolean;
+}
 
-/** Key for localStorage cache. */
-const CHESS_SETTINGS_CACHE_KEY = 'ChessSettings';
+/** Map user settings about chess gaming from the current auth user payload. */
+export const createChessSettings = (me?: CurrentUser): ChessSettings => ({
+  autoQueen: me?.chessAutoQueen || DEFAULT_AUTO_QUEEN,
+  boardColor: me?.chessBoardColor || DEFAULT_BOARD_COLOR,
+  showLegal: me?.chessShowLegal || DEFAULT_SHOW_LEGAL,
+  showRecent: me?.chessShowRecent || DEFAULT_SHOW_RECENT,
+});
 
-/** Default chess game settings. Used in server-side rendering. */
-export const defaultChessSettings: ChessSettings = {
-  boardColor: DEFAULT_CHESS_BOARD_THEME,
-  highlightMoves: true,
-  showLegalMoves: true,
-  autoPromoteToQueen: false,
-};
+/** Convert chess settings to comply with database table keys. (preefix `chess-`) */
+export const mapChessSettings = (settings: ChessSettings) => ({
+  chessAutoQueen: settings.autoQueen,
+  chessBoardColor: settings.boardColor,
+  chessShowLegal: settings.showLegal,
+  chessShowRecent: settings.showRecent,
+});
 
-/** Create initial game settings state */
-const initializeChessSettings = () =>
-  getPersistedState<ChessSettings>(CHESS_SETTINGS_CACHE_KEY) ||
-  defaultChessSettings;
+export const useChessSettings = (me?: CurrentUser) => {
+  // Chess settings from currently authenticated user.
+  const [settings, setSettings] = useState(createChessSettings(me));
+  // This prevents refetching settings from server after submitting new data.
+  const isHydrated = useRef(false);
 
-/**
- * Create local React state reflecting user preferences on the chess game settings,
- * and try to store them in user's local storage to be able to retrieve them later.
- *
- * @returns Array containing:
- * - settings: Current color mode of the theme.
- * - rehydrate: Retrieve cached color mode from `localStorage`.
- * - apply: Merge updated portion of the chess settings.
- * - canUseLocalStorage: Whether user allowed `localStorage` access.
- */
-export const useChessSettings = (): [
-  ChessSettings,
-  () => void,
-  ApplyChessSettings,
-  boolean,
-] => {
-  // Merged state of chess game settings + user interaction status.
-  const [{ chessSettings, interacted }, setStatus] = useState({
-    chessSettings: defaultChessSettings,
-    interacted: false,
-  });
-  // Whether user allowed `localStorage` access.
-  const [canUseLocalStorage, setCanUseLocalStorage] = useState(true);
+  /** Change a single entry in settings object. */
+  const changeSetting = (
+    name: keyof ChessSettings,
+    value: ChessSettings[keyof ChessSettings],
+  ): void => {
+    setSettings(previousSettings => ({
+      ...previousSettings,
+      [name]: value,
+    }));
+  };
 
-  /** Re-initialize chess settings from the persisted state in `localStorage. */
-  const rehydrate = useCallback(() => {
-    setStatus(previousStatus =>
-      update(previousStatus, {
-        chessSettings: { $set: initializeChessSettings() },
-      }),
-    );
-  }, []);
-  /** Merge updated portion of the chess settings. */
-  const applySettings = useCallback<ApplyChessSettings>(diff => {
-    setStatus(previousStatus =>
-      update(previousStatus, {
-        chessSettings: { $merge: diff },
-        interacted: { $set: true },
-      }),
-    );
-  }, []);
-
-  // Rewrite game settings cache in user's `localStorage` when it updates.
+  // Refresh chess settings when the user authentication status changes.
   useEffect(() => {
-    if (canUseLocalStorage && interacted) {
-      const success = persistState<ChessSettings>(
-        chessSettings,
-        CHESS_SETTINGS_CACHE_KEY,
-      );
-      // If the use of localStorage is blocked by user's privacy settings,
-      // do NOT try this process again.
-      // TODO: send a notification to the user.
-      if (!success) setCanUseLocalStorage(false);
+    // Prevent duplicate call.
+    if (!isHydrated.current && me) {
+      isHydrated.current = true;
+      setSettings(createChessSettings(me));
     }
-  }, [chessSettings, canUseLocalStorage, interacted]);
+  }, [me]);
 
-  return [chessSettings, rehydrate, applySettings, canUseLocalStorage];
+  return [settings, changeSetting] as const;
 };

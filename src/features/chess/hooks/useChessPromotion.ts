@@ -1,16 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
 import update from 'immutability-helper';
+import { useCallback, useEffect, useState } from 'react';
 
-import { stringifySquare } from '../helpers';
-import { ChessPromotionVariant, ChessPromotion } from '../typings';
-
-export type PromptPromotion = (
-  promotion: Omit<ChessPromotion, 'variant'>,
-) => void;
-
-export type SelectPromotion = (variant: ChessPromotionVariant) => void;
-
-export type AbortPromotion = () => void;
+import { stringifySquare } from '../utils';
+import { ChessPromotion, ChessPromotionVariant } from '../types';
 
 /**
  * Create a confirmation prompt to let the player decide which piece to
@@ -22,20 +14,16 @@ export type AbortPromotion = () => void;
  * - select: Confirm the promotion variant.
  * - abort: Dismiss the confirmation prompt.
  */
-export const useChessPromotion = (): [
-  ChessPromotion | null,
-  PromptPromotion,
-  SelectPromotion,
-  AbortPromotion,
-] => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const useChessPromotion = () => {
   const [promotion, setPromotion] = useState<ChessPromotion | null>(null);
 
   /**
    * Open a confirm dialog to let the player decide
    * which piece to promote the pawn to.
    */
-  const promptPromotion = useCallback<PromptPromotion>(
-    ({ color, from, to }) => {
+  const promptPromotion = useCallback(
+    ({ color, from, to }: Omit<ChessPromotion, 'variant'>) => {
       setPromotion({
         color,
         from: stringifySquare(from),
@@ -45,8 +33,8 @@ export const useChessPromotion = (): [
     [],
   );
   /** Select the piece variant to promote the current pawn to. */
-  const selectPromotion = useCallback<SelectPromotion>(
-    variant => {
+  const selectPromotion = useCallback(
+    (variant: ChessPromotionVariant) => {
       if (promotion) {
         setPromotion(update(promotion, { $merge: { variant } }));
       }
@@ -54,7 +42,7 @@ export const useChessPromotion = (): [
     [promotion],
   );
   /** Close the promotion dialog without doing anything. */
-  const abortPromotion = useCallback<AbortPromotion>(() => {
+  const abortPromotion = useCallback(() => {
     setPromotion(null);
   }, []);
 
@@ -63,5 +51,5 @@ export const useChessPromotion = (): [
     return () => setPromotion(null);
   }, []);
 
-  return [promotion, promptPromotion, selectPromotion, abortPromotion];
+  return { promotion, promptPromotion, selectPromotion, abortPromotion };
 };

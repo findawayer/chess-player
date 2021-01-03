@@ -1,7 +1,3 @@
-import sample from 'lodash/sample';
-import Link from 'next/link';
-import React, { useMemo } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   Button,
   Card,
@@ -16,6 +12,10 @@ import {
   Typography,
 } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import sample from 'lodash/sample';
+import Link from 'next/link';
+import React, { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 
 import {
   setDuration,
@@ -23,8 +23,8 @@ import {
   setIncrement,
   setPlayerColor,
 } from '~/features/chess/slice';
-import { ChessPieceColor } from '../typings';
 import { AppDispatch } from '~/vendors/redux';
+import { ChessPieceColor } from '../types';
 
 interface ChessGameSelectProps {
   duration: number;

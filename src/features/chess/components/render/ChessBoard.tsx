@@ -1,20 +1,17 @@
+import { ChessBoardColor } from '@prisma/client';
 import map from 'lodash/map';
 import React from 'react';
 
-import { ChessBoardThemeVariant } from '~/typings/preferences';
-import { objectifySquare } from '../../helpers';
-import { AbortPromotion, SelectPromotion } from '../../hooks';
+import { objectifySquare } from '../../utils';
 import {
   ChessLegalMove,
   ChessPieces,
-  ChessPromotion,
   ChessSquare,
   ChessSquareName,
-} from '../../typings';
+} from '../../types';
 import ChessGuide from '../ChessGuide';
 import ChessLegalSquare from '../ChessLegalSquare';
 import ChessPiece from '../ChessPiece';
-import ChessPromotionDialog from '../ChessPromotionDialog';
 
 /* Render chess pieces. */
 export function renderPieces(
@@ -50,7 +47,7 @@ export function renderPieces(
 /* Render user selected square during a piece drag action. */
 export function renderActiveSquare(
   square: ChessSquareName | null,
-  color: ChessBoardThemeVariant,
+  color: ChessBoardColor,
 ): JSX.Element | null {
   return square ? (
     <ChessGuide variant="active" color={color} square={square} />
@@ -60,7 +57,7 @@ export function renderActiveSquare(
 /* Render currently hovered square during a piece drag action. */
 export function renderHoveredSquare(
   square: ChessSquareName | null,
-  color: ChessBoardThemeVariant,
+  color: ChessBoardColor,
 ): JSX.Element | null {
   return square ? (
     <ChessGuide variant="hover" color={color} square={square} />
@@ -70,18 +67,20 @@ export function renderHoveredSquare(
 /* Render currently hovered square during a piece drag action. */
 export function renderLegalSquares(
   legalMoves: ChessLegalMove[],
-  options: {
-    showLegalMoves: boolean;
+  {
+    isVisible,
+    handleSelect,
+  }: {
+    isVisible: boolean;
     handleSelect(square: ChessSquare): void;
   },
 ): JSX.Element[] {
-  const { showLegalMoves, handleSelect } = options;
   return legalMoves.map(({ square, flags }) => (
     <ChessLegalSquare
       key={square}
       square={square}
       flags={flags}
-      showLegalMoves={showLegalMoves}
+      isVisible={isVisible}
       handleSelect={handleSelect}
     />
   ));
@@ -90,7 +89,7 @@ export function renderLegalSquares(
 /* Redner recentmost move's source & target squares. */
 export function renderRecentSquares(
   squares: ChessSquareName[] | null,
-  color: ChessBoardThemeVariant,
+  color: ChessBoardColor,
 ): JSX.Element[] | null {
   return squares
     ? squares.map(square => (
@@ -102,20 +101,4 @@ export function renderRecentSquares(
         />
       ))
     : null;
-}
-
-export function renderPromotionDialog(
-  promotion: ChessPromotion | null,
-  options: { abortPromotion: AbortPromotion; selectPromotion: SelectPromotion },
-): JSX.Element | null {
-  const { abortPromotion, selectPromotion } = options;
-
-  return promotion && !promotion.variant ? (
-    <ChessPromotionDialog
-      color={promotion.color}
-      square={promotion.to}
-      abortPromotion={abortPromotion}
-      selectPromotion={selectPromotion}
-    />
-  ) : null;
 }

@@ -1,4 +1,3 @@
-import React, { memo, useEffect, useRef } from 'react';
 import { List, ListItem, Typography } from '@material-ui/core';
 import {
   createStyles,
@@ -6,8 +5,9 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core/styles';
+import React, { memo, useEffect, useRef } from 'react';
 
-import { ChessMoveLog } from '../typings';
+import { ChessMoveLog } from '../types';
 
 interface ChessMoveListProps {
   // Collection of `ChessMoveLog`s splitted in chunks of 2 items.

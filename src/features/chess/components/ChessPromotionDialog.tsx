@@ -1,21 +1,20 @@
+import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
-import Typography from '@material-ui/core/Typography';
 
-import { getFullPieceVariant, objectifySquare, pieceClass } from '../helpers';
-import { AbortPromotion, SelectPromotion } from '../hooks';
+import { getFullPieceVariant, objectifySquare, pieceClass } from '../utils';
 import {
   ChessPieceColor,
   ChessPromotionVariant,
   ChessSquareName,
-} from '../typings';
+} from '../types';
 import useStyles from './styles/ChessPromotionDialog';
 
 interface ChessPromotionDialogProps {
   square: ChessSquareName;
   color: ChessPieceColor;
-  abortPromotion: AbortPromotion;
-  selectPromotion: SelectPromotion;
+  abortPromotion(): void;
+  selectPromotion(variant: ChessPromotionVariant): void;
 }
 
 // @todo: Find correct a11y sementics for the dialog backdrop

@@ -1,12 +1,15 @@
-import React from 'react';
 import { Container } from '@material-ui/core';
+import React from 'react';
 
-import ResetPassword from '~/features/auth/components/ResetPassword';
+import PleaseLogin from '~/components/PleaseLogin';
+import ResetPassword from '~/features/account/components/ResetPassword';
 
 const RecoverPage: React.FC = () => {
   return (
     <Container maxWidth="xs">
-      <ResetPassword />
+      <PleaseLogin>
+        <ResetPassword />
+      </PleaseLogin>
     </Container>
   );
 };

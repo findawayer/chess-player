@@ -1,9 +1,9 @@
-import React from 'react';
 import { Container } from '@material-ui/core';
+import React from 'react';
 
-import RecoverPassword from '~/features/auth/components/RecoverPassword';
+import RecoverPassword from '~/features/account/components/RecoverPassword';
 
-const RecoverPage: React.FC = () => {
+const Recover: React.FC = () => {
   return (
     <Container maxWidth="xs">
       <RecoverPassword />
@@ -11,4 +11,4 @@ const RecoverPage: React.FC = () => {
   );
 };
 
-export default RecoverPage;
+export default Recover;

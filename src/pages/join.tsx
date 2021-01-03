@@ -1,14 +1,14 @@
-import React from 'react';
 import { Container } from '@material-ui/core';
+import React from 'react';
 
-import Join from '~/features/auth/components/Join';
+import Signup from '~/features/account/components/Signup';
 
-const JoinPage: React.FC = () => {
+const Join: React.FC = () => {
   return (
     <Container maxWidth="xs">
-      <Join />
+      <Signup />
     </Container>
   );
 };
 
-export default JoinPage;
+export default Join;
