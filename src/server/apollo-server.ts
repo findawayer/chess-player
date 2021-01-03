@@ -1,3 +1,4 @@
+// Required for TypeGraphQL
 import 'reflect-metadata';
 
 import { ApolloServer } from 'apollo-server-micro';
@@ -24,6 +25,7 @@ export const createContext = async ({
   return { req, res, user };
 };
 
+/** Create GraphQL server with `apollo-server-micro`. */
 export const createServer = async (): Promise<ApolloServer> => {
   // Check environment.
   const isDevelopment = process.env.NODE_ENV === 'development';
