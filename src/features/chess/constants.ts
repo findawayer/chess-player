@@ -1,7 +1,5 @@
 // ---------- Board ---------- //
 
-import { ChessBoardColor } from '@prisma/client';
-
 /** Chess square's x-axis names. */
 export const RANK_NAMES = '87654321';
 /** Chess square's y-axis names. */
@@ -22,16 +20,16 @@ export const SCORE_WIN = 1;
 /** Score gained by a draw. */
 export const SCORE_DRAW = 0.5;
 
-// ---------- Preferences ---------- //
+// ---------- User settings ---------- //
 
-/** Default value for auto promotion to queen. */
+// Promote automatically to queen without opening confirmation dialog.
 export const DEFAULT_AUTO_QUEEN = false;
-/** Default value for highlighting legal moves. */
+// Chess board theme.
+export const DEFAULT_BOARD_COLOR = 'ARCTIC';
+// Highlight legal moves.
 export const DEFAULT_SHOW_LEGAL = true;
-/** Default value for highlighting recent movese. */
+// Highlight recent move's original & destination squares.
 export const DEFAULT_SHOW_RECENT = true;
-/** Default value for chess board theme. */
-export const DEFAULT_BOARD_COLOR: ChessBoardColor = 'ARCTIC';
 
 // ---------- Misc. ---------- //
 

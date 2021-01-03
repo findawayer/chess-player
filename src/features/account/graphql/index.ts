@@ -81,15 +81,15 @@ export type ResetPassword = (
 
 /** GraphQL: Update user data */
 export const UPDATE_USER_INFO_MUTATION = gql`
-  mutation updateUserInfo($id: Int!, $email: String!, $name: String!) {
-    updateUserInfo(id: $id, email: $email, name: $name) {
+  mutation updateUserInfo($email: String!, $name: String!) {
+    updateUserInfo(email: $email, name: $name) {
       id
     }
   }
 `;
 
 // Returned `updateUserInfo` method.
-export type UpdateUserInfo = (id: number, email: string, name: string) => void;
+export type UpdateUserInfo = (email: string, name: string) => void;
 
 /** GraphQL: Update user data */
 export const UPDATE_PASSWORD_MUTATION = gql`

@@ -1,3 +1,4 @@
+import { ChessBoardColor } from '@prisma/client';
 import {
   ChessGameOver,
   ChessMoveLog,
@@ -22,6 +23,11 @@ export interface ChessState {
   isFlipped: boolean;
   isFrozen: boolean;
   gameOver: ChessGameOver | false;
+  // Game settings
+  autoQueen: boolean;
+  boardColor: ChessBoardColor;
+  showLegal: boolean;
+  showRecent: boolean;
 }
 
 /** Create default state related for `chess` slice. */
@@ -61,4 +67,12 @@ export const initializeChessState = (): ChessState => ({
   isFrozen: false,
   // Game over status expressed either a object or `false`.
   gameOver: false,
+  // Promote automatically to queen without opening confirmation dialog.
+  autoQueen: false,
+  // Chess board theme.
+  boardColor: 'ARCTIC',
+  // Highlight legal moves.
+  showLegal: true,
+  // Highlight recent move's original & destination squares.
+  showRecent: true,
 });

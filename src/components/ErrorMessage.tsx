@@ -1,9 +1,9 @@
-import { ApolloError } from '@apollo/client';
+import type { ApolloError } from '@apollo/client';
 import { Alert } from '@material-ui/lab';
 import React from 'react';
 
 export interface ErrorMessageProps {
-  error?: ApolloError;
+  error?: ApolloError | Error;
 }
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {

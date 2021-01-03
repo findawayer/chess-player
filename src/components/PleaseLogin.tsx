@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import type { Role } from '@prisma/client';
+import type { UserRole } from '@prisma/client';
 import Link from 'next/link';
 import React from 'react';
 
@@ -9,7 +9,8 @@ import { hasRole } from '~/utils/roles';
 
 interface PleaseLoginProps {
   children: React.ReactNode;
-  requiredRole?: Role;
+  message?: string;
+  requiredRole?: UserRole;
 }
 
 /**
@@ -27,14 +28,17 @@ interface PleaseLoginProps {
  */
 const PleaseLogin: React.FC<PleaseLoginProps> = ({
   children,
+  message,
   requiredRole,
 }) => {
   const me = useUser();
   // Not logged in!
   if (!me) {
     return (
-      <Box textAlign="center">
-        <Typography variant="h2">Please log in before continuing.</Typography>
+      <Box textAlign="center" style={{ padding: 32 }}>
+        <Typography variant="h3" component="h2">
+          {message || 'Please log in before continuing.'}
+        </Typography>
         <Box mt={5}>
           <Link href="/join" passHref>
             <Button variant="contained" color="primary" size="large">

@@ -22,7 +22,3 @@ export const setCookie = (
 export const deleteCookie = (res: NextApiResponse, name: string): void => {
   setCookie(res, name, '');
 };
-
-export const clearCookie = (res: NextApiResponse): void => {
-  res.setHeader('Set-Cookie', serialize('', '', { expires: new Date() }));
-};

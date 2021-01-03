@@ -4,7 +4,7 @@
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "commonjs",
-    "target": "es5",
+    "target": "esnext",
     "noEmit": true,
     "isolatedModules": true,
     "strict": false,
@@ -13,12 +13,13 @@
     "esModuleInterop": true,
     "moduleResolution": "Node",
     "paths": {
-      "~/": ["src"],
       "~/*": ["src/*"]
     },
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "exclude": ["node_modules", "public/**/*"],
   "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"]

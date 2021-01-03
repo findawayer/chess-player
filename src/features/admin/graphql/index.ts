@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import type { User, Role } from '@prisma/client';
+import type { User, UserRole } from '@prisma/client';
 
 /** GraphQL: Get users per page. (offset-based) */
 // TODO: move `users`
@@ -29,4 +29,4 @@ export const UPDATE_USER_ROLE_MUTATION = gql`
   }
 `;
 
-export type UpdateUserRole = (id: string, role: Role) => void;
+export type UpdateUserRole = (id: string, role: UserRole) => void;

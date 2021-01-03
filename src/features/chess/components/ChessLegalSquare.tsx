@@ -41,7 +41,7 @@ const ChessLegalSquare: React.FC<ChessLegalSquareProps> = ({
   return (
     <div
       className={clsx(classes.legalSquare, squareClass(square))}
-      style={isVisible ? undefined : { visibility: 'hidden' }}
+      style={isVisible ? undefined : { opacity: 0 }}
       onClick={() => handleSelect(square)}
     />
   );

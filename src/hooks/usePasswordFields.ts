@@ -1,45 +1,75 @@
 import update from 'immutability-helper';
 import React, { useState } from 'react';
 
-const initializeState = <K extends string, V extends unknown>(
-  keys: K[],
-  value: V,
-): Record<K, V> =>
-  keys.reduce((state, key) => {
-    state[key] = value;
-    return state;
-  }, {} as Record<K, V>);
+interface Options {
+  keys: string[];
+  onSubmit?(values: Record<string, string>): Promise<unknown>;
+}
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const usePasswordFields = (keys: string[]) => {
-  const [fields, setFields] = useState(initializeState(keys, ''));
-  const [visibility, setVisibility] = useState(initializeState(keys, false));
+interface State {
+  values: Record<string, string>;
+  visibility: Record<string, boolean>;
+}
+
+const initializeState = (keys: string[]): State => {
+  const values = {};
+  const visibility = {};
+  keys.forEach(key => {
+    values[key] = '';
+    visibility[key] = false;
+  });
+  return { values, visibility };
+};
+
+/**
+ *
+ * Todo: remove onsubmit, add only visibility control
+ * @param param0
+ */
+export const usePasswordFields = (
+  { keys, onSubmit }: Options = { keys: ['password'] },
+) => {
+  const [{ values, visibility }, setState] = useState(initializeState(keys));
 
   /** Handler for input change */
-  const handleChange = (key: keyof typeof fields) => (
+  const handlePasswordChange = (key: keyof typeof values) => (
     event: React.ChangeEvent<HTMLInputElement>,
   ) =>
-    setFields(previousFields =>
-      update(previousFields, {
-        [key]: { $set: event.target.value },
+    setState(previousState =>
+      update(previousState, {
+        values: {
+          [key]: { $set: event.target.value },
+        },
       }),
     );
   /** Handler for toggling password value. */
-  const handleVisibilityChange = (key: keyof typeof fields) => () =>
-    setVisibility(previousVisibility =>
-      update(previousVisibility, {
-        [key]: { $apply: (checked: boolean) => !checked },
+  const handleVisibilityChange = (key: keyof typeof values) => () =>
+    setState(previousState =>
+      update(previousState, {
+        visibility: {
+          [key]: { $apply: (checked: boolean) => !checked },
+        },
       }),
     );
   /** Prevent native click action on password toggler button. */
   const handleTogglerClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     event.preventDefault();
+  /** Prevent form submission and invoke `onSubmit` callback provided. */
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    // Hijack form submission.
+    event.preventDefault();
+    if (onSubmit) onSubmit(values);
+  };
+  /** Clear fields and reset state. */
+  const clearPasswords = () => setState(initializeState(keys));
 
   return {
-    fields,
+    values,
     visibility,
-    handlePasswordChange: handleChange,
+    handlePasswordChange,
     handleVisibilityChange,
     handleTogglerClick,
+    handleSubmit,
+    clearPasswords,
   } as const;
 };

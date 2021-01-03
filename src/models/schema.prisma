@@ -8,42 +8,39 @@ datasource db {
 }
 
 model User {
-  id               Int             @id @default(autoincrement())
-  /// Credentials
-  email            String          @unique
+  id               Int              @id @default(autoincrement())
+  email            String           @unique
   password         String
-  /// Information
   name             String
-  role             Role            @default(MEMBER)
-  verified         Boolean         @default(false)
-  createdAt        DateTime        @default(now()) @map("created_at")
-  updatedAt        DateTime        @updatedAt @map("updated_at")
-  /// Password recovery
-  resetToken       String?         @map("reset_token")
-  resetTokenExpiry Int?            @map("reset_token_expiry")
-  /// Chess game settings
-  chessAutoQueen   Boolean         @default(false) @map("auto_queen")
-  chessBoardColor  ChessBoardColor @default(ARCTIC) @map("board_color")
-  chessShowLegal   Boolean         @default(true) @map("show_legal")
-  chessShowRecent  Boolean         @default(true) @map("show_recent")
-  /// App's theme color
-  colorMode        ColorMode       @default(DARK) @map("color_mode")
+  role             UserRole         @default(MEMBER)
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+  verified         Boolean          @default(false)
+  // Password recovery
+  resetToken       String?          @map("reset_token")
+  resetTokenExpiry Int?             @map("reset_token_expiry")
+  // Preferences
+  colorMode        ColorMode?       @map("color_mode")
+  chessAutoQueen   Boolean?         @map("chess_auto_queen")
+  chessBoardColor  ChessBoardColor? @map("chess_board_color")
+  chessShowLegal   Boolean?         @map("chess_show_legal")
+  chessShowRecent  Boolean?         @map("chess_show_recent")
 
-  @@map("users")
+  @@map("user")
 }
 
-enum Role {
+enum UserRole {
   MEMBER  @map("member")
   ADMIN   @map("admin")
 
-  @@map("roles")
+  @@map("user_role")
 }
 
 enum ColorMode {
   DARK   @map("dark")
   LIGHT  @map("light")
 
-  @@map("color_modes")
+  @@map("color_mode")
 }
 
 enum ChessBoardColor {

@@ -1,7 +1,7 @@
 import { Container } from '@material-ui/core';
 import React from 'react';
 
-import PleaseLogin from '~/features/account/components/PleaseLogin';
+import PleaseLogin from '~/components/PleaseLogin';
 import ResetPassword from '~/features/account/components/ResetPassword';
 
 const RecoverPage: React.FC = () => {

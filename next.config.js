@@ -1,11 +1,16 @@
+/* eslint-disable no-restricted-syntax */
 module.exports = {
-  // Fix use of `fs` Node module.
-  // https://github.com/vercel/next.js/issues/7755#issuecomment-508633125
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.node = {
-        net: 'empty',
-      };
+  webpack(config) {
+    // Use ts-loader for decorators support
+    for (const rule of config.module.rules) {
+      if (rule.test && rule.test.test('foo.ts')) {
+        rule.use = [].concat(rule.use, {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+          },
+        });
+      }
     }
     return config;
   },

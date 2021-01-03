@@ -34,27 +34,20 @@ const UpdateUserInfo: React.FC<UpdateUserInfoProps> = ({
 
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: { email, name },
-    onSubmit: async values => {
-      await updateUserInfo({
-        variables: {
-          email: values.email,
-          name: values.name,
-        },
-        refetchQueries: [{ query: CURRENT_USER_QUERY }],
-      });
+    onSubmit: async currentValues => {
+      try {
+        await updateUserInfo({
+          variables: {
+            email: currentValues.email,
+            name: currentValues.name,
+          },
+          refetchQueries: [{ query: CURRENT_USER_QUERY }],
+        });
+      } catch (error) {
+        // Hide error from user.
+      }
     },
   });
-
-  // /** Handler for form submission */
-  // const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   // Highjack native form submission.
-  //   event.preventDefault();
-  //   try {
-  //     await updateUserInfo();
-  //   } catch (error) {
-  //     // Hide error from user.
-  //   }
-  // };
 
   return (
     <form method="post" onSubmit={handleSubmit}>
@@ -73,7 +66,7 @@ const UpdateUserInfo: React.FC<UpdateUserInfoProps> = ({
           <Box mb={2}>
             <FormControl fullWidth>
               <TextField
-                id="myEmail"
+                id="email"
                 name="email"
                 value={values.email}
                 required
@@ -85,7 +78,7 @@ const UpdateUserInfo: React.FC<UpdateUserInfoProps> = ({
           <Box mb={2}>
             <FormControl fullWidth>
               <TextField
-                id="myName"
+                id="name"
                 name="name"
                 value={values.name}
                 required

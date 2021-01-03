@@ -28,38 +28,40 @@ import {
 } from '../graphql';
 
 const UpdatePassword: React.FC = () => {
-  const {
-    fields,
-    visibility,
-    handlePasswordChange,
-    handleVisibilityChange,
-    handleTogglerClick,
-  } = usePasswordFields(['oldPassword', 'password', 'confirmPassword']);
   const [
     updatePasword,
     { loading, error, called },
-  ] = useMutation<UpdatePasswordMethod>(UPDATE_PASSWORD_MUTATION, {
-    variables: {
-      oldPassword: fields.oldPassword,
-      password: fields.password,
-      confirmPassword: fields.confirmPassword,
+  ] = useMutation<UpdatePasswordMethod>(UPDATE_PASSWORD_MUTATION);
+  const {
+    values,
+    visibility,
+    handlePasswordChange,
+    handleTogglerClick,
+    handleVisibilityChange,
+    handleSubmit,
+    clearPasswords,
+  } = usePasswordFields({
+    keys: ['oldPassword', 'password', 'confirmPassword'],
+    onSubmit: async currentValues => {
+      try {
+        await updatePasword({
+          variables: {
+            oldPassword: currentValues.oldPassword,
+            password: currentValues.password,
+            confirmPassword: currentValues.confirmPassword,
+          },
+          refetchQueries: [{ query: CURRENT_USER_QUERY }],
+        });
+        // Clear fields if sucessful.
+        clearPasswords();
+      } catch (error) {
+        // Hide error from users.
+      }
     },
-    refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
-  /** Handler for form submission */
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    // Highjack native form submission.
-    event.preventDefault();
-    try {
-      await updatePasword();
-    } catch (error) {
-      // Hide error from user.
-    }
-  };
-
   return (
-    <form method="post" onSubmit={handleFormSubmit}>
+    <form method="post" onSubmit={handleSubmit}>
       <Card component="fieldset" elevation={3} aria-busy={loading}>
         <CardContent>
           <Typography variant="h4" component="h2" align="center" gutterBottom>
@@ -79,9 +81,9 @@ const UpdatePassword: React.FC = () => {
               </InputLabel>
               <Input
                 id="oldPassword"
-                type={visibility.oldPassword ? 'text' : 'password'}
                 name="oldPassword"
-                value={fields.oldPassword}
+                type={visibility.oldPassword ? 'text' : 'password'}
+                value={values.oldPassword}
                 disabled={loading}
                 required
                 onChange={handlePasswordChange('oldPassword')}
@@ -110,9 +112,9 @@ const UpdatePassword: React.FC = () => {
               </InputLabel>
               <Input
                 id="password"
-                type={visibility.password ? 'text' : 'password'}
                 name="password"
-                value={fields.password}
+                type={visibility.password ? 'text' : 'password'}
+                value={values.password}
                 disabled={loading}
                 required
                 onChange={handlePasswordChange('password')}
@@ -141,9 +143,9 @@ const UpdatePassword: React.FC = () => {
               </InputLabel>
               <Input
                 id="confirmPassword"
-                type={visibility.confirmPassword ? 'text' : 'password'}
                 name="confirmPassword"
-                value={fields.confirmPassword}
+                type={visibility.confirmPassword ? 'text' : 'password'}
+                value={values.confirmPassword}
                 disabled={loading}
                 required
                 onChange={handlePasswordChange('confirmPassword')}

@@ -1,36 +1,40 @@
+import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { promisify } from 'util';
-import { User } from '@prisma/client';
 
 import { ACCESS_TOKEN_KEY, SALT_ROUNDS } from '../constants';
+import { AuthUserPayload } from '../interfaces';
+import { prisma } from '../prisma';
 import { deleteCookie, setCookie } from './cookies';
 
-export type UserAuthPayload = Pick<User, 'id'>;
+/** User payload stored in cookie. */
+export type CookieUserPayload = Pick<User, 'id'>;
 
-export const createAccessToken = (payload: UserAuthPayload): string => {
-  // Encrypt access token.
+/** Create Encrypted access token. */
+export const createAccessToken = (payload: CookieUserPayload): string => {
   const token = jwt.sign(payload, process.env.APP_SECRET);
   return token;
 };
 
+/** Decode user access token. */
 export const parseAccessToken = async (
   token?: string,
-): Promise<UserAuthPayload | null> => {
+): Promise<CookieUserPayload | null> => {
   if (!token) return null;
-  // Don't display any error to the user while decoding.
+
   try {
-    // Decode access token.
-    return jwt.verify(token, process.env.APP_SECRET) as UserAuthPayload;
+    return jwt.verify(token, process.env.APP_SECRET) as CookieUserPayload;
   } catch (error) {
+    // Don't display any error to the user.
     console.error(`Auth error`, error);
     return null;
   }
 };
 
-/** Hash user passwords. */
+/** Encrypt passwords. */
 export const hashPassword = async (password: string): Promise<string> => {
   const hashed = await bcrypt.hash(password, SALT_ROUNDS);
   return hashed;
@@ -51,13 +55,39 @@ export const createPasswordResetToken = async (): Promise<{
   return { token, expires };
 };
 
+/** Retrieve currently user from cookies. */
+export const getServerSession = async (
+  req: NextApiRequest,
+): Promise<AuthUserPayload | null> => {
+  // Decode access token stored as cookies.
+  const decoded = await parseAccessToken(req.cookies.accessToken);
+  // If no access token is found, return null.
+  if (!decoded) {
+    return null;
+  }
+  // Find the user matching the token.
+  try {
+    const { id, name, role } = await prisma.user.findUnique({
+      where: {
+        id: decoded.id,
+      },
+    });
+    // Return the desired payload.
+    return { id, name, role };
+  } catch (error) {
+    console.error(error);
+    // Throwing an error will make the server crash.
+    return null;
+  }
+};
+
 /** Set user logged in. */
 export const handleSuccessfulLogin = async (
-  user: UserAuthPayload,
+  { id }: AuthUserPayload,
   res: NextApiResponse,
 ): Promise<void> => {
   // Genrate a JWT token.
-  const accessToken = createAccessToken({ id: user.id });
+  const accessToken = createAccessToken({ id });
   // Set the cookie with the token.
   setCookie(res, ACCESS_TOKEN_KEY, accessToken, {
     httpOnly: true,
@@ -65,9 +95,11 @@ export const handleSuccessfulLogin = async (
   });
 };
 
+/** Set user logged out. */
 export const handleSuccessfulLogout = async (
   res: NextApiResponse,
 ): Promise<void> => {
   // Remove user login token from cookie.
   deleteCookie(res, ACCESS_TOKEN_KEY);
+  // clearCookie(res);
 };

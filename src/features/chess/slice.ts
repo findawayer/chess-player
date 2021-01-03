@@ -48,7 +48,6 @@ export enum ChessActionType {
   Repetition = 'repetition',
   ResetGame = 'resetGame',
   FlipBoard = 'flipBoard',
-  // Unsorted (should be empty)
 }
 
 const chessSlice = createSlice({
@@ -323,8 +322,6 @@ const chessSlice = createSlice({
     [ChessActionType.FlipBoard]: chess => {
       chess.isFlipped = !chess.isFlipped;
     },
-
-    // ---------- Unsorted (should be empty) ---------- //
   },
 });
 
@@ -354,7 +351,6 @@ export const {
   repetition,
   resetGame,
   flipBoard,
-  // Unsorted (should be empty)
 } = actions;
 
 export { reducer as chessReducer };

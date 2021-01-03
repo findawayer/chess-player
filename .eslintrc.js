@@ -94,6 +94,7 @@ module.exports = {
         'no-use-before-define': 'off',
         'no-unused-expressions': 'off',
         'no-unused-vars': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-redeclare': 'error',
         '@typescript-eslint/no-use-before-define': [
           'error',

@@ -18,7 +18,7 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core';
-import { Role } from '@prisma/client';
+import { UserRole } from '@prisma/client';
 import React, { useState } from 'react';
 
 import ErrorMessage from '~/components/ErrorMessage';
@@ -45,7 +45,7 @@ const UserTableRow: React.FC<{ user: PaginatedUser }> = ({ user }) => {
   };
   /** Handler for role radio button selection. */
   const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentRole((event.target as HTMLInputElement).value as Role);
+    setCurrentRole((event.target as HTMLInputElement).value as UserRole);
   };
   /** Handle for closing the edit dialog without submitting. */
   const handleClose = () => {
@@ -100,7 +100,7 @@ const UserTableRow: React.FC<{ user: PaginatedUser }> = ({ user }) => {
           <Box p={2} style={{ width: 300 }}>
             <ErrorMessage error={error} />
             <List dense>
-              {Object.keys(Role).map(role => (
+              {Object.keys(UserRole).map(role => (
                 <ListItem key={role}>
                   <ListItemIcon>
                     <Radio

@@ -2,18 +2,18 @@ import type { User } from '@prisma/client';
 import {
   ApolloError,
   AuthenticationError,
-  ForbiddenError,
   UserInputError,
 } from 'apollo-server-micro';
 import bcrypt from 'bcryptjs';
 import isEmail from 'validator/lib/isEmail';
 
-import { isAdmin } from '~/utils';
-import { Context } from '../graphql-context';
-import { UserAuthPayload } from '../utils/auth';
+import { AuthUserPayload, GraphQLContext } from '~/server/interfaces';
+import { prisma } from '~/server/prisma';
 
 /** Retrieve current user's access payload if they are logged in, otherwise throw. */
-export const requireAuth = (context: Context): UserAuthPayload | never => {
+export const requireAuth = (
+  context: GraphQLContext,
+): AuthUserPayload | never => {
   if (!context.user) {
     throw new AuthenticationError('You need to be logged in.');
   }
@@ -64,19 +64,12 @@ export const requirePasswordsMatch = (
 /** Find user by email, and throw if not found.  */
 export const requireValidUser = async (
   email: string,
-  context: Context,
 ): Promise<User | never> => {
-  const user = await context.prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { email },
   });
   if (!user) {
     throw new ApolloError(`No such user found for ${email}.`);
   }
   return user;
-};
-
-export const requireAdmin = (user: Pick<User, 'role'>): void | never => {
-  if (!isAdmin(user)) {
-    throw new ForbiddenError(`You are missing required permission.`);
-  }
 };

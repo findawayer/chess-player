@@ -18,10 +18,11 @@ import {
 } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 
 import ErrorMessage from '~/components/ErrorMessage';
 import { CURRENT_USER_QUERY } from '~/graphql';
+import { usePasswordFields } from '~/hooks';
 import {
   RESET_PASSWORD_MUTATION,
   ResetPassword as ResetPasswordMethod,
@@ -29,82 +30,44 @@ import {
 
 // Component
 const ResetPassword: React.FC = () => {
-  const [values, setValues] = useState({
-    password: '',
-    confirmPassword: '',
-    showPassword: false,
-    showConfirmPassword: false,
-  });
-  const {
-    password,
-    confirmPassword,
-    showPassword,
-    showConfirmPassword,
-  } = values;
   const router = useRouter();
   const { resetToken } = router.query;
   const [
     resetPassword,
     { loading, error, called },
-  ] = useMutation<ResetPasswordMethod>(RESET_PASSWORD_MUTATION, {
-    variables: { resetToken, password, confirmPassword },
-    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  ] = useMutation<ResetPasswordMethod>(RESET_PASSWORD_MUTATION);
+  const {
+    values,
+    visibility,
+    handlePasswordChange,
+    handleTogglerClick,
+    handleVisibilityChange,
+    handleSubmit,
+    clearPasswords,
+  } = usePasswordFields({
+    keys: ['password', 'confirmPassword'],
+    onSubmit: async currentValues => {
+      try {
+        // Invoke reset password action.
+        await resetPassword({
+          variables: {
+            resetToken,
+            password: currentValues.password,
+            confirmPassword: currentValues.confirmPassword,
+          },
+          refetchQueries: [{ query: CURRENT_USER_QUERY }],
+        });
+        // Reset the form if successful.
+        clearPasswords();
+      } catch (error) {
+        // Hide error from users.
+      }
+    },
   });
   const isSuccessful = called && !loading && !error;
 
-  /** Handler for input field changes. */
-  const handleInputChange = (
-    key: Exclude<keyof typeof values, 'showPassword'>,
-  ) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues(previousUserInput => ({
-      ...previousUserInput,
-      [key]: event.target.value,
-    }));
-  };
-  /** Handler for form submission */
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    let hasError = false;
-    // Highjack native form submission.
-    event.preventDefault();
-    // Don't let Next.js display runtime error,
-    // to display custom error message to the user.
-    try {
-      // Invoke reset password action.
-      await resetPassword();
-    } catch (error) {
-      hasError = true;
-    }
-    // If the signup is successful,
-    if (!hasError) {
-      // Reset the form.
-      setValues({
-        password: '',
-        confirmPassword: '',
-        showPassword: false,
-        showConfirmPassword: false,
-      });
-      // Redirect to the login page.
-      // router.push('/login');
-    }
-  };
-  /** Handler for toggling password value. */
-  const handleClickShowPassword = (
-    key: 'showPassword' | 'showConfirmPassword',
-  ) => () => {
-    setValues(previousValues => ({
-      ...previousValues,
-      [key]: !previousValues[key],
-    }));
-  };
-  /** Prevent native click action on password toggler button. */
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.preventDefault();
-  };
-
   return (
-    <form method="post" onSubmit={handleFormSubmit}>
+    <form method="post" onSubmit={handleSubmit}>
       <Card component="fieldset" elevation={3} aria-busy={loading}>
         <CardContent>
           <Typography variant="h4" component="h2" align="center" gutterBottom>
@@ -118,25 +81,26 @@ const ResetPassword: React.FC = () => {
           </Box>
           <Box mb={2}>
             <FormControl fullWidth>
-              <InputLabel htmlFor="userPassword">
+              <InputLabel htmlFor="password">
                 Password <span aria-hidden="true">*</span>
               </InputLabel>
               <Input
-                id="userPassword"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
+                id="password"
+                name="password"
+                type={visibility.password ? 'text' : 'password'}
+                value={values.password}
                 disabled={isSuccessful}
                 required
-                onChange={handleInputChange('password')}
+                onChange={handlePasswordChange('password')}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       disabled={isSuccessful}
-                      onClick={handleClickShowPassword('showPassword')}
-                      onMouseDown={handleMouseDownPassword}
+                      onClick={handleVisibilityChange('password')}
+                      onMouseDown={handleTogglerClick}
                     >
-                      {showPassword ? (
+                      {visibility.password ? (
                         <VisibilityIcon />
                       ) : (
                         <VisibilityOffIcon />
@@ -149,25 +113,26 @@ const ResetPassword: React.FC = () => {
           </Box>
           <Box mb={2}>
             <FormControl fullWidth>
-              <InputLabel htmlFor="userConfirmPassword">
+              <InputLabel htmlFor="confirmPassword">
                 Confirm password <span aria-hidden="true">*</span>
               </InputLabel>
               <Input
-                id="userConfirmPassword"
-                type={showConfirmPassword ? 'text' : 'password'}
-                value={confirmPassword}
+                id="confirmPassword"
+                name="confirmPassword"
+                type={visibility.confirmPassword ? 'text' : 'password'}
+                value={values.confirmPassword}
                 disabled={isSuccessful}
                 required
-                onChange={handleInputChange('confirmPassword')}
+                onChange={handlePasswordChange('confirmPassword')}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       disabled={isSuccessful}
-                      onClick={handleClickShowPassword('showConfirmPassword')}
-                      onMouseDown={handleMouseDownPassword}
+                      onClick={handleVisibilityChange('confirmPassword')}
+                      onMouseDown={handleTogglerClick}
                     >
-                      {showConfirmPassword ? (
+                      {visibility.confirmPassword ? (
                         <VisibilityIcon />
                       ) : (
                         <VisibilityOffIcon />

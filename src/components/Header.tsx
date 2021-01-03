@@ -1,10 +1,20 @@
-import { AppBar, Button, Toolbar, Typography } from '@material-ui/core';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import {
+  AppBar,
+  Box,
+  Button,
+  NoSsr,
+  Switch,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { ColorMode } from '@prisma/client';
 import Link from 'next/link';
 import React from 'react';
 
 import SignoutButton from '~/features/account/components/SignoutButton';
-import { useUser } from '~/hooks';
 
 const useStyles = makeStyles<Theme>(theme =>
   createStyles({
@@ -29,15 +39,23 @@ const useStyles = makeStyles<Theme>(theme =>
   }),
 );
 
-const Header: React.FC = () => {
-  /** Current authenticated user. */
-  const me = useUser();
+interface HeaderProps {
+  hasAuthUser: boolean;
+  colorMode: ColorMode;
+  updateColorMode(colorMode: ColorMode): void;
+}
+
+const Header: React.FC<HeaderProps> = ({
+  hasAuthUser,
+  colorMode,
+  updateColorMode,
+}) => {
   /** CSS Classes via Material UI */
   const classes = useStyles();
 
-  const renderNavigation = () =>
-    me ? (
-      // Logged in user
+  /** Render account menu based on authentication state. */
+  const renderAccountMenu = () =>
+    hasAuthUser ? (
       <>
         <Link href="/account" passHref>
           <Button color="inherit">Account</Button>
@@ -45,7 +63,6 @@ const Header: React.FC = () => {
         <SignoutButton />
       </>
     ) : (
-      // Anon
       <>
         <Link href="/join" passHref>
           <Button color="inherit">Join</Button>
@@ -55,6 +72,9 @@ const Header: React.FC = () => {
         </Link>
       </>
     );
+  /** Toggle color mode */
+  const toggleColorMode = () =>
+    updateColorMode(colorMode === 'DARK' ? 'LIGHT' : 'DARK');
 
   return (
     <AppBar position="static" color="primary" elevation={2}>
@@ -71,18 +91,22 @@ const Header: React.FC = () => {
             </a>
           </Link>
         </Typography>
-        {/* <NoSsr>
-          <Box
-            component="label"
-            alignItems="center"
-            className={classes.colorModeToggler}
-          >
-            <ColorModeToggler
-              isDarkMode={colorMode === 'DARK'}
-              toggleColorMode={toggleColorMode}
-            />
+        <NoSsr>
+          <Box alignItems="center" className={classes.colorModeToggler}>
+            <label htmlFor="colorModeToggler">
+              <span>Light</span>
+              <Tooltip title="Toggle theme">
+                <Switch
+                  id="colorModeTogler"
+                  checked={colorMode === 'DARK'}
+                  color="default"
+                  onChange={toggleColorMode}
+                />
+              </Tooltip>
+              <span>Dark</span>
+            </label>
           </Box>
-        </NoSsr> */}
+        </NoSsr>
         <div className={classes.menu}>
           <Button
             component="a"
@@ -92,7 +116,7 @@ const Header: React.FC = () => {
           >
             GitHub
           </Button>
-          {renderNavigation()}
+          {renderAccountMenu()}
         </div>
       </Toolbar>
     </AppBar>

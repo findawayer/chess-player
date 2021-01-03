@@ -1,11 +1,11 @@
 // Bootstrapped from: https://github.com/vercel/next.js/blob/canary/examples/with-apollo-and-redux/lib/redux.js
+/* eslint-disable no-underscore-dangle */
 import {
   combineReducers,
   configureStore,
   DeepPartial,
   EnhancedStore,
 } from '@reduxjs/toolkit';
-/* eslint-disable no-underscore-dangle */
 import { useMemo } from 'react';
 
 import { chessReducer } from '~/features/chess/slice';
@@ -30,25 +30,21 @@ export type AppDispatch = EnhancedStore<AppState>['dispatch'];
 // Cached store.
 let store: AppStore;
 
-function createStore(preloadedState: PreloadedState): AppStore {
-  return configureStore({
+const createStore = (preloadedState: PreloadedState): AppStore =>
+  configureStore({
     reducer: rootReducer,
     preloadedState,
     devTools: process.env.NODE_ENV === 'development',
   });
-}
 
 /** Create Redux store (redux-toolkit style) */
-function initializeStore(preloadedState?: PreloadedState): AppStore {
+export const initializeStore = (preloadedState?: PreloadedState): AppStore => {
   let _store = store ?? createStore(preloadedState);
 
   // After navigating to a page with an initial Redux state,
   // merge that state with the current state in the store, and create a new store
   if (preloadedState && store) {
-    _store = createStore({
-      ...store.getState(),
-      ...preloadedState,
-    });
+    _store = createStore({ ...store.getState(), ...preloadedState });
     // Reset the current store
     store = undefined;
   }
@@ -59,7 +55,7 @@ function initializeStore(preloadedState?: PreloadedState): AppStore {
   if (!store) store = _store;
 
   return _store;
-}
+};
 
 /** Dynamically create Redux store */
 export const useStore = (initialState?: PreloadedState): AppStore => {

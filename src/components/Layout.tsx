@@ -1,9 +1,9 @@
 import { CssBaseline } from '@material-ui/core';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { useUser } from '~/hooks';
-import { createGlobalTheme, useGlobalTheme } from '~/themes';
+import { useColorMode, useUser } from '~/hooks';
+import { useGlobalTheme } from '~/themes';
 import Header from './Header';
 
 interface LayoutProps {
@@ -30,32 +30,35 @@ const useStyles = makeStyles({
  * @todo Think about updating `theme-color` metadata dynamically to match the color mode? Does this improve SEO?
  */
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  /** GraphQL: currently authenticated user. */
+  /** Currently authenticated user. */
   const me = useUser();
-  // Local state: component's mount state.
-  const [mounted, setMounted] = useState(false);
-  /** App's global theme — dark or light, memoized inside the hook. */
-  const globalTheme = useGlobalTheme(me?.colorMode);
-  /* CSS classes via Material UI */
+  // Local state: Restore color mode from database or client cache.
+  const [colorMode, updateColorMode] = useColorMode(me?.colorMode);
+  /** App's global theme */
+  const globalTheme = useGlobalTheme(colorMode);
+  /** CSS classes via Material UI */
   const classes = useStyles();
+  // Avoid FOUC caused by SSR + rehydration on client side.
+  const [mounted, setMounted] = useState(false);
 
-  // Detect if the component is mounted.
   useEffect(() => {
     setMounted(true);
   }, []);
 
   // ThemeProvider: Exposes material UI theme.
   // CssBaseline: Inject global CSS provided by material-ui.
-  // `visibility: hidden` is set to prevent SSR FOUC caused by
-  // theme mismatch. The content gets revealed when the client rehydrates.
   return (
     <ThemeProvider theme={globalTheme}>
       <CssBaseline />
       <div
         className={classes.root}
-        style={!mounted ? { visibility: 'hidden' } : {}}
+        style={mounted ? undefined : { visibility: 'hidden' }}
       >
-        <Header />
+        <Header
+          hasAuthUser={!!me}
+          colorMode={colorMode}
+          updateColorMode={updateColorMode}
+        />
         <div className={classes.body}>{children}</div>
       </div>
     </ThemeProvider>

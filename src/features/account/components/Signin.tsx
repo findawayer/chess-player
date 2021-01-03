@@ -17,77 +17,56 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
 } from '@material-ui/icons';
+import { useFormik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 
 import ErrorMessage from '~/components/ErrorMessage';
 import { CURRENT_USER_QUERY } from '~/graphql';
+import { usePasswordFields } from '~/hooks';
 import { SIGN_IN_MUTATION, Signin as SigninMethod } from '../graphql';
 
 const Signin: React.FC = () => {
-  const [values, setValues] = useState({
-    email: '',
-    password: '',
-    showPassword: false,
-  });
-  const { email, password, showPassword } = values;
+  const router = useRouter();
   const [signin, { loading, error }] = useMutation<SigninMethod>(
     SIGN_IN_MUTATION,
-    {
-      variables: { email, password },
-      refetchQueries: [{ query: CURRENT_USER_QUERY }],
-    },
   );
-  const router = useRouter();
-
-  /** Handler for input field changes. */
-  const handleInputChange = (
-    key: Exclude<keyof typeof values, 'showPassword'>,
-  ) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues(previousUserInput => ({
-      ...previousUserInput,
-      [key]: event.target.value,
-    }));
-  };
-  /** Handler for form submission */
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    let hasError = false;
-    // Highjack native form submission.
-    event.preventDefault();
-    // Don't let Next.js display runtime error,
-    // to display custom error message to the user.
-    try {
-      // Invoke signup action.
-      await signin();
-      // Reset the form.
-      setValues({ email: '', password: '', showPassword: false });
-    } catch (error) {
-      // Don't let Next.js display error.
-      hasError = true;
-    }
-    // If login is successful,
-    if (!hasError) {
-      // Redirect to the home page.
-      router.push('/');
-    }
-  };
-  /** Handler for toggling password value. */
-  const handleClickShowPassword = () => {
-    setValues(previousValues => ({
-      ...previousValues,
-      showPassword: !previousValues.showPassword,
-    }));
-  };
-  /** Prevent native click action on password toggler button. */
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.preventDefault();
-  };
+  const {
+    values: passwordValues,
+    visibility,
+    handlePasswordChange,
+    handleVisibilityChange,
+    handleTogglerClick,
+    clearPasswords,
+  } = usePasswordFields();
+  const { values, handleChange, handleSubmit, resetForm } = useFormik({
+    initialValues: {
+      email: '',
+    },
+    onSubmit: async currentValues => {
+      try {
+        // Invoke signup action.
+        await signin({
+          variables: {
+            email: currentValues.email,
+            password: passwordValues.password,
+          },
+          refetchQueries: [{ query: CURRENT_USER_QUERY }],
+        });
+        // Reset the form if successful.
+        resetForm();
+        clearPasswords();
+        // Redirect to the home page.
+        router.push('/');
+      } catch (error) {
+        // Hide error from users.
+      }
+    },
+  });
 
   return (
-    <form method="post" onSubmit={handleFormSubmit}>
+    <form method="post" onSubmit={handleSubmit}>
       <Card component="fieldset" elevation={3} aria-busy={loading}>
         <CardContent>
           <Typography variant="h4" component="h2" align="center" gutterBottom>
@@ -99,36 +78,36 @@ const Signin: React.FC = () => {
           <Box mb={2}>
             <FormControl fullWidth>
               <TextField
-                id="userEmail"
-                name="userEmail"
-                value={email}
+                id="email"
+                name="email"
+                value={values.email}
                 required
-                onChange={handleInputChange('email')}
+                onChange={handleChange}
                 label="Email"
               />
             </FormControl>
           </Box>
           <Box mb={2}>
             <FormControl fullWidth>
-              <InputLabel htmlFor="userPassword">
+              <InputLabel htmlFor="password">
                 Password <span aria-hidden="true">*</span>
               </InputLabel>
               <Input
-                id="userPassword"
-                type={showPassword ? 'text' : 'password'}
-                name="userPassword"
-                value={password}
+                id="password"
+                name="password"
+                type={visibility.password ? 'text' : 'password'}
+                value={passwordValues.password}
                 disabled={loading}
                 required
-                onChange={handleInputChange('password')}
+                onChange={handlePasswordChange('password')}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
+                      onClick={handleVisibilityChange('password')}
+                      onMouseDown={handleTogglerClick}
                     >
-                      {showPassword ? (
+                      {visibility.password ? (
                         <VisibilityIcon />
                       ) : (
                         <VisibilityOffIcon />

@@ -1,14 +1,14 @@
 import { Container } from '@material-ui/core';
-import { Role } from '@prisma/client';
+import { UserRole } from '@prisma/client';
 import React from 'react';
 
-import PleaseLogin from '~/features/account/components/PleaseLogin';
+import PleaseLogin from '~/components/PleaseLogin';
 import Permissions from '~/features/admin/components/Permissions';
 
 const Admin: React.FC = () => {
   return (
     <Container maxWidth="md">
-      <PleaseLogin requiredRole={Role.ADMIN}>
+      <PleaseLogin requiredRole={UserRole.ADMIN}>
         <Permissions />
       </PleaseLogin>
     </Container>

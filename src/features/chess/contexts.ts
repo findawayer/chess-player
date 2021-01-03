@@ -1,4 +1,4 @@
-import * as ChessJS from 'chess.js';
+import ChessJS from 'chess.js';
 import { createContext } from 'react';
 
 /**
