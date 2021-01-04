@@ -9,5 +9,4 @@ logs
 
 # Auto-generated
 .next
-**/generated/**/*
 **/migrations/**/*
