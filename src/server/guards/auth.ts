@@ -1,41 +1,14 @@
 import type { User } from '@prisma/client';
-import {
-  ApolloError,
-  AuthenticationError,
-  UserInputError,
-} from 'apollo-server-micro';
+import { ApolloError, UserInputError } from 'apollo-server-micro';
 import bcrypt from 'bcryptjs';
-import isEmail from 'validator/lib/isEmail';
 
-import { AuthUserPayload, GraphQLContext } from '~/server/interfaces';
 import { prisma } from '~/server/prisma';
 
-/** Retrieve current user's access payload if they are logged in, otherwise throw. */
-export const requireAuth = (
-  context: GraphQLContext,
-): AuthUserPayload | never => {
-  if (!context.user) {
-    throw new AuthenticationError('You need to be logged in.');
-  }
-  return context.user;
-};
-
-/** Normalize user's email input, throw if bad its not an email. */
-export const requireValidEmail = (emailInput: string): string | never => {
-  // Normalize email
-  const email = emailInput.trim().toLowerCase();
-  // Validate email pattern
-  if (!isEmail(email)) {
-    throw new UserInputError('Invalid email input.');
-  }
-  return email;
-};
-
-/** Make sure user entered password matches encrypted password. */
+/** Returns `enteredPassword` as is, if it matches previously encrypted password. */
 export const requireValidPassword = async (
   enteredPassword: string,
   correctPassword: string,
-): Promise<void | never> => {
+): Promise<string | never> => {
   // Runtime double-check for empty password.
   if (!enteredPassword) {
     throw new UserInputError(`Please provide password.`);
@@ -49,19 +22,21 @@ export const requireValidPassword = async (
   if (!passwordIsValid) {
     throw new UserInputError(`Invalid password!`);
   }
+  return enteredPassword;
 };
 
-/** Throw if the provided passwords match. */
+/** Returns true if the passed `password` & `confirmPassword` match. */
 export const requirePasswordsMatch = (
   password: string,
   confirmPassword: string,
-): void | never => {
+): true | never => {
   if (password !== confirmPassword) {
     throw new UserInputError(`Your passwords don't match.`);
   }
+  return true;
 };
 
-/** Find user by email, and throw if not found.  */
+/** Returns the user matching the passed email, if existent.  */
 export const requireValidUser = async (
   email: string,
 ): Promise<User | never> => {

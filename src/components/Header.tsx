@@ -113,6 +113,7 @@ const Header: React.FC<HeaderProps> = ({
             color="inherit"
             href="https://github.com/findawayer/chess-player"
             rel="external noopener noreferrer"
+            target="_blank"
           >
             GitHub
           </Button>

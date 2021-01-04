@@ -1,7 +1,5 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Max, Min } from 'class-validator';
-import { ArgsType, Field, InputType, Int } from 'type-graphql';
+import { ArgsType, Field, Int } from 'type-graphql';
 
 @ArgsType()
 export class UserPagination {

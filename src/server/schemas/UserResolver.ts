@@ -1,13 +1,9 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApolloError } from 'apollo-server-micro';
 import { Arg, Args, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 
 import { Context } from '~/server/decorators/Context';
 import {
-  requireAuth,
   requirePasswordsMatch,
-  requireValidEmail,
   requireValidPassword,
   requireValidUser,
 } from '~/server/guards';
@@ -20,9 +16,9 @@ import {
   handleSuccessfulLogout,
   hashPassword,
 } from '~/server/utils';
-import { SignupInput } from './input';
-import { UserPagination } from './pagination';
-import { ChessBoardColor, ColorMode, User, UserRole } from './type';
+import { SignupInput } from './SignupInput';
+import { UserPagination } from './UserPagination';
+import { ChessBoardColor, ColorMode, User, UserRole } from './User';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -50,10 +46,10 @@ export class UserResolver {
   @Mutation(returns => User)
   async signup(@Arg('data') { email, name, password }: SignupInput) {
     // Normalize email and validate it.
-    const sanitizedEmail = requireValidEmail(email);
+    const normalizedEmail = email.trim().toLowerCase();
     // Check if there is a user with that email.
     const existingUser = await prisma.user.findUnique({
-      where: { email: sanitizedEmail },
+      where: { email: normalizedEmail },
     });
     if (existingUser) {
       throw new ApolloError('Email already in use.');
@@ -63,7 +59,7 @@ export class UserResolver {
     // Create the user.
     return prisma.user.create({
       data: {
-        email: sanitizedEmail,
+        email: normalizedEmail,
         password: hashedPassword,
         name,
         role: UserRole.MEMBER,
@@ -168,12 +164,9 @@ export class UserResolver {
     @Arg('name') name: string,
     @Context() context: GraphQLContext,
   ) {
-    // Make sure they are logged in.
-    const { id } = requireAuth(context);
-    // await requireValidPassword(password, user.password);
     // Find requested user and update permissions.
     return prisma.user.update({
-      where: { id },
+      where: { id: context.user.id },
       data: { email, name },
     });
   }
@@ -187,13 +180,11 @@ export class UserResolver {
     @Arg('confirmPassword') confirmPassword: string,
     @Context() context: GraphQLContext,
   ) {
-    // Make sure they are logged in.
-    const { id } = requireAuth(context);
     // Make sure the passwords match.
     requirePasswordsMatch(password, confirmPassword);
     // Check if the password is correct.
     const user = await prisma.user.findUnique({
-      where: { id },
+      where: { id: context.user.id },
     });
     // Check if the old password is correct.
     await requireValidPassword(oldPassword, user.password);
@@ -202,7 +193,7 @@ export class UserResolver {
     // await requireValidPassword(password, user.password);
     // Find requested user and update permissions.
     return prisma.user.update({
-      where: { id },
+      where: { id: user.id },
       data: { password: hashedPassword },
     });
   }
@@ -214,11 +205,9 @@ export class UserResolver {
     @Arg('colorMode', type => ColorMode) colorMode: ColorMode,
     @Context() context: GraphQLContext,
   ) {
-    // Make sure they are logged in.
-    const { id } = requireAuth(context);
     // Check if the requestor has right permissions.
     return prisma.user.update({
-      where: { id },
+      where: { id: context.user.id },
       data: { colorMode },
     });
   }
@@ -234,11 +223,9 @@ export class UserResolver {
     @Arg('chessShowRecent') chessShowRecent: boolean,
     @Context() context: GraphQLContext,
   ) {
-    // Make sure they are logged in.
-    const { id } = requireAuth(context);
     // Check if the requestor has right permissions.
     return prisma.user.update({
-      where: { id },
+      where: { id: context.user.id },
       data: {
         chessAutoQueen,
         chessBoardColor,

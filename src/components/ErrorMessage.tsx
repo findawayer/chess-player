@@ -2,8 +2,8 @@ import type { ApolloError } from '@apollo/client';
 import { Alert } from '@material-ui/lab';
 import React from 'react';
 
-export interface ErrorMessageProps {
-  error?: ApolloError | Error;
+interface ErrorMessageProps {
+  error?: ApolloError;
 }
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
@@ -14,16 +14,9 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
   if (!error || !error.message) {
     return null;
   }
-  // if (error.networkError?.result?.errors.length) {
-  //   return error.networkError.result.errors.map((error, i) => (
-  //     // eslint-disable-next-line react/no-array-index-key
-  //     <Alert key={i} severity="error" variant="filled">
-  //       {error.message.replace('GraphQL error: ', '')}
-  //     </Alert>
-  //   ));
-  // }
+
   return (
-    <Alert severity="error" variant="filled">
+    <Alert severity="error" variant="filled" icon={false}>
       {error.message.replace('GraphQL error: ', '')}
     </Alert>
   );
