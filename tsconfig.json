@@ -2,25 +2,31 @@
   "compilerOptions": {
     "allowJs": true,
     "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "es2018", "esnext.asynciterable"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "commonjs",
     "target": "es6",
     "noEmit": true,
     "isolatedModules": true,
-    "strict": false,
+    "strict": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "esModuleInterop": true,
     "moduleResolution": "Node",
     "paths": {
-      "~/*": ["src/*"]
+      "~app/*": ["app/*"],
+      "~server/*": ["server/*"],
     },
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "public/**/*"],
-  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"]
+  "exclude": ["node_modules"],
+  "include": [
+    "global.d.ts",
+    "next-env.d.ts",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "pages/**/*.ts",
+    "pages/**/*.tsx"
+  ]
 }

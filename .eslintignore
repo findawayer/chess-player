@@ -4,9 +4,6 @@ node_modules
 # Static files
 public
 
-# logs
-logs
-
 # Auto-generated
 .next
 **/migrations/**/*

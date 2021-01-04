@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "module": "commonjs",
+    "target": "es2020",
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "paths": {
+      "~server/*": ["./*"],
+    },
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "plugins": [{ "transform": "typescript-transform-paths" }]
+  },
+  "include": ["../global.d.ts", "**/*.ts"]
+}

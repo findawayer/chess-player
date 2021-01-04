@@ -31,7 +31,10 @@ module.exports = {
     'import/resolver': {
       // eslint-import-resolver-alias
       alias: {
-        map: [['~', './src']],
+        map: [
+          ['~app', './app'],
+          ['~server', './server'],
+        ],
         extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
       },
     },
@@ -132,13 +135,6 @@ module.exports = {
         'react/react-in-jsx-scope': 'off',
         'react/prop-types': 'off',
         'react/self-closing-comp': 'error',
-      },
-    },
-    {
-      files: ['src/server/schemas/**/*.ts'],
-      rules: {
-        'class-methods-use-this': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
       },
     },
   ],

@@ -21,7 +21,6 @@ yarn-error.log*
 
 # Auto generated
 .next
-**/generated/**/*
 
 # Keep folders with .gitkeep
 !.gitkeep
