@@ -73,14 +73,14 @@ export class UserResolver {
   async signin(
     @Arg('email') email: string,
     @Arg('password') password: string,
-    @Context() { res }: GraphQLContext,
+    @Context() context: GraphQLContext,
   ) {
     // Check if there is a user with that email.
     const user = await requireUserByEmail(email);
     // Check if the password is correct.
     await requireValidPassword(password, user.password);
     // Set the user logged in.
-    await handleSuccessfulLogin(user, res);
+    await handleSuccessfulLogin(user, context);
     // Return the user.
     return user;
   }
@@ -88,9 +88,9 @@ export class UserResolver {
   // ---------- signout ---------- //
   @Authorized()
   @Mutation(returns => User, { nullable: true })
-  async signout(@Context() { req, res }: GraphQLContext) {
+  async signout(@Context() context: GraphQLContext) {
     // Remove user login token from cookie.
-    handleSuccessfulLogout(res);
+    handleSuccessfulLogout(context);
     return null;
   }
 
@@ -124,7 +124,7 @@ export class UserResolver {
     @Arg('resetToken') resetToken: string,
     @Arg('password') password: string,
     @Arg('confirmPassword') confirmPassword: string,
-    @Context() { res }: GraphQLContext,
+    @Context() context: GraphQLContext,
   ) {
     // Make sure the passwords match.
     requirePasswordsMatch(password, confirmPassword);
@@ -152,7 +152,7 @@ export class UserResolver {
       },
     });
     // Set the user logged in.
-    await handleSuccessfulLogin(user, res);
+    await handleSuccessfulLogin(user, context);
     // Return the user.
     return updatedUser;
   }

@@ -3,7 +3,7 @@ import type { ColorMode } from '@prisma/client';
 import { useEffect, useState } from 'react';
 
 import { CURRENT_USER_QUERY, UPDATE_COLOR_MODE_MUTATION } from '~app/graphql';
-import { cookiesFromClient } from '~app/utils';
+import { cookies } from '~app/utils';
 
 /** Default color mode of global site theme. */
 export const DEFAULT_COLOR_MODE = 'LIGHT' as ColorMode;
@@ -27,7 +27,7 @@ const getUserPreferredScheme = (): ColorMode | undefined =>
  * 3. Fallback to default color mode.
  */
 const restoreColorMode = (): ColorMode =>
-  cookiesFromClient().get(COLOR_MODE_CACHE_KEY) ||
+  cookies().get(COLOR_MODE_CACHE_KEY) ||
   getUserPreferredScheme() ||
   DEFAULT_COLOR_MODE;
 
@@ -59,7 +59,7 @@ export const useColorMode = (databaseValue?: ColorMode) => {
     }
     // Cache in the `localStorage` — this can fail if access to the
     // `localStorage` is blocked by the user's privacy settings.
-    cookiesFromClient().set(COLOR_MODE_CACHE_KEY, colorMode, { path: '/' });
+    cookies().set(COLOR_MODE_CACHE_KEY, colorMode, { path: '/' });
   };
 
   // Reflect color mode preferences from user data in database.

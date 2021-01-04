@@ -2,11 +2,11 @@ import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest } from 'next';
 import { promisify } from 'util';
 
 import { ACCESS_TOKEN_KEY, SALT_ROUNDS } from '~server/constants';
-import { AuthUserPayload } from '~server/interfaces';
+import { AuthUserPayload, GraphQLContext } from '~server/interfaces';
 import { prisma } from '~server/prisma';
 import { deleteCookie, setCookie } from './cookies';
 
@@ -84,12 +84,12 @@ export const getServerSession = async (
 /** Set user logged in. */
 export const handleSuccessfulLogin = async (
   { id }: AuthUserPayload,
-  res: NextApiResponse,
+  context: GraphQLContext,
 ): Promise<void> => {
   // Genrate a JWT token.
   const accessToken = createAccessToken({ id });
   // Set the cookie with the token.
-  setCookie(res, ACCESS_TOKEN_KEY, accessToken, {
+  setCookie(context.res, ACCESS_TOKEN_KEY, accessToken, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
   });
@@ -97,9 +97,9 @@ export const handleSuccessfulLogin = async (
 
 /** Set user logged out. */
 export const handleSuccessfulLogout = async (
-  res: NextApiResponse,
+  context: GraphQLContext,
 ): Promise<void> => {
   // Remove user login token from cookie.
-  deleteCookie(res, ACCESS_TOKEN_KEY);
+  deleteCookie(context.res, ACCESS_TOKEN_KEY);
   // clearCookie(res);
 };

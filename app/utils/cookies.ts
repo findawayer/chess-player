@@ -1,19 +1,11 @@
 import Cookies from 'universal-cookie';
-import { NextPageContext } from 'next';
 
 let clientHandler: Cookies;
-let serverHandler: Cookies;
 
-export const cookiesFromClient = () => {
+/** Use cached `universal-cookie` instance. */
+export const cookies = () => {
   if (!clientHandler) {
     clientHandler = new Cookies();
   }
   return clientHandler;
-};
-
-export const cookiesFromServer = (context: NextPageContext) => {
-  if (!serverHandler) {
-    serverHandler = new Cookies(context.req?.headers?.cookie);
-  }
-  return serverHandler;
 };
