@@ -1,15 +1,11 @@
-// Use Nprogress built-in CSS
 import 'nprogress/nprogress.css';
 
 import { ApolloProvider } from '@apollo/client';
-// import { ColorMode } from '@prisma/client';
-// import App, { AppContext, AppProps } from 'next/app';
 import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import { Provider as ReactReduxProvider } from 'react-redux';
-// import CookieHandler from 'universal-cookie';
 
 import Layout from '~/components/Layout';
 import { useApollo } from '~/vendors/apollo-client';
@@ -20,12 +16,8 @@ const ProgressBar = dynamic(() => import('~/components/ProgressBar'), {
   ssr: false,
 });
 
-// interface MyAppProps extends AppProps {
-//   initialColorMode: ColorMode;
-// }
-
 /** Custom client-side markup for `next.js` */
-const MyApp = ({ Component, pageProps }: AppProps) => {
+export default function MyApp({ Component, pageProps }: AppProps) {
   // Create Redux store
   const store = useStore(pageProps.initialReduxState);
   // Create Apollo Client
@@ -39,14 +31,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     }
   }, []);
 
-  /**
-   * Core hierarchy of React components.
-   *
-   * ThemeProvider: Exposes material UI theme.
-   * DndProvider: Exposes react-dnd API.
-   * CssBaseline: Inject global CSS provided by material-ui. (Customized by `baseTheme`)
-   * Layout: Outmost presentional layer. Remains static regardless of current route.
-   */
   return (
     <>
       <Head>
@@ -70,28 +54,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <ReactReduxProvider store={store}>
         <ApolloProvider client={apolloClient}>
           <Layout>
-            <ProgressBar />
             <Component {...pageProps} />
           </Layout>
+          <ProgressBar />
         </ApolloProvider>
       </ReactReduxProvider>
     </>
   );
-};
-
-// MyApp.getInitialProps = async (appContext: AppContext) => {
-//   // Simulate the default behavior.
-//   const defaultProps = await App.getInitialProps(appContext);
-
-//   // Retrieve color mode from cookies, to prevent FOUC by client side re-render.
-//   const cookies = new CookieHandler(appContext.ctx.req?.headers?.cookie);
-//   const initialColorMode =
-//     cookies.get(COLOR_MODE_CACHE_KEY) || DEFAULT_COLOR_MODE;
-
-//   return {
-//     ...defaultProps,
-//     initialColorMode,
-//   };
-// };
-
-export default MyApp;
+}

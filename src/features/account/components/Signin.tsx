@@ -13,10 +13,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import {
-  Visibility as VisibilityIcon,
-  VisibilityOff as VisibilityOffIcon,
-} from '@material-ui/icons';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -24,7 +21,7 @@ import React from 'react';
 
 import ErrorMessage from '~/components/ErrorMessage';
 import { CURRENT_USER_QUERY } from '~/graphql';
-import { usePasswordFields, useUser } from '~/hooks';
+import { usePasswordFields } from '~/hooks';
 import {
   SIGN_IN_MUTATION,
   Signin as SigninMethod,
@@ -35,7 +32,6 @@ interface SigninProps {
 }
 
 const Signin: React.FC<SigninProps> = ({ noRedirect }) => {
-  const me = useUser();
   const router = useRouter();
   const [signin, { loading, error }] = useMutation<SigninMethod>(
     SIGN_IN_MUTATION,
@@ -65,16 +61,15 @@ const Signin: React.FC<SigninProps> = ({ noRedirect }) => {
         // Reset the form if successful.
         resetForm();
         clearPasswords();
+        // Once log in, redirect to the home page.
+        if (!noRedirect) {
+          router.push('/');
+        }
       } catch (error) {
         // Hide error from users.
       }
     },
   });
-
-  // Once log in, redirect to the home page.
-  if (me && !noRedirect) {
-    router.push('/');
-  }
 
   return (
     <form method="post" onSubmit={handleSubmit}>
@@ -118,11 +113,7 @@ const Signin: React.FC<SigninProps> = ({ noRedirect }) => {
                       onClick={handleVisibilityChange('password')}
                       onMouseDown={handleTogglerClick}
                     >
-                      {visibility.password ? (
-                        <VisibilityIcon />
-                      ) : (
-                        <VisibilityOffIcon />
-                      )}
+                      {visibility.password ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 }

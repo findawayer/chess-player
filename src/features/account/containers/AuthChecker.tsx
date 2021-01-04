@@ -2,12 +2,13 @@ import { Alert } from '@material-ui/lab';
 import type { UserRole } from '@prisma/client';
 import React from 'react';
 
-import { useUser } from '~/hooks/useUser';
 import { hasRole } from '~/utils/roles';
 import PleaseSignin from '~/features/account/components/PleaseSignin';
 import PleaseSigninInline from '~/features/account/components/PleaseSigninInline';
+import { CurrentUser } from '~/graphql';
 
 interface PleaseLoginProps {
+  me: CurrentUser | null;
   children: React.ReactNode;
   inline?: boolean;
   requiredRole?: UserRole;
@@ -27,11 +28,11 @@ interface PleaseLoginProps {
  *   </PleaseLogin>
  */
 const PleaseLogin: React.FC<PleaseLoginProps> = ({
+  me,
   children,
   inline,
   requiredRole,
 }) => {
-  const me = useUser();
   // Not logged in!
   if (!me) {
     return inline ? <PleaseSigninInline /> : <PleaseSignin />;

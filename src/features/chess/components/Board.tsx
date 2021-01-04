@@ -13,17 +13,19 @@ import {
   useChessGuides,
   useChessPromotion,
 } from '~/features/chess/hooks';
-import { DragItem } from '~/features/chess/react-dnd';
+import {
+  DraggedPiece,
+  DragItem,
+  getDropTargetSquare,
+} from '~/features/chess/react-dnd';
 import { movePiece, playMove } from '~/features/chess/slice';
 import {
   ChessPieces,
   ChessSquare,
   ChessSquareName,
-  DraggedPiece,
 } from '~/features/chess/types';
 import {
   findLegalMoves,
-  getDropTargetSquare,
   isPromotingPawn,
   objectifySquare,
   stringifySquare,

@@ -15,6 +15,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import SignoutButton from '~/features/account/components/SignoutButton';
+import { useUser } from '~/hooks';
 
 const useStyles = makeStyles<Theme>(theme =>
   createStyles({
@@ -45,17 +46,14 @@ interface HeaderProps {
   updateColorMode(colorMode: ColorMode): void;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  hasAuthUser,
-  colorMode,
-  updateColorMode,
-}) => {
+const Header: React.FC<HeaderProps> = ({ colorMode, updateColorMode }) => {
+  const me = useUser();
   /** CSS Classes via Material UI */
   const classes = useStyles();
 
   /** Render account menu based on authentication state. */
   const renderAccountMenu = () =>
-    hasAuthUser ? (
+    me ? (
       <>
         <Link href="/account" passHref>
           <Button color="inherit">Account</Button>

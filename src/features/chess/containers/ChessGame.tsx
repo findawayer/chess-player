@@ -49,7 +49,7 @@ import {
   getRecentMovePath,
   invertPieceColor,
 } from '~/features/chess/utils';
-import { useUser } from '~/hooks';
+import { CurrentUser } from '~/graphql';
 import { AppDispatch, AppState } from '~/vendors/redux';
 
 type ChessGameState = Pick<
@@ -67,10 +67,11 @@ type ChessGameState = Pick<
   | 'turn'
 >;
 
-const ChessGame: React.FC = () => {
-  // ---------- From database ---------- //
-  const me = useUser();
+interface ChessGameProps {
+  me: CurrentUser | null;
+}
 
+const ChessGame: React.FC<ChessGameProps> = ({ me }) => {
   // ---------- From Redux ---------- //
   // Extract chess-related state from Redux store.
   const {
@@ -325,6 +326,7 @@ const ChessGame: React.FC = () => {
           <MoveList moveList={moveList} />
           <SettingsDialog
             isOpen={settingsOpen}
+            me={me}
             settings={settings}
             changeSetting={changeSetting}
             closeSettings={closeSettings}

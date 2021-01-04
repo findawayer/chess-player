@@ -91,6 +91,17 @@ module.exports = {
       rules: {
         ...baseRules,
         'no-redeclare': 'off',
+        'no-restricted-imports': [
+          'error',
+          {
+            // Material UI: https://material-ui.com/guides/minimizing-bundle-size/
+            patterns: [
+              '@material-ui/*/*/*',
+              '!@material-ui/core/test-utils/*',
+              '../*',
+            ],
+          },
+        ],
         'no-use-before-define': 'off',
         'no-unused-expressions': 'off',
         'no-unused-vars': 'off',

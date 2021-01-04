@@ -1,8 +1,8 @@
-import { CssBaseline } from '@material-ui/core';
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import React, { useEffect, useState } from 'react';
+import { Box, CssBaseline } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import React from 'react';
 
-import { useColorMode, useUser } from '~/hooks';
+import { useColorMode, useMounted } from '~/hooks';
 import { useGlobalTheme } from '~/themes';
 import Header from './Header';
 
@@ -10,57 +10,45 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const useStyles = makeStyles({
-  root: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  body: {
-    overflow: 'auto',
-    flexGrow: 1,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
 /**
  * Outmost presentional layer. Remains static regardless of current route.
  * @todo Think about updating `theme-color` metadata dynamically to match the color mode? Does this improve SEO?
  */
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  /** Currently authenticated user. */
-  const me = useUser();
   // Local state: Restore color mode from database or client cache.
-  const [colorMode, updateColorMode] = useColorMode(me?.colorMode);
+  const [colorMode, updateColorMode] = useColorMode();
   /** App's global theme */
   const globalTheme = useGlobalTheme(colorMode);
-  /** CSS classes via Material UI */
-  const classes = useStyles();
-  // Avoid FOUC caused by SSR + rehydration on client side.
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  /** Flag used to hide FOUC caused by color mode mismatch after rehydration. */
+  const mounted = useMounted();
 
   // ThemeProvider: Exposes material UI theme.
   // CssBaseline: Inject global CSS provided by material-ui.
   return (
     <ThemeProvider theme={globalTheme}>
       <CssBaseline />
-      <div
-        className={classes.root}
-        style={mounted ? undefined : { visibility: 'hidden' }}
+      <Box
+        display="flex"
+        flexDirection="column"
+        style={{
+          height: '100%',
+          visibility: mounted ? 'visible' : 'hidden',
+        }}
       >
         <Header
-          hasAuthUser={!!me}
+          hasAuthUser={false}
           colorMode={colorMode}
           updateColorMode={updateColorMode}
         />
-        <div className={classes.body}>{children}</div>
-      </div>
+        <Box
+          flexGrow={1}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {children}
+        </Box>
+      </Box>
     </ThemeProvider>
   );
 };

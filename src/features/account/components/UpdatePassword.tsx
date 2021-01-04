@@ -12,10 +12,7 @@ import {
   InputLabel,
   Typography,
 } from '@material-ui/core';
-import {
-  Visibility as VisibilityIcon,
-  VisibilityOff as VisibilityOffIcon,
-} from '@material-ui/icons';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import React from 'react';
 
 import ErrorMessage from '~/components/ErrorMessage';
@@ -95,9 +92,9 @@ const UpdatePassword: React.FC = () => {
                       onMouseDown={handleTogglerClick}
                     >
                       {visibility.oldPassword ? (
-                        <VisibilityIcon />
+                        <Visibility />
                       ) : (
-                        <VisibilityOffIcon />
+                        <VisibilityOff />
                       )}
                     </IconButton>
                   </InputAdornment>
@@ -125,11 +122,7 @@ const UpdatePassword: React.FC = () => {
                       onClick={handleVisibilityChange('password')}
                       onMouseDown={handleTogglerClick}
                     >
-                      {visibility.password ? (
-                        <VisibilityIcon />
-                      ) : (
-                        <VisibilityOffIcon />
-                      )}
+                      {visibility.password ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -157,9 +150,9 @@ const UpdatePassword: React.FC = () => {
                       onMouseDown={handleTogglerClick}
                     >
                       {visibility.confirmPassword ? (
-                        <VisibilityIcon />
+                        <Visibility />
                       ) : (
-                        <VisibilityOffIcon />
+                        <VisibilityOff />
                       )}
                     </IconButton>
                   </InputAdornment>

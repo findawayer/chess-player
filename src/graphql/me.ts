@@ -1,6 +1,8 @@
 import { gql } from '@apollo/client';
 import type { User } from '@prisma/client';
 
+import { initializeApollo } from '~/vendors/apollo-client';
+
 /**
  * GraphQL: Fetch current user, to reflect the user data to the view.
  */
@@ -33,3 +35,12 @@ export type CurrentUser = Pick<
   | 'chessShowLegal'
   | 'chessShowRecent'
 >;
+
+/** Fetch currently authenticated user with GraphQL query. */
+export const fetchCurrentUser = async (): Promise<CurrentUser | null> => {
+  const apolloClient = initializeApollo();
+  const { data, error } = await apolloClient.query<CurrentUser>({
+    query: CURRENT_USER_QUERY,
+  });
+  return error ? null : data;
+};

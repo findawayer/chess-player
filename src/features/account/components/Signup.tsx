@@ -13,10 +13,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import {
-  Visibility as VisibilityIcon,
-  VisibilityOff as VisibilityOffIcon,
-} from '@material-ui/icons';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -130,11 +127,7 @@ const Signup: React.FC<SignupProps> = ({ noRedirect }) => {
                       onClick={handleVisibilityChange('password')}
                       onMouseDown={handleTogglerClick}
                     >
-                      {visibility.password ? (
-                        <VisibilityIcon />
-                      ) : (
-                        <VisibilityOffIcon />
-                      )}
+                      {visibility.password ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 }

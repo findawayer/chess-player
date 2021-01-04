@@ -1,3 +1,8 @@
+import { DropTargetMonitor } from 'react-dnd';
+
+import { ChessPiece } from './types';
+import { isValidSquare, stringifySquare } from './utils';
+
 /**
  * Drag item types for `react-dnd` library.
  * (The enum values should be a string as the API requires.)
@@ -6,15 +11,16 @@ export const enum DragItem {
   PIECE = 'PIECE',
 }
 
-type ReactDndBackendOptions = {
-  enableMouseEvents?: boolean;
-  enableHoverOutsideTarget?: boolean;
-  getDropTargetElementsAtPoint?<T extends HTMLElement>(
-    x: number,
-    y: number,
-    dropTargets: T[],
-  ): T[];
-};
+/**
+ * Drag item object passed to `useDrag` of `react-dnd` API.
+ * @api https://react-dnd.github.io/react-dnd/docs/api/use-drag
+ */
+export interface DraggedPiece extends ChessPiece {
+  type: DragItem.PIECE;
+  x: number;
+  y: number;
+  size: number;
+}
 
 /**
  * Find drop target elements at the given point.
@@ -42,10 +48,34 @@ const supportsElementsFromPoint = (): boolean =>
  * Backend options for `react-dnd` library.
  * @api https://react-dnd.github.io/react-dnd/docs/backends/touch
  */
-export const createBackendOptions = (): ReactDndBackendOptions => ({
+export const createBackendOptions = () => ({
   enableMouseEvents: true,
   enableHoverOutsideTarget: false,
   getDropTargetElementsAtPoint: supportsElementsFromPoint()
     ? getDropTargetElementsAtPoint
     : undefined,
 });
+
+/**
+ * Find the chess board square where the dragged piece is dropped at.
+ * `item` and `monitor` parameters are forwarded from `drop` method of
+ * `useDrop` hook in `react-dnd` API.
+ *
+ * @param item - Current drag item object.
+ * @param monitor - `DropTargetMonitor` object. (https://react-dnd.github.io/react-dnd/docs/api/drop-target-monitor)
+ * @param isFlipped - Whether the chess board is upside down.
+ * @returns The name of the square where the drop event is fired.
+ */
+export const getDropTargetSquare = (
+  item: DraggedPiece,
+  monitor: DropTargetMonitor,
+  isFlipped: boolean,
+) => {
+  const offset = monitor.getDifferenceFromInitialOffset()!;
+  const modifier = isFlipped ? -1 : 1;
+  const targetSquare = {
+    x: item.x + Math.round(offset.x / item.size) * modifier,
+    y: item.y + Math.round(offset.y / item.size) * modifier,
+  };
+  return isValidSquare(targetSquare) ? stringifySquare(targetSquare) : null;
+};

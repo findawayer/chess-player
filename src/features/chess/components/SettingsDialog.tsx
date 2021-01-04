@@ -18,11 +18,12 @@ import ErrorMessage from '~/components/ErrorMessage';
 import AuthChecker from '~/features/account/containers/AuthChecker';
 import { ChessSettings, mapChessSettings } from '~/features/chess/hooks';
 import { UPDATE_CHESS_SETTINGS_MUTATION } from '~/features/chess/graphql';
-import { CURRENT_USER_QUERY } from '~/graphql';
+import { CurrentUser, CURRENT_USER_QUERY } from '~/graphql';
 import { capitalize } from '~/utils';
 
 interface SettingsDialogProps {
   isOpen: boolean;
+  me: CurrentUser;
   settings: ChessSettings;
   changeSetting(
     name: keyof ChessSettings,
@@ -33,6 +34,7 @@ interface SettingsDialogProps {
 
 const SettingsDialog: React.FC<SettingsDialogProps> = ({
   isOpen,
+  me,
   settings,
   changeSetting,
   closeSettings,
@@ -83,7 +85,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
       onClose={closeSettings}
       aria-labelledby="chessSettingsDialogTitle"
     >
-      <AuthChecker inline>
+      <AuthChecker inline me={me}>
         <form method="post" onSubmit={handleSubmit} style={{ minWidth: 400 }}>
           <DialogTitle id="chessSettingsDialogTitle">Game Settings</DialogTitle>
           <DialogContent>

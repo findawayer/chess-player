@@ -61,7 +61,7 @@ Read more about TypeGraphQL on the [official documentation](https://typegraphql.
 
 ## Module aliases
 
-- The aliases are defined in `tsconfig.json`.
+- The aliases are defined in `tsconfig.json` and `.eslintrc.js`.
 - Use relative imports for siblings and decendant paths.
   - :heavy_check_mark: `import useStyles from './styles/Form';`
   - :x: `import useStyles from '~/features/account/styles/Form';`

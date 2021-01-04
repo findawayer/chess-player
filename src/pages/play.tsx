@@ -1,9 +1,20 @@
-import React from 'react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
 import ChessGame from '~/features/chess/containers/ChessGame';
+import { fetchCurrentUser } from '~/graphql';
 
-const Play: React.FC = () => {
-  return <ChessGame />;
+export const getServerSideProps: GetServerSideProps = async () => {
+  const me = await fetchCurrentUser();
+
+  return {
+    props: {
+      me,
+    },
+  };
 };
 
-export default Play;
+export default function Play({
+  me,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  return <ChessGame me={me} />;
+}

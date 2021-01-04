@@ -1,10 +1,5 @@
 import { Box, IconButton, Tooltip } from '@material-ui/core';
-import {
-  Cached as CachedIcon,
-  Flag as FlagIcon,
-  Settings as SettingsIcon,
-  Undo as UndoIcon,
-} from '@material-ui/icons';
+import { Cached, Flag, Settings, Undo } from '@material-ui/icons';
 import React from 'react';
 
 interface GameControlProps {
@@ -28,34 +23,34 @@ const GameControl: React.FC<GameControlProps> = ({
     <Box display="flex" flexWrap="nowrap" justifyContent="space-between">
       <Tooltip title="Rotate board">
         <IconButton edge="start" onClick={flipBoard}>
-          <CachedIcon fontSize="inherit" />
+          <Cached fontSize="inherit" />
         </IconButton>
       </Tooltip>
       {canTakeBack ? (
         <Tooltip title="Take back a move">
           <IconButton onClick={takeBack}>
-            <UndoIcon fontSize="inherit" />
+            <Undo fontSize="inherit" />
           </IconButton>
         </Tooltip>
       ) : (
         <IconButton disabled>
-          <UndoIcon fontSize="inherit" />
+          <Undo fontSize="inherit" />
         </IconButton>
       )}
       {canResign ? (
         <Tooltip title="Resign">
           <IconButton onClick={resign}>
-            <FlagIcon fontSize="inherit" />
+            <Flag fontSize="inherit" />
           </IconButton>
         </Tooltip>
       ) : (
         <IconButton disabled>
-          <FlagIcon fontSize="inherit" />
+          <Flag fontSize="inherit" />
         </IconButton>
       )}
       <Tooltip title="Settings">
         <IconButton edge="end" onClick={() => openSettings()}>
-          <SettingsIcon fontSize="inherit" />
+          <Settings fontSize="inherit" />
         </IconButton>
       </Tooltip>
     </Box>
