@@ -1,42 +1,30 @@
 module.exports = {
   presets: ['next/babel'],
   plugins: [
-    // Support `const enum` in TypeScript to:
-    // 1. Suppress verbose compilation output.
-    // 2. Make enum values serializable after compilation.
+    // Resolve imports to top level directory for better tree shaking and DX.
+    [
+      'babel-plugin-transform-imports',
+      {
+        '@material-ui/core': {
+          transform: '@material-ui/core/esm/${member}',
+          preventFullImport: true,
+        },
+        '@material-ui/icons': {
+          transform: '@material-ui/icons/esm/${member}',
+          preventFullImport: true,
+        },
+        '@material-ui/lab': {
+          transform: '@material-ui/lab/esm/${member}',
+          preventFullImport: true,
+        },
+      },
+    ],
+    // Support `const enum` in TypeScript.
     [
       'const-enum',
       {
         transform: 'constObject',
       },
-    ],
-    // Resolve imports to top level directory.
-    [
-      'babel-plugin-import',
-      {
-        libraryName: '@material-ui/core',
-        libraryDirectory: '',
-        camel2DashComponentName: false,
-      },
-      'core',
-    ],
-    [
-      'babel-plugin-import',
-      {
-        libraryName: '@material-ui/icons',
-        libraryDirectory: '',
-        camel2DashComponentName: false,
-      },
-      'icons',
-    ],
-    [
-      'babel-plugin-import',
-      {
-        libraryName: '@material-ui/lab',
-        libraryDirectory: '',
-        camel2DashComponentName: false,
-      },
-      'lab',
     ],
   ],
 };

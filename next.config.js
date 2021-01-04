@@ -1,5 +1,9 @@
 /* eslint-disable no-restricted-syntax */
-module.exports = {
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+const nextConfig = {
   webpack(config) {
     // Use ts-loader for decorators support
     for (const rule of config.module.rules) {
@@ -15,3 +19,5 @@ module.exports = {
     return config;
   },
 };
+
+module.exports = withBundleAnalyzer(nextConfig);
