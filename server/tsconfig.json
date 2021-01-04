@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "incremental": true,
     "module": "commonjs",
     "target": "es2020",
@@ -8,6 +9,7 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "moduleResolution": "Node",
+    "outDir": "../server-dist",
     "paths": {
       "~server/*": ["./*"],
     },

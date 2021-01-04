@@ -6,6 +6,11 @@ node_modules
 .env.*
 !.env.example
 
+# Compiled
+.next
+server-dist
+**/migrations/**/*
+
 # OS garbadge
 .DS_Store
 
@@ -18,9 +23,6 @@ yarn-error.log*
 
 # Personal resources
 .idea
-
-# Auto generated
-.next
 
 # Keep folders with .gitkeep
 !.gitkeep

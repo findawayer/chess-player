@@ -4,8 +4,9 @@ import { Arg, Args, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 import { Context } from '~server/decorators/Context';
 import {
   requirePasswordsMatch,
+  requireUserByEmail,
+  requireUserById,
   requireValidPassword,
-  requireValidUser,
 } from '~server/guards';
 import { GraphQLContext } from '~server/interfaces';
 import { sendRecoveryEmail } from '~server/mailing/recovery';
@@ -17,8 +18,8 @@ import {
   hashPassword,
 } from '~server/utils';
 import { SignupInput } from './SignupInput';
-import { UserPagination } from './UserPagination';
 import { ChessBoardColor, ColorMode, User, UserRole } from './User';
+import { UserPagination } from './UserPagination';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -75,7 +76,7 @@ export class UserResolver {
     @Context() { res }: GraphQLContext,
   ) {
     // Check if there is a user with that email.
-    const user = await requireValidUser(email);
+    const user = await requireUserByEmail(email);
     // Check if the password is correct.
     await requireValidPassword(password, user.password);
     // Set the user logged in.
@@ -97,7 +98,7 @@ export class UserResolver {
   @Mutation(returns => User)
   async recoverPassword(@Arg('email') email: string) {
     // Check if there is a user with that email.
-    const user = await requireValidUser(email);
+    const user = await requireUserByEmail(email);
     // Set a reset token and expiry on that user
     const {
       token: resetToken,
@@ -166,7 +167,7 @@ export class UserResolver {
   ) {
     // Find requested user and update permissions.
     return prisma.user.update({
-      where: { id: context.user.id },
+      where: { id: context.user!.id },
       data: { email, name },
     });
   }
@@ -183,9 +184,8 @@ export class UserResolver {
     // Make sure the passwords match.
     requirePasswordsMatch(password, confirmPassword);
     // Check if the password is correct.
-    const user = await prisma.user.findUnique({
-      where: { id: context.user.id },
-    });
+    // `contet.user!` is used because @Authorized ensures presence of user payload.
+    const user = await requireUserById(context.user!.id);
     // Check if the old password is correct.
     await requireValidPassword(oldPassword, user.password);
     // Hash the new password.
@@ -207,7 +207,7 @@ export class UserResolver {
   ) {
     // Check if the requestor has right permissions.
     return prisma.user.update({
-      where: { id: context.user.id },
+      where: { id: context.user!.id },
       data: { colorMode },
     });
   }
@@ -225,7 +225,7 @@ export class UserResolver {
   ) {
     // Check if the requestor has right permissions.
     return prisma.user.update({
-      where: { id: context.user.id },
+      where: { id: context.user!.id },
       data: {
         chessAutoQueen,
         chessBoardColor,

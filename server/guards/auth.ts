@@ -37,7 +37,18 @@ export const requirePasswordsMatch = (
 };
 
 /** Returns the user matching the passed email, if existent.  */
-export const requireValidUser = async (
+export const requireUserById = async (id: number): Promise<User | never> => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+  if (!user) {
+    throw new ApolloError(`Unable to find user data.`);
+  }
+  return user;
+};
+
+/** Returns the user matching the passed email, if existent.  */
+export const requireUserByEmail = async (
   email: string,
 ): Promise<User | never> => {
   const user = await prisma.user.findUnique({

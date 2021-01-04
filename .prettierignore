@@ -1,9 +1,10 @@
 # Dependencies
 node_modules
 
-# Static files
+# Static
 public
 
-# Auto-generated
+# Compiled
 .next
+server-dist
 **/migrations/**/*
