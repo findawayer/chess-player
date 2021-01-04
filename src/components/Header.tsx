@@ -41,7 +41,6 @@ const useStyles = makeStyles<Theme>(theme =>
 );
 
 interface HeaderProps {
-  hasAuthUser: boolean;
   colorMode: ColorMode;
   updateColorMode(colorMode: ColorMode): void;
 }

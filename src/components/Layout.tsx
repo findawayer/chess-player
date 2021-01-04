@@ -35,11 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           visibility: mounted ? 'visible' : 'hidden',
         }}
       >
-        <Header
-          hasAuthUser={false}
-          colorMode={colorMode}
-          updateColorMode={updateColorMode}
-        />
+        <Header colorMode={colorMode} updateColorMode={updateColorMode} />
         <Box
           flexGrow={1}
           display="flex"
