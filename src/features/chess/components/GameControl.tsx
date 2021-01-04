@@ -7,7 +7,7 @@ import {
 } from '@material-ui/icons';
 import React from 'react';
 
-interface ChessControlProps {
+interface GameControlProps {
   canResign: boolean;
   canTakeBack: boolean;
   flipBoard(): void;
@@ -16,7 +16,7 @@ interface ChessControlProps {
   openSettings(): void;
 }
 
-const ChessControl: React.FC<ChessControlProps> = ({
+const GameControl: React.FC<GameControlProps> = ({
   canResign,
   canTakeBack,
   flipBoard,
@@ -62,4 +62,4 @@ const ChessControl: React.FC<ChessControlProps> = ({
   );
 };
 
-export default ChessControl;
+export default GameControl;

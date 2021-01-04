@@ -14,11 +14,11 @@ import React from 'react';
 
 import ErrorMessage from '~/components/ErrorMessage';
 import SuccessMessage from '~/components/SuccessMessage';
-import { CURRENT_USER_QUERY, CurrentUser } from '~/graphql';
 import {
   UPDATE_USER_INFO_MUTATION,
   UpdateUserInfo as UpdateUserInfoMethod,
-} from '../graphql';
+} from '~/features/account/graphql';
+import { CURRENT_USER_QUERY, CurrentUser } from '~/graphql';
 
 interface UpdateUserInfoProps {
   me: CurrentUser;

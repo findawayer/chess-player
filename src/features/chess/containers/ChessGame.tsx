@@ -13,14 +13,14 @@ import { DndProvider } from 'react-dnd';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ChessBoard from '~/features/chess/components/ChessBoard';
-import ChessControl from '~/features/chess/components/ChessControl';
-import ChessGameOverDialog from '~/features/chess/components/ChessGameOverDialog';
-import ChessMoveList from '~/features/chess/components/ChessMoveList';
-import ChessPlayer from '~/features/chess/components/ChessPlayer';
-import ChessSettingsDialog from '~/features/chess/components/ChessSettingsDialog';
+import Board from '~/features/chess/components/Board';
+import GameControl from '~/features/chess/components/GameControl';
+import GameOverDialog from '~/features/chess/components/GameOverDialog';
+import MoveList from '~/features/chess/components/MoveList';
+import Player from '~/features/chess/components/Player';
+import SettingsDialog from '~/features/chess/components/SettingsDialog';
 import { STOCKFISH_FILE_PATH } from '~/features/chess/constants';
-import { ChessValidatorContext } from '~/features/chess/contexts';
+import { ValidatorContext } from '~/features/chess/contexts/ValidatorContext';
 import {
   useChessClock,
   useChessSettings,
@@ -52,6 +52,21 @@ import {
 import { useUser } from '~/hooks';
 import { AppDispatch, AppState } from '~/vendors/redux';
 
+type ChessGameState = Pick<
+  ChessState,
+  | 'duration'
+  | 'engineLevel'
+  | 'gameOver'
+  | 'increment'
+  | 'isFlipped'
+  | 'isFrozen'
+  | 'moves'
+  | 'playerColor'
+  | 'pieces'
+  | 'players'
+  | 'turn'
+>;
+
 const ChessGame: React.FC = () => {
   // ---------- From database ---------- //
   const me = useUser();
@@ -70,7 +85,19 @@ const ChessGame: React.FC = () => {
     pieces,
     players,
     turn,
-  } = useSelector<AppState, ChessState>(state => state.chess);
+  } = useSelector<AppState, ChessGameState>(state => ({
+    duration: state.chess.duration,
+    engineLevel: state.chess.engineLevel,
+    gameOver: state.chess.gameOver,
+    increment: state.chess.increment,
+    isFlipped: state.chess.isFlipped,
+    isFrozen: state.chess.isFrozen,
+    moves: state.chess.moves,
+    playerColor: state.chess.playerColor,
+    pieces: state.chess.pieces,
+    players: state.chess.players,
+    turn: state.chess.turn,
+  }));
   /** Action dispatcher to Redux store. */
   const dispatch = useDispatch<AppDispatch>();
   /** List of played moves splitted by their fullmove count. */
@@ -78,7 +105,7 @@ const ChessGame: React.FC = () => {
 
   // ---------- From React context ---------- //
   /** chess game validator. */
-  const validator = useContext(ChessValidatorContext);
+  const validator = useContext(ValidatorContext);
 
   // ---------- React local state ---------- //
   // Local state: Update clock for active player side until one of their time runs out.
@@ -261,11 +288,11 @@ const ChessGame: React.FC = () => {
       <Box display="flex" flexWrap="nowrap">
         <Box flexGrow={1}>
           <DndProvider backend={TouchBackend} options={backendOptions}>
-            <ChessPlayer
+            <Player
               player={players[topPlayerColor]}
               time={time[topPlayerColor]}
             />
-            <ChessBoard
+            <Board
               targetRef={boardRef}
               validator={validator}
               pieces={pieces}
@@ -275,19 +302,19 @@ const ChessGame: React.FC = () => {
               isGameOver={!!gameOver}
               settings={settings}
             />
-            <ChessPlayer
+            <Player
               player={players[bottomPlayerColor]}
               time={time[bottomPlayerColor]}
             />
-            <ChessGameOverDialog
+            <GameOverDialog
               gameOver={gameOver}
               playerColor={playerColor}
               rematch={rematch}
             />
           </DndProvider>
         </Box>
-        <Box flexShrink={0} flexBasis={300} ml={10}>
-          <ChessControl
+        <Box flexShrink={0} flexBasis={280} ml={5}>
+          <GameControl
             canResign={canResign}
             canTakeBack={canTakeBack}
             flipBoard={handleFlipBoard}
@@ -295,12 +322,12 @@ const ChessGame: React.FC = () => {
             takeBack={handleTakeBack}
             openSettings={openSettings}
           />
-          <ChessMoveList moveList={moveList} />
-          <ChessSettingsDialog
+          <MoveList moveList={moveList} />
+          <SettingsDialog
             isOpen={settingsOpen}
-            close={closeSettings}
             settings={settings}
             changeSetting={changeSetting}
+            closeSettings={closeSettings}
           />
         </Box>
       </Box>

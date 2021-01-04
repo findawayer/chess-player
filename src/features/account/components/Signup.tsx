@@ -25,7 +25,10 @@ import React from 'react';
 import ErrorMessage from '~/components/ErrorMessage';
 import { CURRENT_USER_QUERY } from '~/graphql';
 import { usePasswordFields } from '~/hooks';
-import { SIGN_UP_MUTATION, Signup as SignupMethod } from '../graphql';
+import {
+  SIGN_UP_MUTATION,
+  Signup as SignupMethod,
+} from '~/features/account/graphql';
 
 interface SignupProps {
   noRedirect?: boolean;

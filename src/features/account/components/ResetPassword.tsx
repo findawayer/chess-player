@@ -21,12 +21,12 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import ErrorMessage from '~/components/ErrorMessage';
-import { CURRENT_USER_QUERY } from '~/graphql';
-import { usePasswordFields } from '~/hooks';
 import {
   RESET_PASSWORD_MUTATION,
   ResetPassword as ResetPasswordMethod,
-} from '../graphql';
+} from '~/features/account/graphql';
+import { CURRENT_USER_QUERY } from '~/graphql';
+import { usePasswordFields } from '~/hooks';
 
 // Component
 const ResetPassword: React.FC = () => {

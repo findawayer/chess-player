@@ -5,8 +5,12 @@ import {
   NUMBER_OF_FILES,
   NUMBER_OF_RANKS,
   RANK_NAMES,
-} from '../constants';
-import { ChessSquare, ChessSquareName, ChessSquareXY } from '../types';
+} from '~/features/chess/constants';
+import {
+  ChessSquare,
+  ChessSquareName,
+  ChessSquareXY,
+} from '~/features/chess/types';
 
 /** Convert x, y coordinates of a chess square in SAN format. */
 export function stringifySquare(square: ChessSquare): ChessSquareName {

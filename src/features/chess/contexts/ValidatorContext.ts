@@ -10,12 +10,8 @@ import { createContext } from 'react';
  * this causes either compile-time or runtime error. (https://github.com/jhlywa/chess.js/issues/196)
  * Here comes the ugly :( workaround below to avoid the issue.
  */
-const chessValidator = new (typeof ChessJS === 'function'
-  ? ChessJS
-  : ChessJS.Chess)();
+const createValidator = () =>
+  new (typeof ChessJS === 'function' ? ChessJS : ChessJS.Chess)();
 
 /** Context to provide the chess validator deep into the React component tree. */
-export const ChessValidatorContext = createContext(chessValidator);
-const { Provider } = ChessValidatorContext;
-
-export { Provider as ChessValidatorProvider };
+export const ValidatorContext = createContext(createValidator());

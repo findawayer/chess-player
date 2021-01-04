@@ -2,14 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Move } from 'chess.js';
 
 import { SCORE_DRAW, SCORE_WIN } from './constants';
-import {
-  createPieces,
-  invertPieceColor,
-  isCastling,
-  isEnPassant,
-  isQueenSideSquare,
-  shiftSquareName,
-} from './utils';
 import { initializeChessState } from './state';
 import {
   ChessBoardData,
@@ -19,6 +11,14 @@ import {
   ChessPlayer,
   ChessSquareName,
 } from './types';
+import {
+  createPieces,
+  invertPieceColor,
+  isCastling,
+  isEnPassant,
+  isQueenSideSquare,
+  shiftSquareName,
+} from './utils';
 
 // Action types
 export enum ChessActionType {

@@ -16,7 +16,7 @@ import SuccessMessage from '~/components/SuccessMessage';
 import {
   RECOVER_PASSWORD_MUTATION,
   RecoverPassword as RecoverPasswordMethod,
-} from '../graphql';
+} from '~/features/account/graphql';
 
 // Component
 const RecoverPassword: React.FC = () => {

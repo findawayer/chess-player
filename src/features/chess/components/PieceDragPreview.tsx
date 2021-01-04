@@ -1,22 +1,23 @@
 import clsx from 'clsx';
 import React, { memo } from 'react';
 
-import { pieceClass } from '../utils';
-import { ChessPieceColor, ChessPieceVariant } from '../types';
-import useStyles from './styles/ChessPiece';
+import { ChessPieceColor, ChessPieceVariant } from '~/features/chess/types';
+import { pieceClass } from '~/features/chess/utils';
+import useStyles from './styles/Piece';
 
-interface ChessPieceDragPreviewProps {
+interface PieceDragPreviewProps {
   color: ChessPieceColor;
   variant: ChessPieceVariant;
   size: number;
 }
 
-const ChessPieceDragPreview: React.FC<ChessPieceDragPreviewProps> = ({
+const PieceDragPreview: React.FC<PieceDragPreviewProps> = ({
   color,
   variant,
   size,
 }) => {
   const classes = useStyles();
+
   return (
     <div
       className={clsx(classes.piece, pieceClass({ color, variant }))}
@@ -25,4 +26,4 @@ const ChessPieceDragPreview: React.FC<ChessPieceDragPreviewProps> = ({
   );
 };
 
-export default memo(ChessPieceDragPreview);
+export default memo(PieceDragPreview);

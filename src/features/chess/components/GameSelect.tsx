@@ -14,7 +14,7 @@ import {
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import sample from 'lodash/sample';
 import Link from 'next/link';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
@@ -23,29 +23,26 @@ import {
   setIncrement,
   setPlayerColor,
 } from '~/features/chess/slice';
+import { ChessPieceColor } from '~/features/chess/types';
 import { AppDispatch } from '~/vendors/redux';
-import { ChessPieceColor } from '../types';
-
-interface ChessGameSelectProps {
-  duration: number;
-  engineLevel: number;
-  increment: number;
-  playerColor: ChessPieceColor | null;
-}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      minWidth: 350,
       textAlign: 'center',
+      '& .MuiFormControl-root': {
+        display: 'block',
+        marginBottom: theme.spacing(3),
+      },
+      '& .MuiSlider-root': {
+        display: 'block',
+        width: 300,
+        margin: '0 auto',
+      },
     },
     title: {
       marginBottom: theme.spacing(5),
-    },
-    formRow: {
-      display: 'block',
-      maxWidth: 320,
-      margin: '0 auto',
-      marginBottom: theme.spacing(3),
     },
     formRadioGroup: {
       display: 'flex',
@@ -54,7 +51,14 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
+interface GameSelectProps {
+  duration: number;
+  engineLevel: number;
+  increment: number;
+  playerColor: ChessPieceColor | null;
+}
+
+const GameSelect: React.FC<GameSelectProps> = ({
   duration,
   engineLevel,
   increment,
@@ -65,28 +69,22 @@ const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
   /** CSS classes created via Material-UI. */
   const classes = useStyles();
 
-  // Memoized values -----
+  const durationInMinutes = duration / 1000 / 60;
+  const incrementInSeconds = increment / 1000;
 
-  // Converted `duration` in minute.
-  const durationInMinutes = useMemo(() => duration / 1000 / 60, [duration]);
-  // Converted `increment` in seconds.
-  const incrementInSeconds = useMemo(() => increment / 1000, [increment]);
-
-  // Event handlers -----
-
-  // Handle changes from `duration` slider.
+  /** Handle changes from `duration` slider. */
   const handleDurationChange = (_: React.ChangeEvent, value: number) =>
     dispatch(setDuration(value * 1000 * 60));
 
-  // Handle changes from `increment` slider.
+  /** Handle changes from `increment` slider. */
   const handleIncrementChange = (_: React.ChangeEvent, value: number) =>
     dispatch(setIncrement(value * 1000));
 
-  // Handle changes from `mode` radio buttons.
+  /** Handle changes from `mode` radio buttons. */
   const handleModeChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     dispatch(setPlayerColor(event.target.value === 'simulate' ? null : 'w'));
 
-  // Handle changes from `mode` radio buttons.
+  /** Handle changes from `mode` radio buttons. */
   const handlePlayerColorChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -101,7 +99,7 @@ const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
     dispatch(setPlayerColor(selectedColor));
   };
 
-  // Handle changes from `engineLevel` slider.
+  /** Handle changes from `engineLevel` slider. */
   const handleEngineLevelChange = (_: React.ChangeEvent, value: number) =>
     dispatch(setEngineLevel(value));
 
@@ -109,9 +107,9 @@ const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
     <Card elevation={2} className={classes.root}>
       <CardContent>
         <Typography variant="h3" component="h2" className={classes.title}>
-          Start a game
+          Start a chess {playerColor ? 'game' : 'simulation'}
         </Typography>
-        <FormControl component="fieldset" className={classes.formRow}>
+        <FormControl>
           <FormLabel id="duration">
             Time per side: {durationInMinutes} min.
           </FormLabel>
@@ -125,7 +123,7 @@ const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
             valueLabelDisplay="auto"
           />
         </FormControl>
-        <FormControl component="fieldset" className={classes.formRow}>
+        <FormControl>
           <FormLabel id="increment">
             Time gained per move: {incrementInSeconds} sec.
           </FormLabel>
@@ -139,7 +137,7 @@ const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
             valueLabelDisplay="auto"
           />
         </FormControl>
-        <FormControl component="fieldset" className={classes.formRow}>
+        <FormControl>
           <FormLabel id="mode">Game mode</FormLabel>
           <RadioGroup
             aria-label="Game mode"
@@ -157,40 +155,41 @@ const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
             <FormControlLabel
               value="simulate"
               control={<Radio color="primary" />}
-              label="AI simulation"
+              label="Simulation"
             />
           </RadioGroup>
         </FormControl>
-        {playerColor && (
-          <FormControl component="fieldset" className={classes.formRow}>
-            <FormLabel id="playerColor">Play as</FormLabel>
-            <RadioGroup
-              aria-label="Your preferred piece color"
-              className={classes.formRadioGroup}
-              defaultValue="w"
-              name="playerColor"
-              onChange={handlePlayerColorChange}
-              row
-            >
-              <FormControlLabel
-                control={<Radio color="primary" />}
-                label="White"
-                value="w"
-              />
-              <FormControlLabel
-                control={<Radio color="primary" />}
-                label="Black"
-                value="b"
-              />
-              <FormControlLabel
-                control={<Radio color="primary" />}
-                label="Random"
-                value="random"
-              />
-            </RadioGroup>
-          </FormControl>
-        )}
-        <FormControl component="fieldset" className={classes.formRow}>
+        <FormControl>
+          <FormLabel id="playerColor">Play as</FormLabel>
+          <RadioGroup
+            aria-label="Your preferred piece color"
+            className={classes.formRadioGroup}
+            defaultValue="w"
+            name="playerColor"
+            onChange={handlePlayerColorChange}
+            row
+          >
+            <FormControlLabel
+              control={<Radio color="primary" />}
+              label="White"
+              value="w"
+              disabled={!playerColor}
+            />
+            <FormControlLabel
+              control={<Radio color="primary" />}
+              label="Black"
+              value="b"
+              disabled={!playerColor}
+            />
+            <FormControlLabel
+              control={<Radio color="primary" />}
+              label="Random"
+              value="random"
+              disabled={!playerColor}
+            />
+          </RadioGroup>
+        </FormControl>
+        <FormControl>
           <FormLabel id="increment">AI strength: {engineLevel}</FormLabel>
           <Slider
             aria-labelledby="AI level"
@@ -205,16 +204,16 @@ const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
         </FormControl>
       </CardContent>
       <CardActions>
-        <Link href="/play">
+        <Link href="/play" passHref>
           <Button
-            color="primary"
             component="a"
-            fullWidth
             rel="next"
+            color="primary"
             size="large"
+            fullWidth
             variant="contained"
           >
-            Start
+            Go!
           </Button>
         </Link>
       </CardActions>
@@ -222,4 +221,4 @@ const ChessGameSelect: React.FC<ChessGameSelectProps> = ({
   );
 };
 
-export default ChessGameSelect;
+export default GameSelect;

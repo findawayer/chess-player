@@ -79,7 +79,33 @@ export const baseTheme: ThemeOptions = {
     },
     MuiCard: {
       root: {
-        padding: '32px',
+        padding: 24,
+      },
+    },
+    MuiCardActions: {
+      root: {
+        padding: '8px 16px 16px', // Align horizontal edges with body.
+        justifyContent: 'center',
+      },
+    },
+    MuiDialogActions: {
+      root: {
+        padding: '16px 24px', // Align horizontal edges with body.
+      },
+    },
+    MuiDialogContent: {
+      root: {
+        padding: '8px 24px',
+      },
+    },
+    MuiDialogTitle: {
+      root: {
+        padding: '24px',
+      },
+    },
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '1rem',
       },
     },
   },

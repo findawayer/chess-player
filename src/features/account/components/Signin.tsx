@@ -25,7 +25,10 @@ import React from 'react';
 import ErrorMessage from '~/components/ErrorMessage';
 import { CURRENT_USER_QUERY } from '~/graphql';
 import { usePasswordFields, useUser } from '~/hooks';
-import { SIGN_IN_MUTATION, Signin as SigninMethod } from '../graphql';
+import {
+  SIGN_IN_MUTATION,
+  Signin as SigninMethod,
+} from '~/features/account/graphql';
 
 interface SigninProps {
   noRedirect?: boolean;

@@ -1,14 +1,14 @@
 import { ChessInstance, Move } from 'chess.js';
 import uniqBy from 'lodash/uniqBy';
 
-import { NUMBER_OF_RANKS } from '../constants';
+import { NUMBER_OF_RANKS } from '~/features/chess/constants';
 import {
   ChessLegalMove,
   ChessMoveLog,
   ChessPiece,
   ChessSquare,
   ChessSquareName,
-} from '../types';
+} from '~/features/chess/types';
 import { objectifySquare, stringifySquare } from './squares';
 
 /** Find out whether the chess move passed is a castling. */

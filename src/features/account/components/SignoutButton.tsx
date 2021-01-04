@@ -3,8 +3,8 @@ import { Button } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { SIGN_OUT_MUTATION, Signout } from '~/features/account/graphql';
 import { CURRENT_USER_QUERY } from '~/graphql';
-import { SIGN_OUT_MUTATION, Signout } from '../graphql';
 
 interface SignoutButtonProps {
   noRedirect?: boolean;

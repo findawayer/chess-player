@@ -1,8 +1,8 @@
 import update from 'immutability-helper';
 import { useCallback, useEffect, useState } from 'react';
 
-import { stringifySquare } from '../utils';
-import { ChessPromotion, ChessPromotionVariant } from '../types';
+import { stringifySquare } from '~/features/chess/utils';
+import { ChessPromotion, ChessPromotionVariant } from '~/features/chess/types';
 
 /**
  * Create a confirmation prompt to let the player decide which piece to

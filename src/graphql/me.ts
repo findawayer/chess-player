@@ -3,7 +3,6 @@ import type { User } from '@prisma/client';
 
 /**
  * GraphQL: Fetch current user, to reflect the user data to the view.
- *
  */
 export const CURRENT_USER_QUERY = gql`
   query me {

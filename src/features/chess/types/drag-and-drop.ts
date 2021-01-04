@@ -1,4 +1,4 @@
-import { DragItem } from '../react-dnd';
+import { DragItem } from '~/features/chess/react-dnd';
 import { ChessPiece } from './pieces';
 
 /**

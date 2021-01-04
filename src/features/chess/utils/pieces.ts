@@ -3,7 +3,7 @@ import {
   ChessPieceColor,
   ChessPieces,
   ChessPieceVariant,
-} from '../types';
+} from '~/features/chess/types';
 import { stringifySquare } from './squares';
 
 /** Create pieces from board data fetched from `chess.js` instance. */

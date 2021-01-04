@@ -27,7 +27,7 @@ import {
   UPDATE_USER_ROLE_MUTATION,
   UpdateUserRole as UpdateUserRoleMethod,
   USERS_QUERY,
-} from '../graphql';
+} from '~/features/admin/graphql';
 
 /** Number of users to display in a paginated user list. */
 const USERS_PER_PAGE = 10;

@@ -8,14 +8,12 @@ import {
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 
-import { getFullPieceColor } from '../utils';
-import { ChessGameOver, ChessGameOverType, ChessPieceColor } from '../types';
-
-interface ChessGameOverDialogProps {
-  gameOver: ChessGameOver | false;
-  playerColor: ChessPieceColor | null;
-  rematch(alternate: boolean): void;
-}
+import {
+  ChessGameOver,
+  ChessGameOverType,
+  ChessPieceColor,
+} from '~/features/chess/types';
+import { getFullPieceColor } from '~/features/chess/utils';
 
 const useStyles = makeStyles<Theme>(theme =>
   createStyles({
@@ -74,7 +72,13 @@ const getDescription = (gameOver: ChessGameOver): string => {
   }
 };
 
-const ChessGameOverDialog: React.FC<ChessGameOverDialogProps> = ({
+interface GameOverDialogProps {
+  gameOver: ChessGameOver | false;
+  playerColor: ChessPieceColor | null;
+  rematch(alternate: boolean): void;
+}
+
+const GameOverDialog: React.FC<GameOverDialogProps> = ({
   gameOver,
   playerColor,
   rematch,
@@ -133,4 +137,4 @@ const ChessGameOverDialog: React.FC<ChessGameOverDialogProps> = ({
   );
 };
 
-export default ChessGameOverDialog;
+export default GameOverDialog;

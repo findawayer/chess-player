@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-import { SQUARE_SIZE } from '../../constants';
+import { SQUARE_SIZE } from '~/features/chess/constants';
 
 export default makeStyles({
   piece: {

@@ -8,8 +8,8 @@ export const darkTheme: ThemeOptions = {
       contrastText: '#fff',
     },
     secondary: {
-      main: '#66645c',
-      contrastText: '#fff',
+      main: '#97b2ce',
+      contrastText: '#222',
     },
     background: {
       default: '#282C34',

@@ -1,4 +1,4 @@
-import { List, ListItem, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import {
   createStyles,
   fade,
@@ -7,13 +7,7 @@ import {
 } from '@material-ui/core/styles';
 import React, { memo, useEffect, useRef } from 'react';
 
-import { ChessMoveLog } from '../types';
-
-interface ChessMoveListProps {
-  // Collection of `ChessMoveLog`s splitted in chunks of 2 items.
-  // Each subarray contains moves played by white and black side.
-  moveList: ChessMoveLog[][];
-}
+import { ChessMoveLog } from '~/features/chess/types';
 
 const useStyles = makeStyles<Theme>(theme => {
   const scrollbarColor = theme.palette.type === 'dark' ? '#fff' : '#000';
@@ -37,28 +31,32 @@ const useStyles = makeStyles<Theme>(theme => {
         backgroundColor: fade(scrollbarColor, 0.4),
       },
     },
-    fullmove: {
-      borderBottom: `1px solid ${theme.palette.divider}`,
+    list: {
+      margin: 0,
+      padding: 0,
+    },
+    listItem: {
       display: 'flex',
       alignItems: 'center',
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      fontSize: '1rem',
       // Highlight the latest move.
-      // last child is the scroller x(
-      '&:nth-last-child(2) span:last-child': {
-        backgroundColor: fade('#fc0', 0.4),
+      '&:last-child span:last-child': {
+        color: theme.palette.primary.contrastText,
+        background: theme.palette.primary.main,
       },
     },
-    count: {
+    turn: {
       width: 50,
       paddingRight: '1em',
       color: fade(theme.palette.text.secondary, 0.6),
-      fontSize: '92%',
       textAlign: 'right',
     },
     halfmove: {
       display: 'block',
       width: 'calc(50% - 25px)',
       color: 'inherit',
-      padding: theme.spacing(0, 2),
+      padding: theme.spacing(1, 2),
       boxSizing: 'border-box',
       textAlign: 'left',
       textTransform: 'none',
@@ -66,34 +64,41 @@ const useStyles = makeStyles<Theme>(theme => {
   });
 });
 
-const ChessMoveList: React.FC<ChessMoveListProps> = ({ moveList }) => {
+interface MoveListProps {
+  // Collection of `ChessMoveLog`s splitted in chunks of 2 items.
+  // Each subarray contains moves played by both player side.
+  moveList: ChessMoveLog[][];
+}
+
+const MoveList: React.FC<MoveListProps> = ({ moveList }) => {
   /** Scroller element ref. */
-  const scrollerRef = useRef<HTMLLIElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
   /** CSS classes created via Material-UI. */
   const classes = useStyles();
   /** Keep the scroll to the bottom as the new list item adds up. */
   const scrollToEnd = () => {
     scrollerRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
   useEffect(scrollToEnd, [moveList]);
 
   return (
-    <Typography variant="body1" component="div">
-      <List className={classes.root}>
+    <Typography variant="body1" component="div" className={classes.root}>
+      <ul className={classes.list}>
         {moveList.map(row => (
-          <ListItem key={row[0].fullmove} className={classes.fullmove}>
-            <span className={classes.count}>{row[0].fullmove}.</span>
+          <li key={row[0].fullmove} className={classes.listItem}>
+            <span className={classes.turn}>{row[0].fullmove}.</span>
             {row.map(({ halfmove, san }) => (
               <span key={halfmove} className={classes.halfmove}>
                 {san}
               </span>
             ))}
-          </ListItem>
+          </li>
         ))}
-        <li ref={scrollerRef} role="presentation" />
-      </List>
+      </ul>
+      <div ref={scrollerRef} />
     </Typography>
   );
 };
 
-export default memo(ChessMoveList);
+export default memo(MoveList);

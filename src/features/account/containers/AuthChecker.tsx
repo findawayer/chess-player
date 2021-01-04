@@ -4,8 +4,8 @@ import React from 'react';
 
 import { useUser } from '~/hooks/useUser';
 import { hasRole } from '~/utils/roles';
-import PleaseSignin from '../components/PleaseSignin';
-import PleaseSigninInline from '../components/PleaseSigninInline';
+import PleaseSignin from '~/features/account/components/PleaseSignin';
+import PleaseSigninInline from '~/features/account/components/PleaseSigninInline';
 
 interface PleaseLoginProps {
   children: React.ReactNode;

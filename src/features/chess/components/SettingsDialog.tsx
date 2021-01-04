@@ -10,33 +10,32 @@ import {
   FormLabel,
   MenuItem,
   Select,
-  Typography,
 } from '@material-ui/core';
 import { ChessBoardColor } from '@prisma/client';
 import React from 'react';
 
 import ErrorMessage from '~/components/ErrorMessage';
-import PleaseLogin from '~/components/PleaseLogin';
+import AuthChecker from '~/features/account/containers/AuthChecker';
 import { ChessSettings, mapChessSettings } from '~/features/chess/hooks';
 import { UPDATE_CHESS_SETTINGS_MUTATION } from '~/features/chess/graphql';
 import { CURRENT_USER_QUERY } from '~/graphql';
 import { capitalize } from '~/utils';
 
-interface ChessSettingsDialogProps {
+interface SettingsDialogProps {
   isOpen: boolean;
-  close(): void;
   settings: ChessSettings;
   changeSetting(
     name: keyof ChessSettings,
     value: ChessSettings[keyof ChessSettings],
   ): void;
+  closeSettings(): void;
 }
 
-const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
+const SettingsDialog: React.FC<SettingsDialogProps> = ({
   isOpen,
-  close,
   settings,
   changeSetting,
+  closeSettings,
 }) => {
   // Save new chess settings to the database.
   const [updateSettings, { loading, error }] = useMutation(
@@ -72,7 +71,7 @@ const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
         refetchQueries: [{ query: CURRENT_USER_QUERY }],
       });
       // If successful, close the dialog.
-      close();
+      closeSettings();
     } catch (error) {
       // Don't display error to users.
     }
@@ -81,25 +80,12 @@ const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
   return (
     <Dialog
       open={isOpen}
-      onClose={() => close()}
+      onClose={closeSettings}
       aria-labelledby="chessSettingsDialogTitle"
-      aria-describedby="chessSettingsDialogDescription"
     >
-      <PleaseLogin message="Personalize your game experience.">
-        <form
-          method="post"
-          onSubmit={handleSubmit}
-          style={{ minWidth: 400, padding: 20 }}
-        >
-          <DialogTitle
-            disableTypography
-            id="chessSettingsDialogTitle"
-            aria-level={1}
-          >
-            <Typography variant="h4" component="div" align="center">
-              Settings
-            </Typography>
-          </DialogTitle>
+      <AuthChecker inline>
+        <form method="post" onSubmit={handleSubmit} style={{ minWidth: 400 }}>
+          <DialogTitle id="chessSettingsDialogTitle">Game Settings</DialogTitle>
           <DialogContent>
             <ErrorMessage error={error} />
             <Box display="flex" alignItems="center">
@@ -113,7 +99,7 @@ const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
                   checked={settings.showRecent}
                   disabled={loading}
                   onChange={handleSwitchChange}
-                  color="primary"
+                  color="secondary"
                 />
               </Box>
             </Box>
@@ -128,7 +114,7 @@ const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
                   checked={settings.showLegal}
                   disabled={loading}
                   onChange={handleSwitchChange}
-                  color="primary"
+                  color="secondary"
                 />
               </Box>
             </Box>
@@ -143,7 +129,7 @@ const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
                   checked={settings.autoQueen}
                   disabled={loading}
                   onChange={handleSwitchChange}
-                  color="primary"
+                  color="secondary"
                 />
               </Box>
             </Box>
@@ -151,7 +137,7 @@ const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
               <Box flexGrow={1}>
                 <FormLabel htmlFor="boardColor">Board color</FormLabel>
               </Box>
-              <Box flexShrink={0} flexBasis={100}>
+              <Box flexShrink={0} flexBasis={110} mr={1}>
                 <Select
                   id="boardColor"
                   name="boardColor"
@@ -170,20 +156,14 @@ const ChessSettingsDialog: React.FC<ChessSettingsDialogProps> = ({
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button
-              type="submit"
-              color="primary"
-              size="large"
-              variant="contained"
-              fullWidth
-            >
-              Save
+            <Button type="submit" color="secondary">
+              Save changes
             </Button>
           </DialogActions>
         </form>
-      </PleaseLogin>
+      </AuthChecker>
     </Dialog>
   );
 };
 
-export default ChessSettingsDialog;
+export default SettingsDialog;

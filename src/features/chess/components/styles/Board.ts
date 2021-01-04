@@ -2,8 +2,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { CSSProperties } from '@material-ui/core/styles/withStyles';
 import times from 'lodash/times';
 
-import { NUMBER_OF_FILES, NUMBER_OF_RANKS } from '../../constants';
-import { squareClass } from '../../utils';
+import { NUMBER_OF_FILES, NUMBER_OF_RANKS } from '~/features/chess/constants';
+import { squareClass } from '~/features/chess/utils';
 
 // Generate helper classes for positionning of squares & pieces
 export const createSquareCSS = (): CSSProperties => {

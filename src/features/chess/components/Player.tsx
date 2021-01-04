@@ -3,10 +3,10 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import prettyMilliseconds from 'pretty-ms';
 import React from 'react';
 
-import { ChessPlayer as ChessPlayerType } from '../types';
+import { ChessPlayer } from '~/features/chess/types';
 
 interface PlayerProps {
-  player: ChessPlayerType;
+  player: ChessPlayer;
   time: number;
 }
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles<Theme>(theme =>
   }),
 );
 
-const ChessPlayer: React.FC<PlayerProps> = ({ player, time }) => {
+const Player: React.FC<PlayerProps> = ({ player, time }) => {
   /** CSS classes created via Material-UI. */
   const classes = useStyles();
   /** Time left to the player in `00:00` format. */
@@ -62,4 +62,4 @@ const ChessPlayer: React.FC<PlayerProps> = ({ player, time }) => {
   );
 };
 
-export default ChessPlayer;
+export default Player;

@@ -1,8 +1,12 @@
 import update from 'immutability-helper';
 import { useCallback, useState } from 'react';
 
-import { stringifySquare } from '../utils';
-import { ChessGuides, ChessLegalMove, ChessSquare } from '../types';
+import { stringifySquare } from '~/features/chess/utils';
+import {
+  ChessGuides,
+  ChessLegalMove,
+  ChessSquare,
+} from '~/features/chess/types';
 
 /**
  * Reducer hook to manipulate chess square highlights collectively.

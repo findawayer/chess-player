@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import GameSelect from '~/features/chess/components/GameSelect';
 import { ChessState } from '~/features/chess/state';
 import { AppState } from '~/vendors/redux';
-import ChessGameSelect from '../components/ChessGameSelect';
 
 type SelectGameState = Pick<
   ChessState,
@@ -23,7 +23,7 @@ const SelectGame: React.FC = () => {
   }));
 
   return (
-    <ChessGameSelect
+    <GameSelect
       duration={duration}
       engineLevel={engineLevel}
       increment={increment}

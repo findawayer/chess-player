@@ -5,9 +5,9 @@ import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { promisify } from 'util';
 
-import { ACCESS_TOKEN_KEY, SALT_ROUNDS } from '../constants';
-import { AuthUserPayload } from '../interfaces';
-import { prisma } from '../prisma';
+import { ACCESS_TOKEN_KEY, SALT_ROUNDS } from '~/server/constants';
+import { AuthUserPayload } from '~/server/interfaces';
+import { prisma } from '~/server/prisma';
 import { deleteCookie, setCookie } from './cookies';
 
 /** User payload stored in cookie. */

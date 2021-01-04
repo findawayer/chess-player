@@ -3,12 +3,16 @@ import React, { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { DragItem } from '../react-dnd';
-import { pieceClass, squareClass } from '../utils';
-import { ChessPieceColor, ChessPieceVariant, ChessSquare } from '../types';
-import useStyles from './styles/ChessPiece';
+import { DragItem } from '~/features/chess/react-dnd';
+import {
+  ChessPieceColor,
+  ChessPieceVariant,
+  ChessSquare,
+} from '~/features/chess/types';
+import { pieceClass, squareClass } from '~/features/chess/utils';
+import useStyles from './styles/Piece';
 
-interface ChessPieceProps {
+interface PieceProps {
   id: string;
   color: ChessPieceColor;
   variant: ChessPieceVariant;
@@ -19,7 +23,7 @@ interface ChessPieceProps {
   handleSelect(square: ChessSquare): void;
 }
 
-const ChessPiece: React.FC<ChessPieceProps> = ({
+const Piece: React.FC<PieceProps> = ({
   id,
   color,
   variant,
@@ -72,4 +76,4 @@ const ChessPiece: React.FC<ChessPieceProps> = ({
   );
 };
 
-export default ChessPiece;
+export default Piece;

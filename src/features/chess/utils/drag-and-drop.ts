@@ -1,6 +1,6 @@
 import { DropTargetMonitor } from 'react-dnd';
 
-import { ChessSquareName, DraggedPiece } from '../types';
+import { ChessSquareName, DraggedPiece } from '~/features/chess/types';
 import { isValidSquare, stringifySquare } from './squares';
 
 /**

@@ -1,16 +1,66 @@
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-import { getFullPieceVariant, objectifySquare, pieceClass } from '../utils';
+import { SQUARE_SIZE } from '~/features/chess/constants';
 import {
   ChessPieceColor,
   ChessPromotionVariant,
   ChessSquareName,
-} from '../types';
-import useStyles from './styles/ChessPromotionDialog';
+} from '~/features/chess/types';
+import {
+  getFullPieceVariant,
+  objectifySquare,
+  pieceClass,
+} from '~/features/chess/utils';
 
-interface ChessPromotionDialogProps {
+const useStyles = makeStyles({
+  promotion: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 10,
+  },
+  backdrop: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+  pieceWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: `${SQUARE_SIZE}%`,
+    height: `${SQUARE_SIZE * 4}%`,
+    display: 'flex',
+    flexFlow: 'column',
+    backgroundColor: '#fff',
+    boxShadow: '0 3px 10px rgba(0 0 0 / 50%)',
+    // Direction
+    '&.bottom': {
+      top: 'auto',
+      bottom: 0,
+      flexFlow: 'column-reverse',
+    },
+  },
+  piece: {
+    position: 'static',
+    width: '100%',
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+    // Hovered
+    '&:hover': {
+      backgroundColor: 'rgba(0 0 0 / 8%)',
+    },
+  },
+});
+
+interface PromotionDialogProps {
   square: ChessSquareName;
   color: ChessPieceColor;
   abortPromotion(): void;
@@ -18,7 +68,7 @@ interface ChessPromotionDialogProps {
 }
 
 // @todo: Find correct a11y sementics for the dialog backdrop
-const ChessPromotionDialog: React.FC<ChessPromotionDialogProps> = ({
+const PromotionDialog: React.FC<PromotionDialogProps> = ({
   color,
   square,
   abortPromotion,
@@ -58,4 +108,4 @@ const ChessPromotionDialog: React.FC<ChessPromotionDialogProps> = ({
   );
 };
 
-export default ChessPromotionDialog;
+export default PromotionDialog;

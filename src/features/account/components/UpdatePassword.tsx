@@ -20,12 +20,12 @@ import React from 'react';
 
 import ErrorMessage from '~/components/ErrorMessage';
 import SuccessMessage from '~/components/SuccessMessage';
-import { usePasswordFields } from '~/hooks';
-import { CURRENT_USER_QUERY } from '~/graphql';
 import {
   UPDATE_PASSWORD_MUTATION,
   UpdatePassword as UpdatePasswordMethod,
-} from '../graphql';
+} from '~/features/account/graphql';
+import { CURRENT_USER_QUERY } from '~/graphql';
+import { usePasswordFields } from '~/hooks';
 
 const UpdatePassword: React.FC = () => {
   const [

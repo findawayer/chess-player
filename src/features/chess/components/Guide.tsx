@@ -3,18 +3,18 @@ import { ChessBoardColor } from '@prisma/client';
 import clsx from 'clsx';
 import React, { memo } from 'react';
 
-import { SQUARE_SIZE } from '../constants';
-import { squareClass } from '../utils';
-import { chessBoardTheme } from '../themes';
-import { ChessSquareName } from '../types';
+import { SQUARE_SIZE } from '~/features/chess/constants';
+import { chessBoardTheme } from '~/features/chess/themes';
+import { ChessSquareName } from '~/features/chess/types';
+import { squareClass } from '~/features/chess/utils';
 
-interface ChessGuideProps {
+interface GuideProps {
   color: ChessBoardColor;
   variant: 'active' | 'hover' | 'recent';
   square: ChessSquareName;
 }
 
-const useStyles = makeStyles<Theme, ChessGuideProps>({
+const useStyles = makeStyles<Theme, GuideProps>({
   guide: {
     position: 'absolute',
     width: `${SQUARE_SIZE}%`,
@@ -30,7 +30,7 @@ const useStyles = makeStyles<Theme, ChessGuideProps>({
   },
 });
 
-const ChessGuide: React.FC<ChessGuideProps> = props => {
+const Guide: React.FC<GuideProps> = props => {
   const { square } = props;
   /** CSS classes created via Material-UI. */
   const classes = useStyles(props);
@@ -38,4 +38,4 @@ const ChessGuide: React.FC<ChessGuideProps> = props => {
   return <div className={clsx(classes.guide, squareClass(square))} />;
 };
 
-export default memo(ChessGuide);
+export default memo(Guide);
