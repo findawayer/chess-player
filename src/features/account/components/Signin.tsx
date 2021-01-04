@@ -24,10 +24,15 @@ import React from 'react';
 
 import ErrorMessage from '~/components/ErrorMessage';
 import { CURRENT_USER_QUERY } from '~/graphql';
-import { usePasswordFields } from '~/hooks';
+import { usePasswordFields, useUser } from '~/hooks';
 import { SIGN_IN_MUTATION, Signin as SigninMethod } from '../graphql';
 
-const Signin: React.FC = () => {
+interface SigninProps {
+  noRedirect?: boolean;
+}
+
+const Signin: React.FC<SigninProps> = ({ noRedirect }) => {
+  const me = useUser();
   const router = useRouter();
   const [signin, { loading, error }] = useMutation<SigninMethod>(
     SIGN_IN_MUTATION,
@@ -57,13 +62,16 @@ const Signin: React.FC = () => {
         // Reset the form if successful.
         resetForm();
         clearPasswords();
-        // Redirect to the home page.
-        router.push('/');
       } catch (error) {
         // Hide error from users.
       }
     },
   });
+
+  // Once log in, redirect to the home page.
+  if (me && !noRedirect) {
+    router.push('/');
+  }
 
   return (
     <form method="post" onSubmit={handleSubmit}>

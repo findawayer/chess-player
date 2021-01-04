@@ -1,7 +1,7 @@
 import { Container } from '@material-ui/core';
 import React from 'react';
 
-import MyAccount from '~/features/account/components/MyAccount';
+import MyAccount from '~/features/account/containers/MyAccount';
 
 const Account: React.FC = () => (
   <Container maxWidth="md">

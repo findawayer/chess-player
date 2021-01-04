@@ -27,7 +27,11 @@ import { CURRENT_USER_QUERY } from '~/graphql';
 import { usePasswordFields } from '~/hooks';
 import { SIGN_UP_MUTATION, Signup as SignupMethod } from '../graphql';
 
-const Signup: React.FC = () => {
+interface SignupProps {
+  noRedirect?: boolean;
+}
+
+const Signup: React.FC<SignupProps> = ({ noRedirect }) => {
   const router = useRouter();
   const [signup, { loading, error }] = useMutation<SignupMethod>(
     SIGN_UP_MUTATION,
@@ -60,7 +64,9 @@ const Signup: React.FC = () => {
         resetForm();
         clearPasswords();
         // Redirect to the home page.
-        router.push('/');
+        if (!noRedirect) {
+          router.push('/');
+        }
       } catch (error) {
         // Hide error from users.
       }

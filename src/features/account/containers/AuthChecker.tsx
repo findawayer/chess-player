@@ -1,15 +1,15 @@
-import { Box, Button, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import type { UserRole } from '@prisma/client';
-import Link from 'next/link';
 import React from 'react';
 
 import { useUser } from '~/hooks/useUser';
 import { hasRole } from '~/utils/roles';
+import PleaseSignin from '../components/PleaseSignin';
+import PleaseSigninInline from '../components/PleaseSigninInline';
 
 interface PleaseLoginProps {
   children: React.ReactNode;
-  message?: string;
+  inline?: boolean;
   requiredRole?: UserRole;
 }
 
@@ -28,41 +28,23 @@ interface PleaseLoginProps {
  */
 const PleaseLogin: React.FC<PleaseLoginProps> = ({
   children,
-  message,
+  inline,
   requiredRole,
 }) => {
   const me = useUser();
   // Not logged in!
   if (!me) {
-    return (
-      <Box textAlign="center" style={{ padding: 32 }}>
-        <Typography variant="h3" component="h2">
-          {message || 'Please log in before continuing.'}
-        </Typography>
-        <Box mt={5}>
-          <Link href="/join" passHref>
-            <Button variant="contained" color="primary" size="large">
-              Join
-            </Button>
-          </Link>
-          &nbsp;&nbsp;
-          <Link href="/login" passHref>
-            <Button variant="contained" color="primary" size="large">
-              Login
-            </Button>
-          </Link>
-        </Box>
-      </Box>
-    );
+    return inline ? <PleaseSigninInline /> : <PleaseSignin />;
   }
-  // Specific permissions are required and current user does not have it.
+  // User is missing required role.
   if (requiredRole && !hasRole(me, requiredRole)) {
     return (
       <Alert severity="error" variant="filled">
-        You do not have enough permissions to access this page.
+        You do not have access to this page.
       </Alert>
     );
   }
+  // Good to go :)
   return <>{children}</>;
 };
 
