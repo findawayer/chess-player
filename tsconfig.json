@@ -2,9 +2,9 @@
   "compilerOptions": {
     "allowJs": true,
     "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "es2018", "esnext.asynciterable"],
     "module": "commonjs",
-    "target": "esnext",
+    "target": "es6",
     "noEmit": true,
     "isolatedModules": true,
     "strict": false,

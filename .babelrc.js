@@ -24,8 +24,6 @@ module.exports = {
         },
       },
     ],
-    // Tranpile `const enum`.
-    ['const-enum', { transform: 'constObject' }],
   ],
   ignore: ['node_modules', 'public'],
 };

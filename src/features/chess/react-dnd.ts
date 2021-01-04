@@ -7,16 +7,14 @@ import { isValidSquare, stringifySquare } from './utils';
  * Drag item types for `react-dnd` library.
  * (The enum values should be a string as the API requires.)
  */
-export const enum DragItem {
-  PIECE = 'PIECE',
-}
+export const DRAG_ITEM = 'PIECE' as const;
 
 /**
  * Drag item object passed to `useDrag` of `react-dnd` API.
  * @api https://react-dnd.github.io/react-dnd/docs/api/use-drag
  */
 export interface DraggedPiece extends ChessPiece {
-  type: DragItem.PIECE;
+  type: typeof DRAG_ITEM;
   x: number;
   y: number;
   size: number;

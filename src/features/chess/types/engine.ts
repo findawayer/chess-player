@@ -1,7 +1,7 @@
 import { ChessMove } from './moves';
 
 /** Chess engine's status. */
-export const enum ChessEngineStatus {
+export enum ChessEngineStatus {
   Loading,
   Loaded,
   Ready,

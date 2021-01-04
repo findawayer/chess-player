@@ -1,9 +1,7 @@
 import { ChessPieceColor } from './pieces';
 
-/**
- * Chess game result details.
- */
-export const enum ChessGameOverType {
+/** Chess game result details. */
+export enum ChessGameOverType {
   Checkmate,
   Resignation,
   Timeout,
@@ -12,9 +10,7 @@ export const enum ChessGameOverType {
   Repetition,
 }
 
-/**
- * Chess game over status.
- */
+/** Chess game over status. */
 export interface ChessGameOver {
   type: ChessGameOverType;
   winner: ChessPieceColor | null;
