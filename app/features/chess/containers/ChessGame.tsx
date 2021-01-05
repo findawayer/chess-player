@@ -326,7 +326,6 @@ const ChessGame: React.FC<ChessGameProps> = ({ me }) => {
           <MoveList moveList={moveList} />
           <SettingsDialog
             isOpen={settingsOpen}
-            me={me}
             settings={settings}
             changeSetting={changeSetting}
             closeSettings={closeSettings}

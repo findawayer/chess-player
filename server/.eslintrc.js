@@ -45,6 +45,7 @@ module.exports = {
     'no-restricted-imports': ['error', { patterns: ['../*'] }],
     'no-shadow': 'off',
     'no-undef': 'off',
+    'no-underscore-dangle': 'off',
     'no-use-before-define': 'off',
     'no-unused-expressions': 'off',
     'no-unused-vars': 'off',

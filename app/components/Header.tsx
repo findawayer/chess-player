@@ -14,8 +14,7 @@ import { ColorMode } from '@prisma/client';
 import Link from 'next/link';
 import React from 'react';
 
-import SignoutButton from '~app/features/account/components/SignoutButton';
-import { useUser } from '~app/hooks';
+import AccountMenu from './AccountMenu';
 
 const useStyles = makeStyles<Theme>(theme =>
   createStyles({
@@ -41,34 +40,18 @@ const useStyles = makeStyles<Theme>(theme =>
 );
 
 interface HeaderProps {
+  hasAuthUser: boolean;
   colorMode: ColorMode;
   updateColorMode(colorMode: ColorMode): void;
 }
 
-const Header: React.FC<HeaderProps> = ({ colorMode, updateColorMode }) => {
-  const me = useUser();
+const Header: React.FC<HeaderProps> = ({
+  hasAuthUser,
+  colorMode,
+  updateColorMode,
+}) => {
   /** CSS Classes via Material UI */
   const classes = useStyles();
-
-  /** Render account menu based on authentication state. */
-  const renderAccountMenu = () =>
-    me ? (
-      <>
-        <Link href="/account" passHref>
-          <Button color="inherit">Account</Button>
-        </Link>
-        <SignoutButton />
-      </>
-    ) : (
-      <>
-        <Link href="/join" passHref>
-          <Button color="inherit">Join</Button>
-        </Link>
-        <Link href="/login" passHref>
-          <Button color="inherit">Login</Button>
-        </Link>
-      </>
-    );
   /** Toggle color mode */
   const toggleColorMode = () =>
     updateColorMode(colorMode === 'DARK' ? 'LIGHT' : 'DARK');
@@ -114,7 +97,7 @@ const Header: React.FC<HeaderProps> = ({ colorMode, updateColorMode }) => {
           >
             GitHub
           </Button>
-          {renderAccountMenu()}
+          <AccountMenu hasAuthUser={hasAuthUser} />
         </div>
       </Toolbar>
     </AppBar>

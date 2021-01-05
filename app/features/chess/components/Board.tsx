@@ -239,7 +239,7 @@ const Board: React.FC<BoardProps> = ({
   // drop -> `react-dnd` binding
   return (
     <NoSsr>
-      <div ref={targetRef}>
+      <div ref={targetRef} className={classes.root}>
         <div
           ref={drop}
           className={clsx(classes.board, isFlipped && 'is-flipped')}

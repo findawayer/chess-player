@@ -10,7 +10,7 @@ import { lightTheme } from './light-theme';
 /** Default color mode of global site theme. */
 export const DEFAULT_COLOR_MODE = 'LIGHT' as const;
 
-export const createGlobalTheme = (colorMode: ColorMode): Theme =>
+export const createTheme = (colorMode: ColorMode): Theme =>
   createMuiTheme(
     defaultsDeep(
       {},
@@ -20,6 +20,5 @@ export const createGlobalTheme = (colorMode: ColorMode): Theme =>
   );
 
 /** Get light or dark theme based on user selection. */
-export const useGlobalTheme = (
-  colorMode: ColorMode = DEFAULT_COLOR_MODE,
-): Theme => useMemo(() => createGlobalTheme(colorMode), [colorMode]);
+export const useMuiTheme = (colorMode: ColorMode = DEFAULT_COLOR_MODE): Theme =>
+  useMemo(() => createTheme(colorMode), [colorMode]);

@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import type { ColorMode } from '@prisma/client';
 import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
+import UniversalCookie from 'universal-cookie';
 
 import { CURRENT_USER_QUERY, UPDATE_COLOR_MODE_MUTATION } from '~app/graphql';
 
@@ -26,32 +26,36 @@ const getUserPreferredScheme = (): ColorMode | undefined =>
  * 2. Get the user's preferred color mode from operating system.
  * 3. Fallback to default color mode.
  */
-const restoreColorMode = (): ColorMode =>
-  (Cookies.get(COLOR_MODE_CACHE_KEY) as ColorMode | undefined) ||
-  getUserPreferredScheme() ||
-  DEFAULT_COLOR_MODE;
+const restoreColorMode = (): ColorMode => {
+  const cookie = new UniversalCookie();
+  return (
+    cookie.get(COLOR_MODE_CACHE_KEY) ||
+    getUserPreferredScheme() ||
+    DEFAULT_COLOR_MODE
+  );
+};
 
 /**
  * Create local React state reflecting user selected color mode of the app.
  *
+ * @param userValue: The color mode of user's choice, from user database.
  * @returns Array containing:
  * - colorMode: Current color mode of the theme.
  * - toggleColorMode: Toggle the color mode.
  */
-export const useColorMode = (databaseValue?: ColorMode) => {
+export const useColorMode = (userValue?: ColorMode | null) => {
   // Merged state of app's color mode + user interaction status.
-  const [colorMode, setColorMode] = useState(
-    databaseValue || restoreColorMode(),
-  );
+  const [colorMode, setColorMode] = useState(userValue || restoreColorMode());
   // GraphQL: Save user's color mode choice to the database.
   const [updateColorModeToDatabase] = useMutation(UPDATE_COLOR_MODE_MUTATION);
 
   /** Update color mode. */
   const updateColorMode = (colorMode: ColorMode) => {
+    const cookie = new UniversalCookie();
     // Update local state
     setColorMode(colorMode);
     // Save to the database if user is logged in.
-    if (databaseValue) {
+    if (userValue) {
       updateColorModeToDatabase({
         variables: { colorMode },
         refetchQueries: [{ query: CURRENT_USER_QUERY }],
@@ -59,15 +63,15 @@ export const useColorMode = (databaseValue?: ColorMode) => {
     }
     // Cache in the `localStorage` — this can fail if access to the
     // `localStorage` is blocked by the user's privacy settings.
-    Cookies.set(COLOR_MODE_CACHE_KEY, colorMode, { path: '/' });
+    cookie.set(COLOR_MODE_CACHE_KEY, colorMode, { path: '/' });
   };
 
   // Reflect color mode preferences from user data in database.
   useEffect(() => {
-    if (databaseValue && databaseValue !== colorMode) {
-      setColorMode(databaseValue);
+    if (userValue && userValue !== colorMode) {
+      setColorMode(userValue);
     }
-  }, [databaseValue, colorMode]);
+  }, [userValue, colorMode]);
 
-  return [colorMode, updateColorMode] as const;
+  return { colorMode, updateColorMode };
 };

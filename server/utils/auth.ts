@@ -2,13 +2,9 @@ import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { NextApiRequest } from 'next';
 import { promisify } from 'util';
 
-import { ACCESS_TOKEN_KEY, SALT_ROUNDS } from '~server/constants';
-import { AuthUserPayload, GraphQLContext } from '~server/interfaces';
-import { prisma } from '~server/prisma';
-import { deleteCookie, setCookie } from './cookies';
+import { SALT_ROUNDS } from '~server/constants';
 
 /** User payload stored in cookie. */
 export type CookieUserPayload = Pick<User, 'id'>;
@@ -53,53 +49,4 @@ export const createPasswordResetToken = async (): Promise<{
   const expires = Date.now() + 60 * 60 * 1000;
 
   return { token, expires };
-};
-
-/** Retrieve currently user from cookies. */
-export const getServerSession = async (
-  req: NextApiRequest,
-): Promise<AuthUserPayload | null> => {
-  // Decode access token stored as cookies.
-  const decoded = await parseAccessToken(req.cookies.accessToken);
-  // If no access token is found, return null.
-  if (!decoded) {
-    return null;
-  }
-  // Find the user matching the token.
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: decoded.id,
-      },
-    });
-    // Return the desired payload.
-    return user ? { id: user.id, name: user.name, role: user.role } : null;
-  } catch (error) {
-    console.error(error);
-    // Throwing an error will make the server crash.
-    return null;
-  }
-};
-
-/** Set user logged in. */
-export const handleSuccessfulLogin = async (
-  { id }: AuthUserPayload,
-  context: GraphQLContext,
-): Promise<void> => {
-  // Genrate a JWT token.
-  const accessToken = createAccessToken({ id });
-  // Set the cookie with the token.
-  setCookie(context.res, ACCESS_TOKEN_KEY, accessToken, {
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-  });
-};
-
-/** Set user logged out. */
-export const handleSuccessfulLogout = async (
-  context: GraphQLContext,
-): Promise<void> => {
-  // Remove user login token from cookie.
-  deleteCookie(context.res, ACCESS_TOKEN_KEY);
-  // clearCookie(res);
 };

@@ -35,14 +35,22 @@ export const createSquareCSS = () => {
 };
 
 export default makeStyles({
-  board: {
+  // This keeps 1:1 aspect ratio
+  root: {
     position: 'relative',
-    width: '70vh',
-    height: '70vh',
-    minWidth: 500,
-    minHeight: 500,
     overflow: 'hidden',
-    flex: '0 0 auto',
+    '&::after': {
+      content: '""', // ! Preserve double quotes !
+      display: 'block',
+      paddingTop: '100%',
+    },
+  },
+  board: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
     ...createSquareCSS(),
   },
 });

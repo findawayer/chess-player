@@ -6,12 +6,8 @@ import React from 'react';
 import { SIGN_OUT_MUTATION, Signout } from '~app/features/account/graphql';
 import { CURRENT_USER_QUERY } from '~app/graphql';
 
-interface SignoutButtonProps {
-  noRedirect?: boolean;
-}
-
-const SignoutButton: React.FC<SignoutButtonProps> = ({ noRedirect }) => {
-  const [signout, { loading }] = useMutation<Signout>(SIGN_OUT_MUTATION, {
+const SignoutButton: React.FC = () => {
+  const [signout] = useMutation<Signout>(SIGN_OUT_MUTATION, {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
   const router = useRouter();
@@ -20,15 +16,13 @@ const SignoutButton: React.FC<SignoutButtonProps> = ({ noRedirect }) => {
     try {
       // Invoke signout action.
       await signout();
-      // Redirect to home, if succssful.
-      if (!noRedirect) {
-        router.push('/');
-      }
+      // Redirect to login page, if succssful.
+      router.push('/login');
     } catch (error) {
       // Don't display error to the user.
     }
   };
-  return loading ? null : (
+  return (
     <Button color="inherit" onClick={handleClick}>
       Logout
     </Button>

@@ -2,13 +2,12 @@ import { Alert } from '@material-ui/lab';
 import type { UserRole } from '@prisma/client';
 import React from 'react';
 
-import { hasRole } from '~app/utils/roles';
 import PleaseSignin from '~app/features/account/components/PleaseSignin';
 import PleaseSigninInline from '~app/features/account/components/PleaseSigninInline';
-import { CurrentUser } from '~app/graphql';
+import { useUser } from '~app/hooks/useUser';
+import { hasRole } from '~app/utils/roles';
 
-interface PleaseLoginProps {
-  me: CurrentUser | null;
+interface AuthCheckerProps {
   children: React.ReactNode;
   inline?: boolean;
   requiredRole?: UserRole;
@@ -19,20 +18,20 @@ interface PleaseLoginProps {
  * with this component.
  *
  * @example
- *   <PleaseLogin>
+ *   <AuthChecker>
  *     <Admin />
- *   </PleaseLogin>
+ *   </AuthChecker>
 
- *   <PleaseLogin>
+ *   <AuthChecker>
  *     Any React node can be passed as child node.
- *   </PleaseLogin>
+ *   </AuthChecker>
  */
-const PleaseLogin: React.FC<PleaseLoginProps> = ({
-  me,
+const AuthChecker: React.FC<AuthCheckerProps> = ({
   children,
   inline,
   requiredRole,
 }) => {
+  const me = useUser();
   // Not logged in!
   if (!me) {
     return inline ? <PleaseSigninInline /> : <PleaseSignin />;
@@ -49,4 +48,4 @@ const PleaseLogin: React.FC<PleaseLoginProps> = ({
   return <>{children}</>;
 };
 
-export default PleaseLogin;
+export default AuthChecker;

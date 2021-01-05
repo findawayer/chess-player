@@ -3,6 +3,7 @@ const baseRules = {
   'no-param-reassign': 'off',
   'no-shadow': 'off',
   'no-undef': 'off',
+  'no-underscore-dangle': 'off',
   'import/extensions': [
     'error',
     'ignorePackages',

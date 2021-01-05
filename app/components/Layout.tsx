@@ -2,8 +2,9 @@ import { Box, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 
-import { useColorMode, useMounted } from '~app/hooks';
-import { useGlobalTheme } from '~app/themes';
+import { useColorMode } from '~app/hooks';
+import { useUser } from '~app/hooks/useUser';
+import { useMuiTheme } from '~app/themes';
 import Header from './Header';
 
 interface LayoutProps {
@@ -15,27 +16,25 @@ interface LayoutProps {
  * @todo Think about updating `theme-color` metadata dynamically to match the color mode? Does this improve SEO?
  */
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  // Local state: Restore color mode from database or client cache.
-  const [colorMode, updateColorMode] = useColorMode();
+  const me = useUser();
+  // Local state: Restore color mode from client cache.
+  const { colorMode, updateColorMode } = useColorMode(me?.colorMode);
   /** App's global theme */
-  const globalTheme = useGlobalTheme(colorMode);
-  /** Flag used to hide FOUC caused by color mode mismatch after rehydration. */
-  const mounted = useMounted();
+  const theme = useMuiTheme(colorMode);
+  /** User is authenticated */
+  const hasAuthUser = Boolean(me);
 
   // ThemeProvider: Exposes material UI theme.
   // CssBaseline: Inject global CSS provided by material-ui.
   return (
-    <ThemeProvider theme={globalTheme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box
-        display="flex"
-        flexDirection="column"
-        style={{
-          height: '100%',
-          visibility: mounted ? 'visible' : 'hidden',
-        }}
-      >
-        <Header colorMode={colorMode} updateColorMode={updateColorMode} />
+      <Box display="flex" flexDirection="column" style={{ height: '100%' }}>
+        <Header
+          hasAuthUser={hasAuthUser}
+          colorMode={colorMode}
+          updateColorMode={updateColorMode}
+        />
         <Box
           flexGrow={1}
           display="flex"

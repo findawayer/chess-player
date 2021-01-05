@@ -21,7 +21,7 @@
     "start": "next start",
     "dev:app": "next dev",
     "dev:server": "ttsc --project ./server --watch",
-    "build": "yarn build:server && yarn build:app",
+    "build": "yarn generate && yarn build:server && yarn build:app",
     "build:app": "next build",
     "build:server": "rm -rf ./server-dist && ttsc --project ./server",
     "analyze": "cross-env ANALYZE=true yarn build:app",
@@ -49,7 +49,6 @@
     "formik": "^2.2.6",
     "graphql": "^15.4.0",
     "immutability-helper": "^3.1.1",
-    "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
     "next": "^10.0.4",
@@ -66,6 +65,7 @@
     "react-resize-detector": "^5.2.0",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
+    "universal-cookie": "^4.0.4",
     "url-join": "^4.0.1"
   },
   "devDependencies": {
@@ -78,7 +78,6 @@
     "@types/chess.js": "^0.10.1",
     "@types/cookie": "^0.4.0",
     "@types/dedent": "^0.7.0",
-    "@types/js-cookie": "^2.2.6",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/lodash": "^4.14.165",
     "@types/node": "^14.14.16",
