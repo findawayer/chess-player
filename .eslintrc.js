@@ -3,6 +3,7 @@ const baseRules = {
   'no-param-reassign': 'off',
   'no-shadow': 'off',
   'no-undef': 'off',
+  'no-underscore-dangle': 'off',
   'import/extensions': [
     'error',
     'ignorePackages',
@@ -31,7 +32,10 @@ module.exports = {
     'import/resolver': {
       // eslint-import-resolver-alias
       alias: {
-        map: [['~', './src']],
+        map: [
+          ['~app', './app'],
+          ['~server', './server'],
+        ],
         extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
       },
     },
@@ -91,6 +95,17 @@ module.exports = {
       rules: {
         ...baseRules,
         'no-redeclare': 'off',
+        'no-restricted-imports': [
+          'error',
+          {
+            // Material UI: https://material-ui.com/guides/minimizing-bundle-size/
+            patterns: [
+              '@material-ui/*/*/*',
+              '!@material-ui/core/test-utils/*',
+              '../*',
+            ],
+          },
+        ],
         'no-use-before-define': 'off',
         'no-unused-expressions': 'off',
         'no-unused-vars': 'off',

@@ -1,42 +1,29 @@
 module.exports = {
   presets: ['next/babel'],
   plugins: [
-    // Support `const enum` in TypeScript to:
-    // 1. Suppress verbose compilation output.
-    // 2. Make enum values serializable after compilation.
+    // Support TypeScript decorators (required for TypeGraphQL)
+    'babel-plugin-transform-typescript-metadata',
+    ['@babel/plugin-proposal-decorators', { legacy: true }],
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    'babel-plugin-parameter-decorator',
+    // Resolve imports to top level directory for better tree shaking.
     [
-      'const-enum',
+      'babel-plugin-transform-imports',
       {
-        transform: 'constObject',
+        '@material-ui/core': {
+          transform: '@material-ui/core/${member}',
+          preventFullImport: true,
+        },
+        '@material-ui/icons': {
+          transform: '@material-ui/icons/${member}',
+          preventFullImport: true,
+        },
+        '@material-ui/lab': {
+          transform: '@material-ui/lab/${member}',
+          preventFullImport: true,
+        },
       },
-    ],
-    // Resolve imports to top level directory.
-    [
-      'babel-plugin-import',
-      {
-        libraryName: '@material-ui/core',
-        libraryDirectory: '',
-        camel2DashComponentName: false,
-      },
-      'core',
-    ],
-    [
-      'babel-plugin-import',
-      {
-        libraryName: '@material-ui/icons',
-        libraryDirectory: '',
-        camel2DashComponentName: false,
-      },
-      'icons',
-    ],
-    [
-      'babel-plugin-import',
-      {
-        libraryName: '@material-ui/lab',
-        libraryDirectory: '',
-        camel2DashComponentName: false,
-      },
-      'lab',
     ],
   ],
+  ignore: ['node_modules', 'public'],
 };

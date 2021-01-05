@@ -1,20 +1,3 @@
-# Basic
-
-## Authoring conventions
-
-### Module aliases
-
-- Use module aliases for import statements. (e.g. `import logger from '~/devtools/logger'`)
-- The aliases are declared in the following locations:
-  - frontend: `frontend/tsconfig.json`
-  - backend: `backend/tsconfig.json` & `backend/src/helpers/module-alias.ts`
-- Use function components and hooks over class components whenever possible.
-
-### Comments
-
-- Use block comment to describe a value, or leave a multiline note. This way, VSCode is able to show the comment in tooltips.
-- Use inline comment to describe an action, or leave an inline note.
-
 # Frontend
 
 ## React
@@ -73,6 +56,27 @@ TypeGraphQL helps us to:
 - Simplify user input validation and permission check process.
 
 Read more about TypeGraphQL on the [official documentation](https://typegraphql.com/docs/introduction.html).
+
+# Authoring conventions
+
+## Module aliases
+
+- The aliases are defined in `tsconfig.json` and `.eslintrc.js`.
+- Use relative imports for siblings and decendant paths.
+  - :heavy_check_mark: `import useStyles from './styles/Form';`
+  - :x: `import useStyles from '~/features/account/styles/Form';`
+- Avoid relative imports for antecedant paths.
+  - :heavy_check_mark: `import useStyles from '~/features/chess/constants';`
+  - :x: `import useStyles from '../constants';`
+
+## Comments
+
+- Use block comment to describe a value, or leave a multiline note. This way, VSCode is able to show the comment in tooltips.
+- Use inline comment to describe an action, or leave an inline note.
+
+## React
+
+- Use function components and hooks over class components whenever possible.
 
 # Pitfalls
 

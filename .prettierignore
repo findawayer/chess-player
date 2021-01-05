@@ -1,13 +1,10 @@
 # Dependencies
 node_modules
 
-# Static files
+# Static
 public
 
-# logs
-logs
-
-# Auto-generated
+# Compiled
 .next
-**/generated/**/*
+server-dist
 **/migrations/**/*

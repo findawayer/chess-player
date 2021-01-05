@@ -1,26 +1,35 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "commonjs",
-    "target": "esnext",
-    "noEmit": true,
-    "isolatedModules": true,
-    "strict": false,
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "esModuleInterop": true,
     "moduleResolution": "Node",
+    "noEmit": true,
     "paths": {
-      "~/*": ["src/*"]
+      "~app/*": ["app/*"],
+      "~server/*": ["server/*"],
     },
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "skipLibCheck": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "target": "es6"
   },
-  "exclude": ["node_modules", "public/**/*"],
-  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"]
+  "exclude": ["node_modules"],
+  "include": [
+    "global.d.ts",
+    "next-env.d.ts",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "pages/**/*.ts",
+    "pages/**/*.tsx"
+  ]
 }
