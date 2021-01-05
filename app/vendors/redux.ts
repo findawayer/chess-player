@@ -28,9 +28,9 @@ export type AppStore = EnhancedStore<AppState>;
 export type AppDispatch = EnhancedStore<AppState>['dispatch'];
 
 // Cached store.
-let store: AppStore;
+let store: AppStore | undefined;
 
-const createStore = (preloadedState: PreloadedState): AppStore =>
+const createStore = (preloadedState?: PreloadedState): AppStore =>
   configureStore({
     reducer: rootReducer,
     preloadedState,

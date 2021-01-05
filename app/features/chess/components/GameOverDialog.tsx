@@ -43,8 +43,8 @@ const getTitle = (
   playerColor: ChessPieceColor | null,
 ): string => {
   if (!winner) return 'Draw';
-  if (playerColor) return `You ${winner === playerColor ? 'win!!' : 'lose…'}`;
-  return `${getFullPieceColor(winner)} wins!!`;
+  if (playerColor) return `You ${winner === playerColor ? 'win!' : 'lose…'}`;
+  return `${getFullPieceColor(winner)} wins!`;
 };
 
 const getDescription = (gameOver: ChessGameOver): string => {
@@ -92,7 +92,7 @@ const GameOverDialog: React.FC<GameOverDialogProps> = ({
 
   // Toggle the dialog's visibility based on the gameOver props change.
   useEffect(() => {
-    setIsOpen(!!gameOver);
+    setIsOpen(Boolean(gameOver));
   }, [gameOver]);
 
   return (

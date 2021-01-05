@@ -11,10 +11,10 @@ import { squareClass } from '~app/features/chess/utils';
 interface GuideProps {
   color: ChessBoardColor;
   variant: 'active' | 'hover' | 'recent';
-  square: ChessSquareName;
+  square: ChessSquareName | null;
 }
 
-const useStyles = makeStyles<Theme, GuideProps>({
+const useStyles = makeStyles<Theme, Omit<GuideProps, 'square'>>({
   guide: {
     position: 'absolute',
     width: `${SQUARE_SIZE}%`,
@@ -30,12 +30,12 @@ const useStyles = makeStyles<Theme, GuideProps>({
   },
 });
 
-const Guide: React.FC<GuideProps> = props => {
-  const { square } = props;
-  /** CSS classes created via Material-UI. */
-  const classes = useStyles(props);
+const Guide: React.FC<GuideProps> = ({ color, variant, square }) => {
+  const classes = useStyles({ color, variant });
 
-  return <div className={clsx(classes.guide, squareClass(square))} />;
+  return !square ? null : (
+    <div className={clsx(classes.guide, squareClass(square))} />
+  );
 };
 
 export default memo(Guide);

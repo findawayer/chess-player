@@ -58,9 +58,9 @@ export function findLegalMoves(
 /** Get the latest move's source and target squares from the move history. */
 export function getRecentMovePath(
   moveHistory: ChessMoveLog[],
-): ChessSquareName[] | null {
+): ChessSquareName[] {
   if (!moveHistory.length) {
-    return null;
+    return [];
   }
   const lastMove = moveHistory[moveHistory.length - 1];
   return [lastMove.from, lastMove.to];

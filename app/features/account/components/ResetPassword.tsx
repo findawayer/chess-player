@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
+import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -23,7 +24,7 @@ import {
   ResetPassword as ResetPasswordMethod,
 } from '~app/features/account/graphql';
 import { CURRENT_USER_QUERY } from '~app/graphql';
-import { usePasswordFields } from '~app/hooks';
+import { useVisibilityToggle } from '~app/hooks';
 
 // Component
 const ResetPassword: React.FC = () => {
@@ -34,15 +35,16 @@ const ResetPassword: React.FC = () => {
     { loading, error, called },
   ] = useMutation<ResetPasswordMethod>(RESET_PASSWORD_MUTATION);
   const {
-    values,
     visibility,
-    handlePasswordChange,
-    handleTogglerClick,
     handleVisibilityChange,
-    handleSubmit,
-    clearPasswords,
-  } = usePasswordFields({
-    keys: ['password', 'confirmPassword'],
+    preventMouseDown,
+    resetVisibility,
+  } = useVisibilityToggle(['password']);
+  const { values, handleChange, handleSubmit, resetForm } = useFormik({
+    initialValues: {
+      password: '',
+      confirmPassword: '',
+    },
     onSubmit: async currentValues => {
       try {
         // Invoke reset password action.
@@ -55,12 +57,14 @@ const ResetPassword: React.FC = () => {
           refetchQueries: [{ query: CURRENT_USER_QUERY }],
         });
         // Reset the form if successful.
-        clearPasswords();
+        resetForm();
+        resetVisibility();
       } catch (error) {
         // Hide error from users.
       }
     },
   });
+
   const isSuccessful = called && !loading && !error;
 
   return (
@@ -88,14 +92,14 @@ const ResetPassword: React.FC = () => {
                 value={values.password}
                 disabled={isSuccessful}
                 required
-                onChange={handlePasswordChange('password')}
+                onChange={handleChange}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       disabled={isSuccessful}
                       onClick={handleVisibilityChange('password')}
-                      onMouseDown={handleTogglerClick}
+                      onMouseDown={preventMouseDown}
                     >
                       {visibility.password ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
@@ -116,14 +120,14 @@ const ResetPassword: React.FC = () => {
                 value={values.confirmPassword}
                 disabled={isSuccessful}
                 required
-                onChange={handlePasswordChange('confirmPassword')}
+                onChange={handleChange}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       disabled={isSuccessful}
                       onClick={handleVisibilityChange('confirmPassword')}
-                      onMouseDown={handleTogglerClick}
+                      onMouseDown={preventMouseDown}
                     >
                       {visibility.confirmPassword ? (
                         <Visibility />

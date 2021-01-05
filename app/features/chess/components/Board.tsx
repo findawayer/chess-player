@@ -14,8 +14,8 @@ import {
   useChessPromotion,
 } from '~app/features/chess/hooks';
 import {
+  DRAG_ITEM,
   DraggedPiece,
-  DragItem,
   getDropTargetSquare,
 } from '~app/features/chess/react-dnd';
 import { movePiece, playMove } from '~app/features/chess/slice';
@@ -74,7 +74,7 @@ interface BoardProps {
   // Game data
   validator: ChessInstance;
   pieces: ChessPieces;
-  recentMovePath: ChessSquareName[] | null;
+  recentMovePath: ChessSquareName[];
   isFlipped: boolean;
   isFrozen: boolean;
   isGameOver: boolean;
@@ -191,7 +191,7 @@ const Board: React.FC<BoardProps> = ({
 
   // `react-dnd` bindings for droppability.
   const [, drop] = useDrop({
-    accept: DragItem.PIECE,
+    accept: DRAG_ITEM,
     // canDrop: () => !isFrozen,
     hover: (item: DraggedPiece, monitor: DropTargetMonitor) => {
       // Hovered square can have 2 possible values.

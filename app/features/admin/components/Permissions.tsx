@@ -70,7 +70,7 @@ const UserTableRow: React.FC<{ user: PaginatedUser }> = ({ user }) => {
     // Close popover
     setAnchorEl(null);
   };
-  const open = !!anchorEl;
+  const open = Boolean(anchorEl);
 
   return (
     <TableRow>

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // ---------- Global augmentations ---------- //
 declare global {
   // Node.js
@@ -17,8 +19,8 @@ declare global {
   }
 
   /** Not-yet-defined `TODO` type that bypasses eslint warnings */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type TODO = any;
+  type Unused = any;
 }
 
 // Treat this file as a module; required for global type augmentations.

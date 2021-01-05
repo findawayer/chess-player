@@ -31,7 +31,7 @@ export interface ChessState {
 }
 
 /** Create default state related for `chess` slice. */
-export const initializeChessState = (): ChessState => ({
+export const initialChessState: ChessState = {
   // Time given to play per side. (in milliseconds)
   duration: 10 * 60 * 1000, // 10 min.
   // Time gained by playing a move. (in milliseconds)
@@ -75,4 +75,4 @@ export const initializeChessState = (): ChessState => ({
   showLegal: true,
   // Highlight recent move's original & destination squares.
   showRecent: true,
-});
+};

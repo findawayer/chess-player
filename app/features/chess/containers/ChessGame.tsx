@@ -138,7 +138,7 @@ const ChessGame: React.FC<ChessGameProps> = ({ me }) => {
    * 2. The game is not over yet.
    * 3. At least the first move has to be played.
    */
-  const canResign = !!playerColor && !gameOver && moves.length > 0;
+  const canResign = Boolean(playerColor) && !gameOver && moves.length > 0;
   /**
    * Figure out whether to allow the player to request a take back of move.
    * 1. The game should not be computer vs computer mode.
@@ -147,7 +147,7 @@ const ChessGame: React.FC<ChessGameProps> = ({ me }) => {
    * 4. It should be the player's turn. (TODO: reconsider this behavior)
    */
   const canTakeBack =
-    !!playerColor &&
+    Boolean(playerColor) &&
     !gameOver &&
     moves.length > (playerColor === 'w' ? 1 : 0) &&
     isPlayerTurn;
@@ -300,7 +300,7 @@ const ChessGame: React.FC<ChessGameProps> = ({ me }) => {
               recentMovePath={recentMovePath}
               isFlipped={isFlipped}
               isFrozen={isFrozen}
-              isGameOver={!!gameOver}
+              isGameOver={Boolean(gameOver)}
               settings={settings}
             />
             <Player

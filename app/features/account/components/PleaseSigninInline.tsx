@@ -5,7 +5,7 @@ import Signin from './Signin';
 import Signup from './Signup';
 
 const PleaseSigninInline: React.FC = () => {
-  const [route, setRoute] = useState<'signin' | 'signup'>(null);
+  const [route, setRoute] = useState<'signin' | 'signup' | null>(null);
   const signinHandler = () => setRoute('signin');
   const signupHandler = () => setRoute('signup');
 

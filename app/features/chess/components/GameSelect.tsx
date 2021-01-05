@@ -73,12 +73,12 @@ const GameSelect: React.FC<GameSelectProps> = ({
   const incrementInSeconds = increment / 1000;
 
   /** Handle changes from `duration` slider. */
-  const handleDurationChange = (_: React.ChangeEvent, value: number) =>
-    dispatch(setDuration(value * 1000 * 60));
+  const handleDurationChange = (_: Unused, value: number | number[]) =>
+    dispatch(setDuration((value as number) * 1000 * 60));
 
   /** Handle changes from `increment` slider. */
-  const handleIncrementChange = (_: React.ChangeEvent, value: number) =>
-    dispatch(setIncrement(value * 1000));
+  const handleIncrementChange = (_: Unused, value: number | number[]) =>
+    dispatch(setIncrement((value as number) * 1000));
 
   /** Handle changes from `mode` radio buttons. */
   const handleModeChange = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -100,8 +100,8 @@ const GameSelect: React.FC<GameSelectProps> = ({
   };
 
   /** Handle changes from `engineLevel` slider. */
-  const handleEngineLevelChange = (_: React.ChangeEvent, value: number) =>
-    dispatch(setEngineLevel(value));
+  const handleEngineLevelChange = (_: Unused, value: number | number[]) =>
+    dispatch(setEngineLevel(value as number));
 
   return (
     <Card elevation={2} className={classes.root}>

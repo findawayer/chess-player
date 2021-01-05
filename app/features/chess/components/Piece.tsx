@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { DragItem } from '~app/features/chess/react-dnd';
+import { DRAG_ITEM } from '~app/features/chess/react-dnd';
 import {
   ChessPieceColor,
   ChessPieceVariant,
@@ -36,7 +36,7 @@ const Piece: React.FC<PieceProps> = ({
   // `react-dnd` bindings for draggability.
   const [{ isDragging }, drag, preview] = useDrag({
     item: {
-      type: DragItem.PIECE,
+      type: DRAG_ITEM,
       id,
       color,
       variant,

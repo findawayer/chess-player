@@ -57,7 +57,7 @@ const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
 };
 
 export const initializeApollo = (
-  initialState: ApolloState = null,
+  initialState?: ApolloState,
 ): ApolloClient<unknown> => {
   const _apolloClient = apolloClient ?? createApolloClient();
 
@@ -65,7 +65,7 @@ export const initializeApollo = (
   // the initial state gets hydrated here
   if (initialState) {
     // Get existing cache, loaded during client side data fetching
-    const existingCache = _apolloClient.extract();
+    const existingCache = _apolloClient.extract() as ApolloState;
 
     // Merge the existing cache into data passed from getStaticProps/getServerSideProps
     const data = deepMerge(initialState, existingCache, {

@@ -23,7 +23,7 @@ import { capitalize } from '~app/utils';
 
 interface SettingsDialogProps {
   isOpen: boolean;
-  me: CurrentUser;
+  me: CurrentUser | null;
   settings: ChessSettings;
   changeSetting(
     name: keyof ChessSettings,
@@ -54,7 +54,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   };
   /** Handle changes on <Select /> components. */
   const handleSelectChange = (
-    event: React.ChangeEvent<{ name: string; value: unknown }>,
+    event: React.ChangeEvent<{ name?: string; value: unknown }>,
   ) => {
     const { name, value } = event.target;
     changeSetting(

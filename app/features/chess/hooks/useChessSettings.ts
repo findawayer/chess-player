@@ -17,7 +17,7 @@ export interface ChessSettings {
 }
 
 /** Map user settings about chess gaming from the current auth user payload. */
-export const createChessSettings = (me?: CurrentUser): ChessSettings => ({
+export const createChessSettings = (me: CurrentUser | null): ChessSettings => ({
   autoQueen: me?.chessAutoQueen || DEFAULT_AUTO_QUEEN,
   boardColor: me?.chessBoardColor || DEFAULT_BOARD_COLOR,
   showLegal: me?.chessShowLegal || DEFAULT_SHOW_LEGAL,
@@ -32,7 +32,7 @@ export const mapChessSettings = (settings: ChessSettings) => ({
   chessShowRecent: settings.showRecent,
 });
 
-export const useChessSettings = (me?: CurrentUser) => {
+export const useChessSettings = (me: CurrentUser | null) => {
   // Chess settings from currently authenticated user.
   const [settings, setSettings] = useState(createChessSettings(me));
   // This prevents refetching settings from server after submitting new data.

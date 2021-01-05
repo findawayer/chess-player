@@ -21,7 +21,7 @@ import React from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
 import { CURRENT_USER_QUERY } from '~app/graphql';
-import { usePasswordFields } from '~app/hooks';
+import { useVisibilityToggle } from '~app/hooks';
 import {
   SIGN_UP_MUTATION,
   Signup as SignupMethod,
@@ -37,17 +37,16 @@ const Signup: React.FC<SignupProps> = ({ noRedirect }) => {
     SIGN_UP_MUTATION,
   );
   const {
-    values: passwordValues,
     visibility,
-    handlePasswordChange,
     handleVisibilityChange,
-    handleTogglerClick,
-    clearPasswords,
-  } = usePasswordFields();
+    preventMouseDown,
+    resetVisibility,
+  } = useVisibilityToggle(['password']);
   const { values, handleChange, handleSubmit, resetForm } = useFormik({
     initialValues: {
       email: '',
       name: '',
+      password: '',
     },
     onSubmit: async currentValues => {
       try {
@@ -56,13 +55,13 @@ const Signup: React.FC<SignupProps> = ({ noRedirect }) => {
           variables: {
             email: currentValues.email,
             name: currentValues.name,
-            password: passwordValues.password,
+            password: currentValues.password,
           },
           refetchQueries: [{ query: CURRENT_USER_QUERY }],
         });
         // Reset the form if successful.
         resetForm();
-        clearPasswords();
+        resetVisibility();
         // Redirect to the home page.
         if (!noRedirect) {
           router.push('/');
@@ -116,16 +115,16 @@ const Signup: React.FC<SignupProps> = ({ noRedirect }) => {
                 id="password"
                 name="password"
                 type={visibility.password ? 'text' : 'password'}
-                value={passwordValues.password}
+                value={values.password}
                 disabled={loading}
                 required
-                onChange={handlePasswordChange('password')}
+                onChange={handleChange}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       onClick={handleVisibilityChange('password')}
-                      onMouseDown={handleTogglerClick}
+                      onMouseDown={preventMouseDown}
                     >
                       {visibility.password ? <Visibility /> : <VisibilityOff />}
                     </IconButton>

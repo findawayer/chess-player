@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { useFormik } from 'formik';
 import React from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
@@ -22,7 +23,7 @@ import {
   UpdatePassword as UpdatePasswordMethod,
 } from '~app/features/account/graphql';
 import { CURRENT_USER_QUERY } from '~app/graphql';
-import { usePasswordFields } from '~app/hooks';
+import { useVisibilityToggle } from '~app/hooks';
 
 const UpdatePassword: React.FC = () => {
   const [
@@ -30,17 +31,20 @@ const UpdatePassword: React.FC = () => {
     { loading, error, called },
   ] = useMutation<UpdatePasswordMethod>(UPDATE_PASSWORD_MUTATION);
   const {
-    values,
     visibility,
-    handlePasswordChange,
-    handleTogglerClick,
     handleVisibilityChange,
-    handleSubmit,
-    clearPasswords,
-  } = usePasswordFields({
-    keys: ['oldPassword', 'password', 'confirmPassword'],
+    preventMouseDown,
+    resetVisibility,
+  } = useVisibilityToggle(['password']);
+  const { values, handleChange, handleSubmit, resetForm } = useFormik({
+    initialValues: {
+      oldPassword: '',
+      password: '',
+      confirmPassword: '',
+    },
     onSubmit: async currentValues => {
       try {
+        // Invoke update password action.
         await updatePasword({
           variables: {
             oldPassword: currentValues.oldPassword,
@@ -49,8 +53,9 @@ const UpdatePassword: React.FC = () => {
           },
           refetchQueries: [{ query: CURRENT_USER_QUERY }],
         });
-        // Clear fields if sucessful.
-        clearPasswords();
+        // Reset the form if successful.
+        resetForm();
+        resetVisibility();
       } catch (error) {
         // Hide error from users.
       }
@@ -83,13 +88,13 @@ const UpdatePassword: React.FC = () => {
                 value={values.oldPassword}
                 disabled={loading}
                 required
-                onChange={handlePasswordChange('oldPassword')}
+                onChange={handleChange}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       onClick={handleVisibilityChange('oldPassword')}
-                      onMouseDown={handleTogglerClick}
+                      onMouseDown={preventMouseDown}
                     >
                       {visibility.oldPassword ? (
                         <Visibility />
@@ -114,13 +119,13 @@ const UpdatePassword: React.FC = () => {
                 value={values.password}
                 disabled={loading}
                 required
-                onChange={handlePasswordChange('password')}
+                onChange={handleChange}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       onClick={handleVisibilityChange('password')}
-                      onMouseDown={handleTogglerClick}
+                      onMouseDown={preventMouseDown}
                     >
                       {visibility.password ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
@@ -141,13 +146,13 @@ const UpdatePassword: React.FC = () => {
                 value={values.confirmPassword}
                 disabled={loading}
                 required
-                onChange={handlePasswordChange('confirmPassword')}
+                onChange={handleChange}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="Toggle password visibility"
                       onClick={handleVisibilityChange('confirmPassword')}
-                      onMouseDown={handleTogglerClick}
+                      onMouseDown={preventMouseDown}
                     >
                       {visibility.confirmPassword ? (
                         <Visibility />

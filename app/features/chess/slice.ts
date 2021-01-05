@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Move } from 'chess.js';
 
 import { SCORE_DRAW, SCORE_WIN } from './constants';
-import { initializeChessState } from './state';
+import { initialChessState } from './state';
 import {
   ChessBoardData,
   ChessGameOverType,
@@ -51,58 +51,42 @@ export enum ChessActionType {
 }
 
 const chessSlice = createSlice({
+  // Action type prefix.
   name: 'chess',
-  initialState: initializeChessState(),
+  // Initial state.
+  initialState: initialChessState,
   // Note that mutable reducers *ONLY* work inside `createSlice`.
   reducers: {
     // ---------- Game definitions ---------- //
     // setDuration
-    [ChessActionType.SetDuration]: (
-      chess,
-      action: PayloadAction<number, ChessActionType>,
-    ) => {
+    setDuration: (chess, action: PayloadAction<number>) => {
       chess.duration = action.payload;
     },
     // setIncrement
-    [ChessActionType.SetIncrement]: (
-      chess,
-      action: PayloadAction<number, ChessActionType>,
-    ) => {
+    setIncrement: (chess, action: PayloadAction<number>) => {
       chess.increment = action.payload;
     },
     // setPlayerColr
-    [ChessActionType.SetPlayerColor]: (
-      chess,
-      action: PayloadAction<ChessPieceColor | null, ChessActionType>,
-    ) => {
+    setPlayerColor: (chess, action: PayloadAction<ChessPieceColor | null>) => {
       const playerColor = action.payload;
       chess.playerColor = playerColor;
       chess.isFlipped = playerColor === 'b';
     },
     // setEngineLevel
-    [ChessActionType.SetEngineLevel]: (
-      chess,
-      action: PayloadAction<number, ChessActionType>,
-    ) => {
+    setEngineLevel: (chess, action: PayloadAction<number>) => {
       chess.engineLevel = action.payload;
     },
 
     // ---------- Pieces ---------- //
     // setPieces
-    [ChessActionType.SetPieces]: (
-      chess,
-      action: PayloadAction<{ board: ChessBoardData }, ChessActionType>,
-    ) => {
+    setPieces: (chess, action: PayloadAction<{ board: ChessBoardData }>) => {
       chess.pieces = createPieces(action.payload.board);
     },
     /**
      * movePiece
      * Visually move the piece, without updating movelist. Used for pawn promotion.
      */
-    [ChessActionType.MovePiece]: (
-      chess,
-      action: PayloadAction<ChessMove, ChessActionType>,
-    ) => {
+    movePiece: (chess, action: PayloadAction<ChessMove>) => {
       const { from, to } = action.payload;
       // Find the ID of the piece that just moved.
       const movedPieceId = chess.pieces.positions[from]!;
@@ -115,10 +99,7 @@ const chessSlice = createSlice({
 
     // ---------- Moves ---------- //
     // playMove
-    [ChessActionType.PlayMove]: (
-      chess,
-      action: PayloadAction<Move, ChessActionType>,
-    ) => {
+    playMove: (chess, action: PayloadAction<Move>) => {
       const move = action.payload;
       const { from, to, promotion, san } = move;
       // Move the piece accordingly.
@@ -177,12 +158,9 @@ const chessSlice = createSlice({
       chess.turn = invertPieceColor(chess.turn);
     },
     // undoMove
-    [ChessActionType.UndoMove]: (
+    undoMove: (
       chess,
-      action: PayloadAction<
-        { length: number; board: ChessBoardData },
-        ChessActionType
-      >,
+      action: PayloadAction<{ length: number; board: ChessBoardData }>,
     ) => {
       // Default undo length to 1
       const undoLength = action.payload.length || 1;
@@ -200,19 +178,16 @@ const chessSlice = createSlice({
       chess.pieces = createPieces(action.payload.board);
     },
     // clearMoves
-    [ChessActionType.ClearMoves]: chess => {
+    clearMoves: chess => {
       chess.moves = [];
       chess.turn = 'w';
     },
 
     // ---------- Players ---------- //
     // setPlayers
-    [ChessActionType.SetPlayers]: (
+    setPlayers: (
       chess,
-      action: PayloadAction<
-        Record<ChessPieceColor, ChessPlayer>,
-        ChessActionType
-      >,
+      action: PayloadAction<Record<ChessPieceColor, ChessPlayer>>,
     ) => {
       const players = action.payload;
       Object.assign(chess.players.w, players.w);
@@ -221,10 +196,7 @@ const chessSlice = createSlice({
 
     // ---------- Game control ---------- //
     // checkmate
-    [ChessActionType.Checkmate]: (
-      chess,
-      action: PayloadAction<{ winner: ChessPieceColor }, ChessActionType>,
-    ) => {
+    checkmate: (chess, action: PayloadAction<{ winner: ChessPieceColor }>) => {
       const { winner } = action.payload;
       chess.gameOver = {
         type: ChessGameOverType.Checkmate,
@@ -234,10 +206,7 @@ const chessSlice = createSlice({
       chess.isFrozen = true;
     },
     // timeout
-    [ChessActionType.Timeout]: (
-      chess,
-      action: PayloadAction<{ winner: ChessPieceColor }, ChessActionType>,
-    ) => {
+    timeout: (chess, action: PayloadAction<{ winner: ChessPieceColor }>) => {
       const { winner } = action.payload;
       chess.gameOver = {
         type: ChessGameOverType.Timeout,
@@ -247,7 +216,7 @@ const chessSlice = createSlice({
       chess.isFrozen = true;
     },
     // resignGame
-    [ChessActionType.Resign]: chess => {
+    resign: chess => {
       if (!chess.gameOver && chess.playerColor) {
         const winner = invertPieceColor(chess.playerColor);
         chess.gameOver = {
@@ -259,7 +228,7 @@ const chessSlice = createSlice({
       }
     },
     // stalemate
-    [ChessActionType.Stalemate]: chess => {
+    stalemate: chess => {
       chess.gameOver = {
         type: ChessGameOverType.Stalemate,
         winner: null,
@@ -269,7 +238,7 @@ const chessSlice = createSlice({
       chess.isFrozen = true;
     },
     // notEnoughMaterial
-    [ChessActionType.NotEnoughMaterial]: chess => {
+    notEnoughMaterial: chess => {
       chess.gameOver = {
         type: ChessGameOverType.NotEnoughMaterial,
         winner: null,
@@ -279,7 +248,7 @@ const chessSlice = createSlice({
       chess.isFrozen = true;
     },
     // repetition
-    [ChessActionType.Repetition]: chess => {
+    repetition: chess => {
       chess.gameOver = {
         type: ChessGameOverType.Repetition,
         winner: null,
@@ -289,12 +258,9 @@ const chessSlice = createSlice({
       chess.isFrozen = true;
     },
     // resetGame
-    [ChessActionType.ResetGame]: (
+    resetGame: (
       chess,
-      action: PayloadAction<
-        { board: ChessBoardData; alternate: boolean },
-        ChessActionType
-      >,
+      action: PayloadAction<{ board: ChessBoardData; alternate: boolean }>,
     ) => {
       // Reset pieces
       chess.pieces = createPieces(action.payload.board);
@@ -319,7 +285,7 @@ const chessSlice = createSlice({
       chess.isFrozen = false;
     },
     // flipBoard
-    [ChessActionType.FlipBoard]: chess => {
+    flipBoard: chess => {
       chess.isFlipped = !chess.isFlipped;
     },
   },
