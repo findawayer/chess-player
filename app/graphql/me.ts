@@ -1,8 +1,6 @@
 import { gql } from '@apollo/client';
 import type { User } from '@prisma/client';
 
-import { initializeApollo } from '~app/vendors/apollo-client';
-
 /**
  * GraphQL: Fetch current user, to reflect the user data to the view.
  */

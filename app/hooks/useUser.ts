@@ -1,8 +1,15 @@
-import { useQuery } from '@apollo/client';
+import { useContext } from 'react';
 
-import { CURRENT_USER_QUERY, CurrentUser } from '~app/graphql';
+import { UserContext } from '~app/contexts';
 
-export const useUser = (): CurrentUser | undefined => {
-  const { data } = useQuery<{ me: CurrentUser }>(CURRENT_USER_QUERY);
-  return data?.me;
+import type { CurrentUser } from '~app/graphql';
+
+/**
+ * Hook that extracts auth user payload from the context.
+ *
+ * @returns Currently authenticated user.
+ */
+export const useUser = (): CurrentUser | null => {
+  const user = useContext(UserContext);
+  return user;
 };

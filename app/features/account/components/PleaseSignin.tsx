@@ -43,8 +43,12 @@ const PleaseSignin: React.FC<PleaseSigninProps> = ({
       </Typography>
     </CardContent>
     <CardActions>
-      <RouteLink href="/join" text="Get started" handler={signupHandler} />
-      <RouteLink href="/login" text="Sign in" handler={signinHandler} />
+      <RouteLink
+        href="/get-started"
+        text="Get started"
+        handler={signupHandler}
+      />
+      <RouteLink href="/signin" text="Sign in" handler={signinHandler} />
     </CardActions>
   </Card>
 );

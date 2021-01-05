@@ -121,7 +121,7 @@ const Signin: React.FC<SigninProps> = ({ noRedirect }) => {
           </Box>
           <Box mt={3}>
             <p>
-              <Link href="/join" passHref>
+              <Link href="/get-started" passHref>
                 <Typography component="a" color="inherit">
                   Create a new account.
                 </Typography>

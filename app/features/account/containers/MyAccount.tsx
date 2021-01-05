@@ -1,16 +1,15 @@
 import { Container, Grid } from '@material-ui/core';
 import React from 'react';
 
-import { CurrentUser } from '~app/graphql';
+import { useUser } from '~app/hooks';
 import UpdatePassword from '~app/features/account/components/UpdatePassword';
 import UpdateUserInfo from '~app/features/account/components/UpdateUserInfo';
 
-interface MyAccountProps {
-  me: CurrentUser;
-}
+const MyAccount: React.FC = () => {
+  /** Authenticated user paylaod extracted from React Context. */
+  const me = useUser();
 
-const MyAccount: React.FC<MyAccountProps> = ({ me }) => {
-  return (
+  return !me ? null : (
     <Container maxWidth="md">
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>

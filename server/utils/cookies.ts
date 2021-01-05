@@ -13,7 +13,7 @@ export const setCookie = (
   options: CookieSerializeOptions = {},
 ): void => {
   // Create cookie header string.
-  const _value =
+  const stringValue =
     typeof value === 'object' ? `j:${JSON.stringify(value)}` : String(value);
   // Normalize expiry.
   if (typeof options.maxAge === 'number') {
@@ -21,13 +21,5 @@ export const setCookie = (
     options.maxAge /= 1000;
   }
   // Set the cookie.
-  res.setHeader('Set-Cookie', serialize(name, String(_value), options));
-};
-
-export const deleteCookie = (
-  res: NextApiResponse,
-  name: string,
-  options?: CookieSerializeOptions,
-): void => {
-  setCookie(res, name, '', options);
+  res.setHeader('Set-Cookie', serialize(name, String(stringValue), options));
 };

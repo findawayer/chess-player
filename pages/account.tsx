@@ -1,6 +1,9 @@
 import { Container } from '@material-ui/core';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 
+import Layout from '~app/components/Layout';
+import { UserProvider } from '~app/contexts/UserContext';
 import MyAccount from '~app/features/account/containers/MyAccount';
 import { getServerSession } from '~server/utils';
 
@@ -23,12 +26,17 @@ export const getServerSideProps: GetServerSideProps = async context => {
   };
 };
 
-export default function Account({
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Account() {
   return (
-    <Container maxWidth="md">
-      <MyAccount me={me} />
-    </Container>
+    <UserProvider>
+      <Head>
+        <title>My account | Chess Player</title>
+      </Head>
+      <Layout>
+        <Container maxWidth="md">
+          <MyAccount />
+        </Container>
+      </Layout>
+    </UserProvider>
   );
 }

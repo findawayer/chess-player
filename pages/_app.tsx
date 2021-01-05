@@ -1,24 +1,28 @@
 import 'nprogress/nprogress.css';
 
 import { ApolloProvider } from '@apollo/client';
-import App, { AppContext, AppProps } from 'next/app';
+// import App, { AppContext, AppProps } from 'next/app';
+import { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import { Provider as ReactReduxProvider } from 'react-redux';
 
-import Layout from '~app/components/Layout';
 import { useApollo } from '~app/vendors/apollo-client';
 import { useStore } from '~app/vendors/redux';
-// import { CurrentUser } from '~app/graphql';
+import { CurrentUser } from '~app/graphql';
 
 /** Load progressbar only in the browser. */
 const ProgressBar = dynamic(() => import('~app/components/ProgressBar'), {
   ssr: false,
 });
 
+interface MyAppProps extends AppProps {
+  me: CurrentUser | null;
+}
+
 /** Custom client-side markup for `next.js` */
-export default function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: MyAppProps) {
   // Create Redux store
   const store = useStore(pageProps.initialReduxState);
   // Create Apollo Client
@@ -39,7 +43,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
-        <title>Chess Player: Demo</title>
+        <title>Chess Player</title>
         <meta property="og:title" content="Chess Player" />
         <meta property="og:site_name" content="Chess Player Demo" />
         <meta
@@ -54,9 +58,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <ReactReduxProvider store={store}>
         <ApolloProvider client={apolloClient}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Component {...pageProps} />
           <ProgressBar />
         </ApolloProvider>
       </ReactReduxProvider>
@@ -64,8 +66,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  // Simulate the default behavior.
-  const appProps = await App.getInitialProps(appContext);
-  return { ...appProps };
-};
+// // Disable user
+// MyApp.getInitialProps = async (appContext: AppContext) => {
+//   // Simulate the default behavior.
+//   const appProps = await App.getInitialProps(appContext);
+//   // const apolloClient = initializeApollo();
+//   // const { data } = await apolloClient.query<{ me: CurrentUser | null }>({
+//   //   query: CURRENT_USER_QUERY,
+//   // });
+//   return { ...appProps };
+// };

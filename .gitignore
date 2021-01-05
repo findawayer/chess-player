@@ -23,6 +23,7 @@ yarn-error.log*
 
 # Personal resources
 .idea
+TODOs.md
 
 # Keep folders with .gitkeep
 !.gitkeep

@@ -1,6 +1,9 @@
 import { Container } from '@material-ui/core';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 
+import Layout from '~app/components/Layout';
+import { UserProvider } from '~app/contexts/UserContext';
 import Signin from '~app/features/account/components/Signin';
 import { getServerSession } from '~server/utils';
 
@@ -17,16 +20,21 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   return {
-    props: {
-      me,
-    },
+    props: {},
   };
 };
 
 export default function Login() {
   return (
-    <Container maxWidth="xs">
-      <Signin />
-    </Container>
+    <UserProvider>
+      <Head>
+        <title>Login | Chess Player</title>
+      </Head>
+      <Layout>
+        <Container maxWidth="xs">
+          <Signin />
+        </Container>
+      </Layout>
+    </UserProvider>
   );
 }

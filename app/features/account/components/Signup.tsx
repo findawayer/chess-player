@@ -134,7 +134,7 @@ const Signup: React.FC<SignupProps> = ({ noRedirect }) => {
             </FormControl>
           </Box>
           <Box mt={3}>
-            <Link href="/login" passHref>
+            <Link href="/signin" passHref>
               <Typography component="a" color="inherit">
                 Already have an account?
               </Typography>

@@ -6,12 +6,16 @@ import { ACCESS_TOKEN_KEY } from '~server/constants';
 import { AuthUserPayload, GraphQLContext } from '~server/interfaces';
 import { prisma } from '~server/prisma';
 import { createAccessToken, parseAccessToken } from './auth';
-import { deleteCookie, setCookie } from './cookies';
+import { setCookie } from './cookies';
 
 /** Retrieve currently user from cookies. */
 export const getServerSession = async (
-  req: NextApiRequest | IncomingMessage,
+  req?: NextApiRequest | IncomingMessage,
 ): Promise<AuthUserPayload | null> => {
+  // There are cases where `req` is unavailable. (e.g. pages/_app.tsx)
+  if (!req) {
+    return null;
+  }
   const cookies = cookie.parse(req.headers.cookie || '');
   // Decode access token stored as cookies.
   const decoded = await parseAccessToken(cookies[ACCESS_TOKEN_KEY]);
@@ -46,6 +50,8 @@ export const handleSuccessfulLogin = async (
   setCookie(context.res, ACCESS_TOKEN_KEY, accessToken, {
     maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
     httpOnly: true,
+    path: '/',
+    sameSite: 'lax',
   });
 };
 
@@ -53,7 +59,8 @@ export const handleSuccessfulLogin = async (
 export const handleSuccessfulLogout = async (
   context: GraphQLContext,
 ): Promise<void> => {
-  // Remove user login token from cookie.
-  deleteCookie(context.res, ACCESS_TOKEN_KEY);
-  // clearCookie(res);
+  setCookie(context.res, ACCESS_TOKEN_KEY, '', {
+    maxAge: 0,
+    path: '/',
+  });
 };

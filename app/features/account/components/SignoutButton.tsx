@@ -17,7 +17,7 @@ const SignoutButton: React.FC = () => {
       // Invoke signout action.
       await signout();
       // Redirect to login page, if succssful.
-      router.push('/login');
+      router.push('/signin');
     } catch (error) {
       // Don't display error to the user.
     }
