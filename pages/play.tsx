@@ -1,10 +1,10 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
 import ChessGame from '~app/features/chess/containers/ChessGame';
-import { fetchCurrentUser } from '~app/graphql';
+import { getServerSession } from '~server/utils';
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const me = await fetchCurrentUser();
+export const getServerSideProps: GetServerSideProps = async context => {
+  const me = await getServerSession(context.req);
 
   return {
     props: {

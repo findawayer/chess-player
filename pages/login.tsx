@@ -2,12 +2,11 @@ import { Container } from '@material-ui/core';
 import { GetServerSideProps } from 'next';
 
 import Signin from '~app/features/account/components/Signin';
-import { fetchCurrentUser } from '~app/graphql';
+import { getServerSession } from '~server/utils';
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const me = await fetchCurrentUser();
+export const getServerSideProps: GetServerSideProps = async context => {
+  const me = await getServerSession(context.req);
 
-  // Redirect auth user to landing page.
   if (me) {
     return {
       redirect: {
@@ -18,7 +17,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
   }
 
   return {
-    props: {},
+    props: {
+      me,
+    },
   };
 };
 

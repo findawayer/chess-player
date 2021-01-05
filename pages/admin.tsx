@@ -1,15 +1,14 @@
 import { Container } from '@material-ui/core';
-import { UserRole } from '@prisma/client';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps } from 'next';
 
-import AuthChecker from '~app/features/account/containers/AuthChecker';
 import Permissions from '~app/features/admin/components/Permissions';
-import { fetchCurrentUser } from '~app/graphql';
+import { getServerSession } from '~server/utils';
+import { isAdmin } from '~app/utils';
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const me = await fetchCurrentUser();
+export const getServerSideProps: GetServerSideProps = async context => {
+  const me = await getServerSession(context.req);
 
-  if (!me) {
+  if (!me || !isAdmin(me)) {
     return {
       notFound: true,
     };
@@ -22,14 +21,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export default function Admin({
-  me,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Admin() {
   return (
     <Container maxWidth="md">
-      <AuthChecker me={me} requiredRole={UserRole.ADMIN}>
-        <Permissions />
-      </AuthChecker>
+      <Permissions />
     </Container>
   );
 }

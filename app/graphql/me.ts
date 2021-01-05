@@ -35,12 +35,3 @@ export type CurrentUser = Pick<
   | 'chessShowLegal'
   | 'chessShowRecent'
 >;
-
-/** Fetch currently authenticated user with GraphQL query. */
-export const fetchCurrentUser = async (): Promise<CurrentUser | null> => {
-  const apolloClient = initializeApollo();
-  const { data, error } = await apolloClient.query<{ me: CurrentUser | null }>({
-    query: CURRENT_USER_QUERY,
-  });
-  return error ? null : data.me;
-};
