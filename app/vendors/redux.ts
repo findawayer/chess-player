@@ -30,7 +30,7 @@ export type AppDispatch = EnhancedStore<AppState>['dispatch'];
 // Cached store.
 let store: AppStore | undefined;
 
-const createStore = (preloadedState?: PreloadedState): AppStore =>
+const createReduxStore = (preloadedState?: PreloadedState): AppStore =>
   configureStore({
     reducer: rootReducer,
     preloadedState,
@@ -38,13 +38,13 @@ const createStore = (preloadedState?: PreloadedState): AppStore =>
   });
 
 /** Create Redux store (redux-toolkit style) */
-export const initializeStore = (preloadedState?: PreloadedState): AppStore => {
-  let _store = store ?? createStore(preloadedState);
+export const initReduxStore = (preloadedState?: PreloadedState): AppStore => {
+  let _store = store ?? createReduxStore(preloadedState);
 
   // After navigating to a page with an initial Redux state,
   // merge that state with the current state in the store, and create a new store
   if (preloadedState && store) {
-    _store = createStore({ ...store.getState(), ...preloadedState });
+    _store = createReduxStore({ ...store.getState(), ...preloadedState });
     // Reset the current store
     store = undefined;
   }
@@ -59,6 +59,6 @@ export const initializeStore = (preloadedState?: PreloadedState): AppStore => {
 
 /** Dynamically create Redux store */
 export const useStore = (initialState?: PreloadedState): AppStore => {
-  const store = useMemo(() => initializeStore(initialState), [initialState]);
+  const store = useMemo(() => initReduxStore(initialState), [initialState]);
   return store;
 };

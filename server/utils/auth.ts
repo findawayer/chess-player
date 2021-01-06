@@ -11,7 +11,7 @@ export type CookieUserPayload = Pick<User, 'id'>;
 
 /** Create Encrypted access token. */
 export const createAccessToken = (payload: CookieUserPayload): string => {
-  const token = jwt.sign(payload, process.env.APP_SECRET);
+  const token = jwt.sign(payload, process.env.ACCESS_HASH_SECRET);
   return token;
 };
 
@@ -22,7 +22,10 @@ export const parseAccessToken = async (
   if (!token) return null;
 
   try {
-    return jwt.verify(token, process.env.APP_SECRET) as CookieUserPayload;
+    return jwt.verify(
+      token,
+      process.env.ACCESS_HASH_SECRET,
+    ) as CookieUserPayload;
   } catch (error) {
     // Don't display any error to the user.
     console.error(`Auth error`, error);

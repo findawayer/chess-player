@@ -11,18 +11,12 @@ import { concatPagination } from '@apollo/client/utilities';
 import deepMerge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
 import { useMemo } from 'react';
-import urlJoin from 'url-join';
+// import urlJoin from 'url-join';
 
 export type ApolloState = Record<string, unknown>;
 
 // Cached apollo client to prevent duplicate instance.
 let apolloClient: ApolloClient<unknown>;
-
-// Create link to backend.
-const link = new HttpLink({
-  uri: urlJoin(process.env.NEXT_PUBLIC_ENDPOINT, 'api/graphql'), // must be absolute
-  credentials: 'same-origin', // fetch() options goes into `credentials` or `headers`
-});
 
 // Log server errors.
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -39,6 +33,11 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Create apollo client instance.
 const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
+  // Create link to backend.
+  const link = new HttpLink({
+    uri: `${process.env.NEXT_PUBLIC_ENDPOINT.replace(/\/$/, '')}/api/graphql`, // must be absolute
+    credentials: 'same-origin', // fetch() options goes into `credentials` or `headers`
+  });
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     // Server URL and CORS settings
@@ -56,7 +55,7 @@ const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
   });
 };
 
-export const initializeApollo = (
+export const initApolloClient = (
   initialState?: ApolloState,
 ): ApolloClient<unknown> => {
   const _apolloClient = apolloClient ?? createApolloClient();
@@ -89,6 +88,6 @@ export const initializeApollo = (
 
 // Create Apollo client dynamically.
 export const useApollo = (initialState: ApolloState): ApolloClient<unknown> => {
-  const store = useMemo(() => initializeApollo(initialState), [initialState]);
+  const store = useMemo(() => initApolloClient(initialState), [initialState]);
   return store;
 };

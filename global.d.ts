@@ -8,7 +8,7 @@ declare global {
       NODE_ENV: 'development' | 'production';
       // `NEXT_PUBLIC_` prefixed variables are exposed to the browser.
       NEXT_PUBLIC_ENDPOINT: string;
-      APP_SECRET: string;
+      ACCESS_HASH_SECRET: string;
       DATABASE_URI: string;
       MAIL_HOST: string;
       MAIL_PORT: string;
