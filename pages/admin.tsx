@@ -8,6 +8,7 @@ import Permissions from '~app/features/admin/components/Permissions';
 import { isAdmin } from '~app/utils';
 import { getServerSession } from '~server/utils';
 
+/** Redirect user from server side. This avoids flashing and should be more SEO friendly. */
 export const getServerSideProps: GetServerSideProps = async context => {
   const me = await getServerSession(context.req);
 
@@ -18,9 +19,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   }
 
   return {
-    props: {
-      me,
-    },
+    props: {},
   };
 };
 

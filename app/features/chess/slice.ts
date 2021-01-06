@@ -20,36 +20,7 @@ import {
   shiftSquareName,
 } from './utils';
 
-// Action types
-export enum ChessActionType {
-  // Game definitions
-  SetDuration = 'setDuration',
-  SetIncrement = 'setIncrement',
-  SetPlayerColor = 'setPlayerColor',
-  SetPlayerColorByOption = 'setPlayerColor',
-  SetEngineLevel = 'setEngineLevel',
-  // Pieces
-  SetPieces = 'setPieces',
-  MovePiece = 'movePiece',
-  // Moves
-  PlayMove = 'playMove',
-  UndoMove = 'undoMove',
-  ClearMoves = 'clearMoves',
-  // Players
-  SetPlayers = 'setPlayers',
-  // Guide
-  SetActive = 'setActive',
-  // Game control
-  Checkmate = 'checkmate',
-  Resign = 'resign',
-  Timeout = 'timeout',
-  Stalemate = 'stalemate',
-  NotEnoughMaterial = 'notEnoughMaterial',
-  Repetition = 'repetition',
-  ResetGame = 'resetGame',
-  FlipBoard = 'flipBoard',
-}
-
+// Redux-toolkit slice: `chess`
 const chessSlice = createSlice({
   // Action type prefix.
   name: 'chess',
@@ -291,8 +262,7 @@ const chessSlice = createSlice({
   },
 });
 
-const { actions, reducer } = chessSlice;
-
+// Actions
 export const {
   // Game settings
   setDuration,
@@ -317,6 +287,7 @@ export const {
   repetition,
   resetGame,
   flipBoard,
-} = actions;
+} = chessSlice.actions;
 
-export { reducer as chessReducer };
+// Reducer
+export const chessReducer = chessSlice.reducer;

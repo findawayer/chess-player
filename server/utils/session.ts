@@ -26,9 +26,7 @@ export const getServerSession = async (
   // Find the user matching the token.
   try {
     const user = await prisma.user.findUnique({
-      where: {
-        id: decoded.id,
-      },
+      where: { id: decoded.id },
     });
     // Return the desired payload.
     return user ? { id: user.id, name: user.name, role: user.role } : null;

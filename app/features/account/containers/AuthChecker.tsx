@@ -1,16 +1,15 @@
 import { Alert } from '@material-ui/lab';
-import type { UserRole } from '@prisma/client';
 import React from 'react';
 
 import PleaseSignin from '~app/features/account/components/PleaseSignin';
 import PleaseSigninInline from '~app/features/account/components/PleaseSigninInline';
 import { useUser } from '~app/hooks/useUser';
-import { hasRole } from '~app/utils/roles';
+import { isAdmin } from '~app/utils/roles';
 
 interface AuthCheckerProps {
   children: React.ReactNode;
   inline?: boolean;
-  requiredRole?: UserRole;
+  requireAdmin?: boolean;
 }
 
 /**
@@ -29,7 +28,7 @@ interface AuthCheckerProps {
 const AuthChecker: React.FC<AuthCheckerProps> = ({
   children,
   inline,
-  requiredRole,
+  requireAdmin,
 }) => {
   const me = useUser();
   // Not logged in!
@@ -37,7 +36,7 @@ const AuthChecker: React.FC<AuthCheckerProps> = ({
     return inline ? <PleaseSigninInline /> : <PleaseSignin />;
   }
   // User is missing required role.
-  if (requiredRole && !hasRole(me, requiredRole)) {
+  if (requireAdmin && !isAdmin(me)) {
     return (
       <Alert severity="error" variant="filled">
         You do not have access to this page.

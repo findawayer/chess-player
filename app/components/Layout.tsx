@@ -29,13 +29,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box display="flex" flexDirection="column" style={{ height: '100%' }}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        role="presentation"
+        style={{ height: '100%' }}
+      >
         <Header
           hasAuthUser={hasAuthUser}
           colorMode={colorMode}
           updateColorMode={updateColorMode}
         />
         <Box
+          component="main"
           flexGrow={1}
           display="flex"
           alignItems="center"

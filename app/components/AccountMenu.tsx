@@ -11,7 +11,7 @@ interface AccountMenuProps {
 const AccountMenu: React.FC<AccountMenuProps> = ({ hasAuthUser }) => {
   return hasAuthUser ? (
     <>
-      <Link href="/account" passHref>
+      <Link href="/my-account" passHref>
         <Button color="inherit">Account</Button>
       </Link>
       <SignoutButton />

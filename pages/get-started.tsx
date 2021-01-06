@@ -7,6 +7,7 @@ import { UserProvider } from '~app/contexts/UserContext';
 import Signup from '~app/features/account/components/Signup';
 import { getServerSession } from '~server/utils';
 
+/** Redirect user from server side. This avoids flashing and should be more SEO friendly. */
 export const getServerSideProps: GetServerSideProps = async context => {
   const me = await getServerSession(context.req);
 
