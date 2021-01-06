@@ -1,0 +1,207 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Layout /> renders properly for anonymous users. 1`] = `
+<div>
+  <div
+    class="MuiBox-root MuiBox-root-1"
+    role="presentation"
+    style="height: 100%;"
+  >
+    <header
+      class="MuiPaper-root MuiAppBar-root MuiAppBar-positionStatic MuiAppBar-colorPrimary MuiPaper-elevation2"
+    >
+      <div
+        class="MuiToolbar-root MuiToolbar-regular MuiToolbar-gutters"
+      >
+        <div
+          class="MuiTypography-root makeStyles-title-2 MuiTypography-h1 MuiTypography-noWrap"
+        >
+          <a
+            class="makeStyles-titleLink-3"
+            href="/"
+            rel="home"
+          >
+            chess-player
+          </a>
+        </div>
+        <div
+          class="MuiBox-root MuiBox-root-7 makeStyles-colorModeToggler-4"
+        >
+          <label
+            for="colorModeToggler"
+          >
+            <span>
+              Light
+            </span>
+            <span
+              class="MuiSwitch-root"
+            >
+              <span
+                aria-disabled="false"
+                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-8 MuiSwitch-switchBase"
+                title="Toggle theme"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <input
+                    class="PrivateSwitchBase-input-11 MuiSwitch-input"
+                    id="colorModeTogler"
+                    type="checkbox"
+                    value=""
+                  />
+                  <span
+                    class="MuiSwitch-thumb"
+                  />
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </span>
+              <span
+                class="MuiSwitch-track"
+              />
+            </span>
+            <span>
+              Dark
+            </span>
+          </label>
+        </div>
+        <div
+          class="makeStyles-menu-5"
+        >
+          <a
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+            href="https://github.com/findawayer/chess-player"
+            rel="external noopener noreferrer"
+            tabindex="0"
+            target="_blank"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              GitHub
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </a>
+          <a
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+            href="/get-started"
+            tabindex="0"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              Join
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </a>
+          <a
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+            href="/signin"
+            tabindex="0"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              Login
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </a>
+        </div>
+      </div>
+    </header>
+    <main
+      class="MuiBox-root MuiBox-root-6"
+    >
+      ...
+    </main>
+  </div>
+</div>
+`;
+
+exports[`<Layout /> renders properly for anonymous users. 2`] = `
+<div>
+  <div
+    class="MuiBox-root MuiBox-root-12"
+    role="presentation"
+    style="height: 100%;"
+  >
+    <header
+      class="MuiPaper-root MuiAppBar-root MuiAppBar-positionStatic MuiAppBar-colorPrimary MuiPaper-elevation2"
+    >
+      <div
+        class="MuiToolbar-root MuiToolbar-regular MuiToolbar-gutters"
+      >
+        <div
+          class="MuiTypography-root makeStyles-title-13 MuiTypography-h1 MuiTypography-noWrap"
+        >
+          <a
+            class="makeStyles-titleLink-14"
+            href="/"
+            rel="home"
+          >
+            chess-player
+          </a>
+        </div>
+        <div
+          class="makeStyles-menu-16"
+        >
+          <a
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+            href="https://github.com/findawayer/chess-player"
+            rel="external noopener noreferrer"
+            tabindex="0"
+            target="_blank"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              GitHub
+            </span>
+          </a>
+          <a
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+            href="/get-started"
+            tabindex="0"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              Join
+            </span>
+          </a>
+          <a
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+            href="/signin"
+            tabindex="0"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              Login
+            </span>
+          </a>
+        </div>
+      </div>
+    </header>
+    <main
+      class="MuiBox-root MuiBox-root-17"
+    >
+      ...
+    </main>
+  </div>
+</div>
+`;

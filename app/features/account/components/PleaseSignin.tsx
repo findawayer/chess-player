@@ -39,7 +39,7 @@ const PleaseSignin: React.FC<PleaseSigninProps> = ({
   <Card>
     <CardContent>
       <Typography variant="h4" component="h2" align="center" gutterBottom>
-        Please login before continuing.
+        Please sign in before continuing.
       </Typography>
     </CardContent>
     <CardActions>

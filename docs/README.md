@@ -60,6 +60,11 @@ Requires:
 - [Prisma](https://github.com/prisma/prisma) as GraphQL database framework.
 - [TypeGraphQL](https://github.com/MichalLytek/type-graphql) as GraphQL schema framework.
 
+### Testing
+
+- [Jest](https://github.com/facebook/jest) as Unit testing solution.
+- [Testing library](https://testing-library.com/) as Unit testing helper.
+
 ### Others
 
 - [Chess piece graphics](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces) by Colin M.L.Burnett
@@ -69,35 +74,37 @@ Requires:
 <pre>
 📦chess-player
  ┣ 📂.vscode — VS Code editor specific setup
+ ┣ 📂app — App's source code besides the server
+ ┃ ┣ 📂__tests__ — Unit testing codes
+ ┃ ┣ 📂components — Shared React components
+ ┃ ┣ 📂contexts — Shared React contexts
+ ┃ ┣ 📂features — Per-feature subresources
+ ┃ ┃ ┣ 📂account — User authentication
+ ┃ ┃ ┣ 📂admin — Admin interface
+ ┃ ┃ ┣ 📂chess — Chess game
+ ┃ ┣ 📂graphql — GraphQL queries and related type definitions
+ ┃ ┣ 📂hooks — Shared React hooks
+ ┃ ┣ 📂themes — Material UI theme customizations
+ ┃ ┣ 📂utils — Functions shared across project
+ ┃ ┣ 📂vendors — Additional external library settings
+ ┃ ┃ ┣ 📜apollo-client.ts — Apollo client setup
+ ┃ ┃ ┗ 📜redux.ts — Redux setup
  ┣ 📂docs — Documentations
+ ┣ 📂pages — Next.js pages
+ ┃ ┗ 📂api
+ ┃   ┗ 📜graphql.ts — GraphQL server endpoint
+ ┣ 📂prisma — Data model with Prisma 2
  ┣ 📂public — Static files
  ┃ ┣ 📂graphics — Chess piece vector graphics
  ┃ ┗ 📂stockfish — Chess engine library
- ┗ 📂src — Source code
-   ┣ 📂components — Global React components
-   ┣ 📂features — Per-feature subresources
-   ┃ ┣ 📂account — User authentication
-   ┃ ┣ 📂admin — Admin interface
-   ┃ ┣ 📂chess — Chess game
-   ┣ 📂graphql — GraphQL queries and related type definitions
-   ┣ 📂pages — Next.js pages
-   ┃ ┗ 📂api
-   ┃   ┗ 📜graphql.ts — GraphQL server endpoint
-   ┣ 📂server — GraphQL server
-   ┃ ┣ 📂decorators — Custom decorators for TypeGraphQL
-   ┃ ┣ 📂guards — Backend guard clauses
-   ┃ ┣ 📂interface — Frequently used interfaces in backend
-   ┃ ┣ 📂mailing — Mailing service
-   ┃ ┣ 📂schemas — GraphQL schemas by TypeGraphQL
-   ┃ ┃ ┣ 📜apollo-server.ts — Apollo server setup
-   ┃ ┃ ┗ 📜prisma.ts — Prisma client setup
-   ┃ ┗ 📂utils — Functions shared within backend
-   ┣ 📂themes — Material UI theme customizations
-   ┣ 📂utils — Functions shared across project
-   ┣ 📂vendors — Additional external library settings
-   ┃ ┣ 📜apollo-client.ts — Apollo client setup
-   ┃ ┗ 📜redux.ts — Redux setup
-   ┗ 📜global.d.ts — Global types accessible across project
+ ┣ 📂server — Source code
+ ┃ ┣ 📂decorators — Custom decorators for TypeGraphQL
+ ┃ ┣ 📂guards — Backend guard clauses
+ ┃ ┣ 📂interface — Frequently used interfaces in backend
+ ┃ ┣ 📂mailing — Mailing service
+ ┃ ┣ 📂schemas — GraphQL schemas and resolvers with TypeGraphQL
+ ┃ ┗ 📂utils — Functions shared within backend
+ ┗ 📜global.d.ts — Global types accessible across project
 </pre>
 
 ## Next to come

@@ -16,7 +16,7 @@ export const COLOR_MODE_CACHE_KEY = 'ColorMode';
  */
 const getUserPreferredScheme = (): ColorMode | undefined =>
   typeof window !== 'undefined' &&
-  window.matchMedia('(prefers-color-scheme: dark)').matches
+  window.matchMedia('(prefers-color-scheme: dark)')?.matches
     ? 'DARK'
     : undefined;
 

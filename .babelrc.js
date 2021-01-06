@@ -26,4 +26,21 @@ module.exports = {
     ],
   ],
   ignore: ['node_modules', 'public'],
+  env: {
+    test: {
+      presets: [
+        [
+          'next/babel',
+          {
+            'preset-env': {
+              targets: {
+                node: 'current',
+              },
+              modules: 'commonjs',
+            },
+          },
+        ],
+      ],
+    },
+  },
 };

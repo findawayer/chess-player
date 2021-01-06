@@ -1,3 +1,5 @@
+const aliases = require('./aliases').eslint;
+
 const baseRules = {
   'no-console': 'off',
   'no-param-reassign': 'off',
@@ -32,10 +34,7 @@ module.exports = {
     'import/resolver': {
       // eslint-import-resolver-alias
       alias: {
-        map: [
-          ['~app', './app'],
-          ['~server', './server'],
-        ],
+        map: aliases,
         extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
       },
     },
