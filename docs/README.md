@@ -15,8 +15,6 @@ Chess Player is an implementation of [chess game](https://en.wikipedia.org/wiki/
   </tbody>
 </table>
 
-Please visit the [demo page](https://chess-player.vercel.app/) to visualize chess-player's operation.
-
 ## Installation
 
 ```
