@@ -25,27 +25,28 @@ import { UserPagination } from './UserPagination';
 export class UserResolver {
   // ---------- me ---------- //
   @Query(returns => User, { nullable: true })
-  async me(@Context() { user }: GraphQLContext) {
-    if (!user) return null;
+  async me(@Context() context: GraphQLContext) {
+    if (!context.user) return null;
     return prisma.user.findUnique({
-      where: { id: user.id },
+      where: { id: context.user.id },
     });
   }
 
   // ---------- users ---------- //
   @Authorized('ADMIN')
   @Query(returns => [User])
-  async users(@Args() { take, skip }: UserPagination) {
+  async users(@Args() args: UserPagination) {
     return prisma.user.findMany({
-      take,
-      skip,
+      take: args.take,
+      skip: args.skip,
       orderBy: { createdAt: 'desc' },
     });
   }
 
   // ---------- signup ---------- //
   @Mutation(returns => User)
-  async signup(@Arg('data') { email, name, password }: SignupInput) {
+  async signup(@Arg('data') input: SignupInput) {
+    const { email, name, password } = input;
     // Normalize email and validate it.
     const normalizedEmail = email.trim().toLowerCase();
     // Check if there is a user with that email.
