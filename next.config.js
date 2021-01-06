@@ -17,16 +17,13 @@ class FixServerReloadPlugin {
   apply(compiler) {
     compiler.hooks.afterEmit.tapPromise(
       'FixServerReloadPlugin',
-      async compilation => {
+      async _compilation => {
         const moduleIds = Object.keys(require.cache);
-        const TESTS = [/server-dist/, /typeorm/];
-        TESTS.forEach(regex => {
-          moduleIds.forEach(moduleId => {
-            if (regex.test(moduleId)) {
-              // console.log(moduleId)
-              delete require.cache[moduleId];
-            }
-          });
+        const pattern = /server-dist/;
+        moduleIds.forEach(moduleId => {
+          if (pattern.test(moduleId)) {
+            delete require.cache[moduleId];
+          }
         });
       },
     );
@@ -43,6 +40,7 @@ const nextConfig = {
     const serverDist = path.resolve('server-dist');
     // Note that webpack 5 will change the function signature
     config.externals.push((context, request, callback) => {
+      // Resolve `~server` to `server-dist`
       if (request.startsWith('~server/')) {
         // Externalize to a commonjs module using the request path
         return callback(
@@ -50,19 +48,17 @@ const nextConfig = {
           `commonjs ${request.replace('~server', serverDist)}`,
         );
       }
-
+      // Resolve relative imports to `server-dist`
       if (request[0] === '.' && context.includes(serverDist)) {
-        return callback(null, `commonjs${path.join(serverDist, request)}`);
+        return callback(null, `commonjs ${path.join(serverDist, request)}`);
       }
-
       // Continue without externalizing the import
       callback();
     });
-
+    // Resolve server paths for hot reload.
     if (dev) {
       config.plugins.push(new FixServerReloadPlugin());
     }
-
     return config;
   },
 };
