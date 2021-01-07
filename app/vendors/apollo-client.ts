@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 import {
   ApolloClient,
-  HttpLink,
+  createHttpLink,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
@@ -34,9 +34,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 // Create apollo client instance.
 const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
   // Create link to backend.
-  const link = new HttpLink({
-    uri: `${process.env.NEXT_PUBLIC_ENDPOINT.replace(/\/$/, '')}/api/graphql`, // must be absolute
-    credentials: 'include', // fetch() options goes into `credentials` or `headers`
+  const link = createHttpLink({
+    uri: `${process.env.NEXT_PUBLIC_ENDPOINT.replace(/\/$/, '')}/api/graphql`,
+    credentials: 'same-origin',
   });
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
