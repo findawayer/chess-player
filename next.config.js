@@ -1,7 +1,5 @@
-/**
- * Next.js & TypeGraphQL project configuration.
- * Original code from: https://github.com/egoist/next-fullstack-starter/blob/master/next.config.js
- */
+/* eslint-disable import/no-extraneous-dependencies */
+const webpack = require('webpack');
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',

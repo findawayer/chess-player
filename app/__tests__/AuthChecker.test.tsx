@@ -4,7 +4,7 @@ import { render, waitFor } from '@testing-library/react';
 import { UserProvider } from '~app/contexts';
 import AuthChecker from '~app/features/account/containers/AuthChecker';
 import { CURRENT_USER_QUERY } from '~app/graphql';
-import { fakeUser } from '~app/utils';
+import { fakeUser } from './utils';
 
 const anonymousMocks = [
   {
