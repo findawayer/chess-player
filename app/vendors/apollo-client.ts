@@ -36,7 +36,7 @@ const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
   // Create link to backend.
   const link = new HttpLink({
     uri: `${process.env.NEXT_PUBLIC_ENDPOINT.replace(/\/$/, '')}/api/graphql`, // must be absolute
-    credentials: 'same-origin', // fetch() options goes into `credentials` or `headers`
+    credentials: 'include', // fetch() options goes into `credentials` or `headers`
   });
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
