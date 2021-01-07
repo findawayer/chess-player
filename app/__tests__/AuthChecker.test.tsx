@@ -4,7 +4,7 @@ import { render, waitFor } from '@testing-library/react';
 import { UserProvider } from '~app/contexts';
 import AuthChecker from '~app/features/account/containers/AuthChecker';
 import { CURRENT_USER_QUERY } from '~app/graphql';
-import { fakeUser } from './utils';
+import { fakeUser } from '~app/utils';
 
 const anonymousMocks = [
   {
@@ -21,7 +21,7 @@ const authUserMocks = [
 ];
 
 describe('<AuthChecker />', () => {
-  it('renders a please sign in dialog to anonymous users', () => {
+  it('renders a please sign in dialog to anonymous users.', () => {
     const { getByText } = render(
       <MockedProvider mocks={anonymousMocks}>
         <UserProvider>
@@ -33,7 +33,7 @@ describe('<AuthChecker />', () => {
     expect(getByText(/Please sign in/)).toBeInTheDocument();
   });
 
-  it('renders the child React node when the user is signed in', async () => {
+  it('renders the child React node when the user is signed in.', async () => {
     const Child = () => <p>💩</p>;
     const { container } = render(
       <MockedProvider mocks={authUserMocks}>

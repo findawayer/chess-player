@@ -1,16 +1,12 @@
-import casual from 'casual';
 import type { User } from '@prisma/client';
-
-// Fixed seed for consistent results
-casual.seed(255);
 
 const fakeTime = new Date();
 
 export const fakeUser = (overrides?: Partial<User>): User => ({
   id: 1,
-  email: casual.email,
+  email: 'some@email.com',
   password: '1234',
-  name: casual.name,
+  name: 'someone',
   role: 'ADMIN',
   createdAt: fakeTime,
   updatedAt: fakeTime,
