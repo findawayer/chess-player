@@ -7,6 +7,15 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const nextConfig = {};
+const nextConfig = {
+  webpack(config) {
+    // Test folders are not automatically ignored.
+    // issue: https://github.com/vercel/next.js/issues/1914
+    // issue: https://github.com/vercel/next.js/discussions/11113
+    config.plugins.push(new webpack.IgnorePlugin(/\/__tests__\//));
+
+    return config;
+  },
+};
 
 module.exports = withBundleAnalyzer(nextConfig);

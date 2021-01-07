@@ -4,12 +4,7 @@ module.exports = {
   // Root folders for testing.
   roots: ['<rootDir>/app'],
   // Configuration scripts.
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  // Testing files patterns.
-  testMatch: [
-    '**/__tests__/**/*.+(ts|tsx|js)',
-    '**/?(*.)+(spec|test).+(ts|tsx|js)',
-  ],
+  setupFilesAfterEnv: ['<rootDir>/jest/prepare.ts'],
   // Ignore patterns.
   testPathIgnorePatterns: [
     // Dependencies

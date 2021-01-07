@@ -23,7 +23,6 @@
     "strictPropertyInitialization": false,
     "target": "es6"
   },
-  "exclude": ["node_modules"],
   "include": [
     "global.d.ts",
     "next-env.d.ts",
@@ -31,5 +30,6 @@
     "app/**/*.tsx",
     "pages/**/*.ts",
     "pages/**/*.tsx"
-  ]
+  ],
+  "exclude": ["node_modules"]
 }
