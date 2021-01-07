@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 import {
   ApolloClient,
-  HttpLink,
+  createHttpLink,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
@@ -11,7 +11,6 @@ import { concatPagination } from '@apollo/client/utilities';
 import deepMerge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
 import { useMemo } from 'react';
-// import urlJoin from 'url-join';
 
 export type ApolloState = Record<string, unknown>;
 
@@ -34,9 +33,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 // Create apollo client instance.
 const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
   // Create link to backend.
-  const link = new HttpLink({
-    uri: `${process.env.NEXT_PUBLIC_ENDPOINT.replace(/\/$/, '')}/api/graphql`, // must be absolute
-    credentials: 'include', // fetch() options goes into `credentials` or `headers`
+  const link = createHttpLink({
+    uri: `${process.env.NEXT_PUBLIC_ENDPOINT.replace(/\/$/, '')}/api/graphql`,
+    credentials: 'same-origin',
   });
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
