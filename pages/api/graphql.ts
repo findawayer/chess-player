@@ -3,6 +3,7 @@ import 'reflect-metadata';
 
 import { ApolloServer } from 'apollo-server-micro';
 import { NextApiHandler } from 'next';
+import NextCors from 'nextjs-cors';
 import { buildSchema } from 'type-graphql';
 
 import { authChecker } from '~server/auth-checker';
@@ -24,6 +25,21 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 let handler: NextApiHandler;
 
 const apiHandler: NextApiHandler = async (req, res) => {
+  // Run the cors middleware
+  await NextCors(req, res, {
+    origin: true,
+    methods: ['GET', 'POST'],
+    allowedHeaders: [
+      'Origin',
+      'Access-Control-Allow-Origin',
+      'Content-Type',
+      'Accept',
+    ],
+    credentials: true,
+    optionsSuccessStatus: 200,
+  });
+
+  // Use cached handler.
   if (handler) {
     return handler(req, res);
   }
@@ -46,6 +62,7 @@ const apiHandler: NextApiHandler = async (req, res) => {
     // mocks: isDevelopment,
   });
 
+  // Create new handler.
   handler = apolloServer.createHandler({
     path: '/api/graphql',
   });
