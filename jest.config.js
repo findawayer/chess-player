@@ -4,7 +4,7 @@ module.exports = {
   // Root folders for testing.
   roots: ['<rootDir>/app'],
   // Configuration scripts.
-  setupFilesAfterEnv: ['<rootDir>/jest/prepare.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   // Ignore patterns.
   testPathIgnorePatterns: [
     // Dependencies

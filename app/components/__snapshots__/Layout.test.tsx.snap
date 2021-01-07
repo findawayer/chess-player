@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Layout /> renders properly for anonymous users. 1`] = `
+exports[`<Layout /> while user is anonymous renders proper layout for anonymous user 1`] = `
 <div>
   <div
     class="MuiBox-root MuiBox-root-1"
@@ -18,16 +18,18 @@ exports[`<Layout /> renders properly for anonymous users. 1`] = `
         >
           <a
             class="makeStyles-titleLink-3"
-            href="/"
             rel="home"
           >
             chess-player
           </a>
         </div>
         <div
-          class="MuiBox-root MuiBox-root-7 makeStyles-colorModeToggler-4"
+          class="MuiBox-root MuiBox-root-7 makeStyles-colorToggler-4"
         >
           <label
+            aria-label="Toggler color mode"
+            data-testid="colorModeToggler"
+            data-theme="LIGHT"
             for="colorModeToggler"
           >
             <span>
@@ -46,7 +48,7 @@ exports[`<Layout /> renders properly for anonymous users. 1`] = `
                 >
                   <input
                     class="PrivateSwitchBase-input-11 MuiSwitch-input"
-                    id="colorModeTogler"
+                    id="colorModeToggler"
                     type="checkbox"
                     value=""
                   />
@@ -87,36 +89,34 @@ exports[`<Layout /> renders properly for anonymous users. 1`] = `
               class="MuiTouchRipple-root"
             />
           </a>
-          <a
-            aria-disabled="false"
+          <button
             class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
-            href="/get-started"
             tabindex="0"
+            type="button"
           >
             <span
               class="MuiButton-label"
             >
-              Join
+              Get started
             </span>
             <span
               class="MuiTouchRipple-root"
             />
-          </a>
-          <a
-            aria-disabled="false"
+          </button>
+          <button
             class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
-            href="/signin"
             tabindex="0"
+            type="button"
           >
             <span
               class="MuiButton-label"
             >
-              Login
+              Sign in
             </span>
             <span
               class="MuiTouchRipple-root"
             />
-          </a>
+          </button>
         </div>
       </div>
     </header>
@@ -129,10 +129,10 @@ exports[`<Layout /> renders properly for anonymous users. 1`] = `
 </div>
 `;
 
-exports[`<Layout /> renders properly for anonymous users. 2`] = `
+exports[`<Layout /> while user is signed in renders proper layout for signed user. 1`] = `
 <div>
   <div
-    class="MuiBox-root MuiBox-root-12"
+    class="MuiBox-root MuiBox-root-45"
     role="presentation"
     style="height: 100%;"
   >
@@ -143,18 +143,64 @@ exports[`<Layout /> renders properly for anonymous users. 2`] = `
         class="MuiToolbar-root MuiToolbar-regular MuiToolbar-gutters"
       >
         <div
-          class="MuiTypography-root makeStyles-title-13 MuiTypography-h1 MuiTypography-noWrap"
+          class="MuiTypography-root makeStyles-title-46 MuiTypography-h1 MuiTypography-noWrap"
         >
           <a
-            class="makeStyles-titleLink-14"
-            href="/"
+            class="makeStyles-titleLink-47"
             rel="home"
           >
             chess-player
           </a>
         </div>
         <div
-          class="makeStyles-menu-16"
+          class="MuiBox-root MuiBox-root-51 makeStyles-colorToggler-48"
+        >
+          <label
+            aria-label="Toggler color mode"
+            data-testid="colorModeToggler"
+            data-theme="DARK"
+            for="colorModeToggler"
+          >
+            <span>
+              Light
+            </span>
+            <span
+              class="MuiSwitch-root"
+            >
+              <span
+                aria-disabled="false"
+                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-52 MuiSwitch-switchBase PrivateSwitchBase-checked-53 Mui-checked"
+                title="Toggle theme"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <input
+                    checked=""
+                    class="PrivateSwitchBase-input-55 MuiSwitch-input"
+                    id="colorModeToggler"
+                    type="checkbox"
+                    value=""
+                  />
+                  <span
+                    class="MuiSwitch-thumb"
+                  />
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </span>
+              <span
+                class="MuiSwitch-track"
+              />
+            </span>
+            <span>
+              Dark
+            </span>
+          </label>
+        </div>
+        <div
+          class="makeStyles-menu-49"
         >
           <a
             aria-disabled="false"
@@ -169,36 +215,43 @@ exports[`<Layout /> renders properly for anonymous users. 2`] = `
             >
               GitHub
             </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
           </a>
-          <a
-            aria-disabled="false"
+          <button
             class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
-            href="/get-started"
             tabindex="0"
+            type="button"
           >
             <span
               class="MuiButton-label"
             >
-              Join
+              Account
             </span>
-          </a>
-          <a
-            aria-disabled="false"
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+          <button
             class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
-            href="/signin"
             tabindex="0"
+            type="button"
           >
             <span
               class="MuiButton-label"
             >
-              Login
+              Sign out
             </span>
-          </a>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
         </div>
       </div>
     </header>
     <main
-      class="MuiBox-root MuiBox-root-17"
+      class="MuiBox-root MuiBox-root-50"
     >
       ...
     </main>

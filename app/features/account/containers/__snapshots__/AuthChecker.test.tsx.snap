@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AuthChecker /> renders a please sign in dialog to anonymous users. 1`] = `
+<div>
+  <div
+    class="MuiPaper-root MuiCard-root MuiPaper-elevation1 MuiPaper-rounded"
+  >
+    <div
+      class="MuiCardContent-root"
+    >
+      <h2
+        class="MuiTypography-root MuiTypography-h4 MuiTypography-gutterBottom MuiTypography-alignCenter"
+      >
+        Please sign in before continuing.
+      </h2>
+    </div>
+    <div
+      class="MuiCardActions-root MuiCardActions-spacing"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Get started
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-containedSizeLarge MuiButton-sizeLarge"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Sign in
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AuthChecker /> renders the child React node when the user is signed in. 1`] = `
+<div>
+  <p>
+    💩
+  </p>
+</div>
+`;

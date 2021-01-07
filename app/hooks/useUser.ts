@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 
 import { UserContext } from '~app/contexts';
-
 import type { CurrentUser } from '~app/graphql';
 
 /**

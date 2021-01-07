@@ -68,13 +68,6 @@ export const baseTheme: ThemeOptions = {
           color: '#fff',
           backgroundColor: '#303f9f',
         },
-        '#nprogress .bar': {
-          height: 3,
-          zIndex: 1600, // Above any Mui component.
-        },
-        '#nprogress .spinner': {
-          display: 'none',
-        },
       },
     },
     MuiCard: {

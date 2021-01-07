@@ -1,7 +1,8 @@
 import { Box, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import React from 'react';
+import React, { useMemo } from 'react';
 
+import { ColorModeProvider } from '~app/contexts/ColorModeContext';
 import { useColorMode } from '~app/hooks';
 import { useUser } from '~app/hooks/useUser';
 import { useMuiTheme } from '~app/themes';
@@ -23,34 +24,41 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const theme = useMuiTheme(colorMode);
   /** User is authenticated */
   const hasAuthUser = Boolean(me);
+  /** Create color mode API to pass it deep down. */
+  const colorModeApi = useMemo(
+    () => ({
+      colorMode,
+      toggleColorMode: () =>
+        updateColorMode(colorMode === 'DARK' ? 'LIGHT' : 'DARK'),
+    }),
+    [colorMode, updateColorMode],
+  );
 
   // ThemeProvider: Exposes material UI theme.
   // CssBaseline: Inject global CSS provided by material-ui.
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box
-        display="flex"
-        flexDirection="column"
-        role="presentation"
-        style={{ height: '100%' }}
-      >
-        <Header
-          hasAuthUser={hasAuthUser}
-          colorMode={colorMode}
-          updateColorMode={updateColorMode}
-        />
+    <ColorModeProvider value={colorModeApi}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Box
-          component="main"
-          flexGrow={1}
           display="flex"
-          alignItems="center"
-          justifyContent="center"
+          flexDirection="column"
+          role="presentation"
+          style={{ height: '100%' }}
         >
-          {children}
+          <Header hasAuthUser={hasAuthUser} />
+          <Box
+            component="main"
+            flexGrow={1}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            {children}
+          </Box>
         </Box>
-      </Box>
-    </ThemeProvider>
+      </ThemeProvider>
+    </ColorModeProvider>
   );
 };
 

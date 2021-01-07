@@ -1,15 +1,13 @@
 import type { User } from '@prisma/client';
 
-const fakeTime = new Date();
-
-export const fakeUser = (overrides?: Partial<User>): User => ({
+export const mockUser = (overrides?: Partial<User>): User => ({
   id: 1,
   email: 'some@email.com',
   password: '1234',
   name: 'someone',
   role: 'ADMIN',
-  createdAt: fakeTime,
-  updatedAt: fakeTime,
+  createdAt: new Date(),
+  updatedAt: new Date(),
   verified: false,
   resetToken: null,
   resetTokenExpiry: null,

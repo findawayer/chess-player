@@ -5,8 +5,9 @@ declare global {
   // Node.js
   namespace NodeJS {
     interface ProcessEnv {
+      // Node.js environment variables.
       NODE_ENV: 'development' | 'production';
-      // `NEXT_PUBLIC_` prefixed variables are exposed to the browser.
+      // Custom environment variables.
       NEXT_PUBLIC_ENDPOINT: string;
       ACCESS_HASH_SECRET: string;
       DATABASE_URI: string;
@@ -18,9 +19,16 @@ declare global {
     }
   }
 
-  /** Not-yet-defined `TODO` type that bypasses eslint warnings */
-  type TODO = any;
-  type Unused = any;
+  /** Intended `any` type that bypasses eslint warnings. */
+  type Unused = any; // Type of unused arguments; `never` cannot replace it in strict mode.
+  type TODO = any; // Procrastination.
+}
+
+declare module 'react' {
+  // This allows use of `data-testid` attribute in Material UI components.
+  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
+    'data-testid'?: string;
+  }
 }
 
 // Treat this file as a module; required for global type augmentations.

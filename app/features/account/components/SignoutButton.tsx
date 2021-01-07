@@ -24,7 +24,7 @@ const SignoutButton: React.FC = () => {
   };
   return (
     <Button color="inherit" onClick={handleClick}>
-      Logout
+      Sign out
     </Button>
   );
 };

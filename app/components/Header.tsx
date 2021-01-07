@@ -4,17 +4,15 @@ import {
   Box,
   Button,
   NoSsr,
-  Switch,
   Toolbar,
-  Tooltip,
   Typography,
 } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { ColorMode } from '@prisma/client';
 import Link from 'next/link';
 import React from 'react';
 
 import AccountMenu from './AccountMenu';
+import ColorModeToggler from './ColorModeToggler';
 
 const useStyles = makeStyles<Theme>(theme =>
   createStyles({
@@ -27,8 +25,7 @@ const useStyles = makeStyles<Theme>(theme =>
       color: 'inherit',
       textDecoration: 'none',
     },
-    colorModeToggler: {
-      marginRight: theme.spacing(2),
+    colorToggler: {
       fontWeight: 500,
     },
     menu: {
@@ -41,20 +38,10 @@ const useStyles = makeStyles<Theme>(theme =>
 
 interface HeaderProps {
   hasAuthUser: boolean;
-  colorMode: ColorMode;
-  updateColorMode(colorMode: ColorMode): void;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  hasAuthUser,
-  colorMode,
-  updateColorMode,
-}) => {
-  /** CSS Classes via Material UI */
+const Header: React.FC<HeaderProps> = ({ hasAuthUser }) => {
   const classes = useStyles();
-  /** Toggle color mode */
-  const toggleColorMode = () =>
-    updateColorMode(colorMode === 'DARK' ? 'LIGHT' : 'DARK');
 
   return (
     <AppBar position="static" color="primary" elevation={2}>
@@ -72,19 +59,8 @@ const Header: React.FC<HeaderProps> = ({
           </Link>
         </Typography>
         <NoSsr>
-          <Box alignItems="center" className={classes.colorModeToggler}>
-            <label htmlFor="colorModeToggler">
-              <span>Light</span>
-              <Tooltip title="Toggle theme">
-                <Switch
-                  id="colorModeTogler"
-                  checked={colorMode === 'DARK'}
-                  color="default"
-                  onChange={toggleColorMode}
-                />
-              </Tooltip>
-              <span>Dark</span>
-            </label>
+          <Box alignItems="center" mr={2} className={classes.colorToggler}>
+            <ColorModeToggler />
           </Box>
         </NoSsr>
         <div className={classes.menu}>

@@ -19,10 +19,10 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ hasAuthUser }) => {
   ) : (
     <>
       <Link href="/get-started" passHref>
-        <Button color="inherit">Join</Button>
+        <Button color="inherit">Get started</Button>
       </Link>
       <Link href="/signin" passHref>
-        <Button color="inherit">Login</Button>
+        <Button color="inherit">Sign in</Button>
       </Link>
     </>
   );

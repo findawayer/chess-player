@@ -12,6 +12,7 @@ import {
   Select,
 } from '@material-ui/core';
 import { ChessBoardColor } from '@prisma/client';
+import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
@@ -19,7 +20,6 @@ import AuthChecker from '~app/features/account/containers/AuthChecker';
 import { ChessSettings, mapChessSettings } from '~app/features/chess/hooks';
 import { UPDATE_CHESS_SETTINGS_MUTATION } from '~app/features/chess/graphql';
 import { CURRENT_USER_QUERY } from '~app/graphql';
-import { capitalize } from '~app/utils';
 
 interface SettingsDialogProps {
   isOpen: boolean;
