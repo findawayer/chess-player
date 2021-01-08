@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 
 import { mockUser } from '~app/__mocks__';
 import { CURRENT_USER_QUERY } from '~app/graphql';
+
 import AccountMenu from './AccountMenu';
 
 describe('<AccountMneu />', () => {

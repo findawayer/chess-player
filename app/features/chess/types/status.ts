@@ -1,4 +1,4 @@
-import { ChessPieceColor } from './pieces';
+import type { ChessPieceColor } from './pieces';
 
 /** Chess game result details. */
 export enum ChessGameOverType {

@@ -1,5 +1,5 @@
 import { CookieSerializeOptions, serialize } from 'cookie';
-import { NextApiResponse } from 'next';
+import type { NextApiResponse } from 'next';
 
 /**
  * Set cookie using the `res` object from Next API.

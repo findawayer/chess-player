@@ -1,10 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import type { FunctionComponent } from 'react';
+import { useMemo } from 'react';
 
 import { SQUARE_SIZE } from '~app/features/chess/constants';
-import {
+import type {
   ChessPieceColor,
   ChessPromotionVariant,
   ChessSquareName,
@@ -68,7 +69,7 @@ interface PromotionDialogProps {
 }
 
 // @todo: Find correct a11y sementics for the dialog backdrop
-const PromotionDialog: React.FC<PromotionDialogProps> = ({
+const PromotionDialog: FunctionComponent<PromotionDialogProps> = ({
   color,
   square,
   abortPromotion,

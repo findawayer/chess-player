@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import Link from 'next/link';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import SignoutButton from '~app/features/account/components/SignoutButton';
 
@@ -8,7 +8,7 @@ interface AccountMenuProps {
   hasAuthUser: boolean;
 }
 
-const AccountMenu: React.FC<AccountMenuProps> = ({ hasAuthUser }) => {
+const AccountMenu: FunctionComponent<AccountMenuProps> = ({ hasAuthUser }) => {
   return hasAuthUser ? (
     <>
       <Link href="/my-account" passHref>

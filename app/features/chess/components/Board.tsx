@@ -1,25 +1,23 @@
 import { NoSsr } from '@material-ui/core';
 import clsx from 'clsx';
 import map from 'lodash/map';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import type { FunctionComponent, Ref } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { withResizeDetector } from 'react-resize-detector';
 
 import { NUMBER_OF_FILES } from '~app/features/chess/constants';
+import type { ChessSettings } from '~app/features/chess/hooks';
 import {
-  ChessSettings,
   useChessGuides,
   useChessPromotion,
   useChessValidator,
 } from '~app/features/chess/hooks';
-import {
-  DRAG_ITEM,
-  DraggedPiece,
-  getDropTargetSquare,
-} from '~app/features/chess/react-dnd';
+import type { DraggedPiece } from '~app/features/chess/react-dnd';
+import { DRAG_ITEM, getDropTargetSquare } from '~app/features/chess/react-dnd';
 import { movePiece, playMove } from '~app/features/chess/slice';
-import {
+import type {
   ChessPieces,
   ChessSquare,
   ChessSquareName,
@@ -30,7 +28,8 @@ import {
   objectifySquare,
   stringifySquare,
 } from '~app/features/chess/utils';
-import { AppDispatch } from '~app/vendors/redux';
+import type { AppDispatch } from '~app/vendors/redux';
+
 import BoardGrid from './BoardGrid';
 import Guide from './Guide';
 import LegalSquare from './LegalSquare';
@@ -80,11 +79,11 @@ interface BoardProps {
   // Game settings
   settings: ChessSettings;
   // For `react-resize-detector`
-  targetRef: React.Ref<HTMLDivElement>;
+  targetRef: Ref<HTMLDivElement>;
   width: number;
 }
 
-const Board: React.FC<BoardProps> = ({
+const Board: FunctionComponent<BoardProps> = ({
   pieces,
   recentMovePath,
   isFlipped,

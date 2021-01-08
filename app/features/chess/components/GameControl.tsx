@@ -1,6 +1,6 @@
 import { Box, IconButton, Tooltip } from '@material-ui/core';
 import { Cached, Flag, Settings, Undo } from '@material-ui/icons';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 interface GameControlProps {
   canResign: boolean;
@@ -11,7 +11,7 @@ interface GameControlProps {
   openSettings(): void;
 }
 
-const GameControl: React.FC<GameControlProps> = ({
+const GameControl: FunctionComponent<GameControlProps> = ({
   canResign,
   canTakeBack,
   flipBoard,

@@ -1,8 +1,10 @@
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import { ChessBoardColor } from '@prisma/client';
+import type { Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import type { ChessBoardColor } from '@prisma/client';
 import clsx from 'clsx';
 import times from 'lodash/times';
-import React, { memo } from 'react';
+import type { FunctionComponent } from 'react';
+import { memo } from 'react';
 
 import {
   NUMBER_OF_FILES,
@@ -39,7 +41,7 @@ const useStyles = makeStyles<Theme, BoardGridProps>({
   },
 });
 
-const BoardGrid: React.FC<BoardGridProps> = ({ color }) => {
+const BoardGrid: FunctionComponent<BoardGridProps> = ({ color }) => {
   /** CSS classes created via Material-UI. */
   const classes = useStyles({ color });
 

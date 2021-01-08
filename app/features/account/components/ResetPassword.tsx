@@ -16,7 +16,7 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
 import {
@@ -27,7 +27,7 @@ import { CURRENT_USER_QUERY } from '~app/graphql';
 import { useVisibilityToggle } from '~app/hooks';
 
 // Component
-const ResetPassword: React.FC = () => {
+const ResetPassword: FunctionComponent = () => {
   const router = useRouter();
   const { resetToken } = router.query;
   const [

@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import { useCallback, useState } from 'react';
 
 import { stringifySquare } from '~app/features/chess/utils';
-import {
+import type {
   ChessGuides,
   ChessLegalMove,
   ChessSquare,

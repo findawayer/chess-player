@@ -9,7 +9,8 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import type { ChangeEvent, FormEvent, FunctionComponent } from 'react';
+import { useState } from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
 import SuccessMessage from '~app/components/SuccessMessage';
@@ -19,7 +20,7 @@ import {
 } from '~app/features/account/graphql';
 
 // Component
-const RecoverPassword: React.FC = () => {
+const RecoverPassword: FunctionComponent = () => {
   const [email, setEmail] = useState('');
   const [
     recoverPassword,
@@ -27,10 +28,10 @@ const RecoverPassword: React.FC = () => {
   ] = useMutation<RecoverPasswordMethod>(RECOVER_PASSWORD_MUTATION);
 
   /** Handler for input field changes. */
-  const handleEmailInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+  const handleEmailInputChange = (event: ChangeEvent<HTMLInputElement>) =>
     setEmail(event.target.value);
   /** Handler for form submission */
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     // Highjack native form submission.
     event.preventDefault();
     try {

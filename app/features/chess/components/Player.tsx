@@ -1,9 +1,10 @@
 import { Box } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import type { Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import prettyMilliseconds from 'pretty-ms';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
-import { ChessPlayer } from '~app/features/chess/types';
+import type { ChessPlayer } from '~app/features/chess/types';
 
 interface PlayerProps {
   player: ChessPlayer;
@@ -33,7 +34,7 @@ const useStyles = makeStyles<Theme>(theme =>
   }),
 );
 
-const Player: React.FC<PlayerProps> = ({ player, time }) => {
+const Player: FunctionComponent<PlayerProps> = ({ player, time }) => {
   /** CSS classes created via Material-UI. */
   const classes = useStyles();
   /** Time left to the player in `00:00` format. */

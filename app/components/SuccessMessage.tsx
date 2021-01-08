@@ -1,12 +1,12 @@
 import { Alert } from '@material-ui/lab';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 export interface SuccessMessageProps {
   isSuccessful: boolean;
   message: string;
 }
 
-const SuccessMessage: React.FC<SuccessMessageProps> = ({
+const SuccessMessage: FunctionComponent<SuccessMessageProps> = ({
   isSuccessful,
   message,
 }) => {

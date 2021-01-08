@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react';
 import { useState } from 'react';
 
 // State keys (array of strings)
@@ -40,7 +41,7 @@ export const useVisibilityToggle = <Keys extends StateKeys>(keys: Keys) => {
    * Mimics prevent default on `onMouseDown` handler.
    * https://material-ui.com/components/text-fields/#text-field
    */
-  const preventMouseDown = (event: React.MouseEvent<HTMLButtonElement>) =>
+  const preventMouseDown = (event: MouseEvent<HTMLButtonElement>) =>
     event.preventDefault();
   /** Clear fields and reset state. */
   const resetVisibility = () => setVisibility(initializeState(keys));

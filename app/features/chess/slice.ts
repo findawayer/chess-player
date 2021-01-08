@@ -1,16 +1,17 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Move } from 'chess.js';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { Move } from 'chess.js';
 
 import { SCORE_DRAW, SCORE_WIN } from './constants';
 import { initialChessState } from './state';
-import {
+import type {
   ChessBoardData,
-  ChessGameOverType,
   ChessMove,
   ChessPieceColor,
   ChessPlayer,
   ChessSquareName,
 } from './types';
+import { ChessGameOverType } from './types';
 import {
   createPieces,
   invertPieceColor,

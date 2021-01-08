@@ -1,5 +1,5 @@
 import { Alert } from '@material-ui/lab';
-import React from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
 
 import PleaseSignin from '~app/features/account/components/PleaseSignin';
 import PleaseSigninInline from '~app/features/account/components/PleaseSigninInline';
@@ -7,7 +7,7 @@ import { useUser } from '~app/hooks/useUser';
 import { isAdmin } from '~app/utils/roles';
 
 interface AuthCheckerProps {
-  children: React.ReactNode;
+  children: ReactNode;
   inline?: boolean;
   requireAdmin?: boolean;
 }
@@ -25,7 +25,7 @@ interface AuthCheckerProps {
  *     Any React node can be passed as child node.
  *   </AuthChecker>
  */
-const AuthChecker: React.FC<AuthCheckerProps> = ({
+const AuthChecker: FunctionComponent<AuthCheckerProps> = ({
   children,
   inline,
   requireAdmin,

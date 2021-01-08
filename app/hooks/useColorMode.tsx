@@ -5,6 +5,7 @@ import UniversalCookie from 'universal-cookie';
 
 import { CURRENT_USER_QUERY, UPDATE_COLOR_MODE_MUTATION } from '~app/graphql';
 import { noop } from '~app/utils';
+
 import { useUser } from './useUser';
 
 // ---------- Configurations ---------- //

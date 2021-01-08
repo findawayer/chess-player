@@ -1,4 +1,5 @@
-import { User, UserRole } from '@prisma/client';
+import type { User } from '@prisma/client';
+import { UserRole } from '@prisma/client';
 
 /** Test if a user is eligible to role-restricted data or content. */
 export const hasRole = (

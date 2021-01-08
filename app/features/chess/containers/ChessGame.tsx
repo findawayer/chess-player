@@ -1,13 +1,8 @@
 import { Container, Grid } from '@material-ui/core';
 import chunk from 'lodash/chunk';
 import times from 'lodash/times';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import type { FunctionComponent } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,8 +35,8 @@ import {
   timeout,
   undoMove,
 } from '~app/features/chess/slice';
-import { ChessState } from '~app/features/chess/state';
-import { ChessPieceColor } from '~app/features/chess/types';
+import type { ChessState } from '~app/features/chess/state';
+import type { ChessPieceColor } from '~app/features/chess/types';
 import {
   createComputers,
   createHumanAndComputer,
@@ -49,7 +44,7 @@ import {
   invertPieceColor,
 } from '~app/features/chess/utils';
 import { useUser } from '~app/hooks';
-import { AppDispatch, AppState } from '~app/vendors/redux';
+import type { AppDispatch, AppState } from '~app/vendors/redux';
 
 type ChessGameState = Pick<
   ChessState,
@@ -66,7 +61,7 @@ type ChessGameState = Pick<
   | 'turn'
 >;
 
-const ChessGame: React.FC = () => {
+const ChessGame: FunctionComponent = () => {
   /** Authenticated user paylaod extracted from React Context. */
   const me = useUser();
 

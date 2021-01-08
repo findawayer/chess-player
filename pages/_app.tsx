@@ -1,14 +1,13 @@
 import { ApolloProvider } from '@apollo/client';
-// import App, { AppContext, AppProps } from 'next/app';
-import { AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Provider as ReactReduxProvider } from 'react-redux';
 
+import type { CurrentUser } from '~app/graphql';
 import { useApollo } from '~app/vendors/apollo-client';
 import { useStore } from '~app/vendors/redux';
-import { CurrentUser } from '~app/graphql';
 
 /** Load progressbar only in the browser. */
 const ProgressBar = dynamic(() => import('~app/components/ProgressBar'), {

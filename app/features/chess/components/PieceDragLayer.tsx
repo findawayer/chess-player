@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 import { useDragLayer, XYCoord } from 'react-dnd';
 
 import PieceDragPreview from './PieceDragPreview';
@@ -31,7 +31,7 @@ function getLayerStyles(
   return { transform: `translate3d(${x}px, ${y}px, 0)` };
 }
 
-const PieceDragLayer: React.FC = () => {
+const PieceDragLayer: FunctionComponent = () => {
   // DragItemLayer data of `react-dnd` API.
   const { item, initialOffset, currentOffset, isDragging } = useDragLayer(
     monitor => ({

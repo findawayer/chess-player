@@ -1,18 +1,18 @@
 import { Box, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Head from 'next/head';
-import React from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
 
 import { ColorModeApiProvider, useColorMode } from '~app/hooks';
 import { useMuiTheme } from '~app/themes';
 import Header from './Header';
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 /** Outmost presentional layer. Should be wrapping all pages. */
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: FunctionComponent<LayoutProps> = ({ children }) => {
   // Local state: Restore color mode from client cache.
   const colorModeApi = useColorMode();
   /** Material UI theme */

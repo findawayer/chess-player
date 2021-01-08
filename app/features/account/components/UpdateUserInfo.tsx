@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
 import SuccessMessage from '~app/components/SuccessMessage';
@@ -24,7 +24,7 @@ interface UpdateUserInfoProps {
   me: CurrentUser;
 }
 
-const UpdateUserInfo: React.FC<UpdateUserInfoProps> = ({
+const UpdateUserInfo: FunctionComponent<UpdateUserInfoProps> = ({
   me: { email, name },
 }) => {
   const [

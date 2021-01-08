@@ -9,7 +9,7 @@ import {
 import { useMemo } from 'react';
 
 import { chessReducer } from '~app/features/chess/slice';
-import { ChessState } from '~app/features/chess/state';
+import type { ChessState } from '~app/features/chess/state';
 
 /* Root reducer. Define a top-level state field named {key}, handled by `{value}`. */
 export const rootReducer = combineReducers({

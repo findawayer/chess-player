@@ -5,14 +5,13 @@ import {
   DialogTitle,
   Typography,
 } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import React, { useEffect, useState } from 'react';
+import type { Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import type { FunctionComponent } from 'react';
+import { useEffect, useState } from 'react';
 
-import {
-  ChessGameOver,
-  ChessGameOverType,
-  ChessPieceColor,
-} from '~app/features/chess/types';
+import type { ChessGameOver, ChessPieceColor } from '~app/features/chess/types';
+import { ChessGameOverType } from '~app/features/chess/types';
 import { getFullPieceColor } from '~app/features/chess/utils';
 
 const useStyles = makeStyles<Theme>(theme =>
@@ -78,7 +77,7 @@ interface GameOverDialogProps {
   rematch(alternate: boolean): void;
 }
 
-const GameOverDialog: React.FC<GameOverDialogProps> = ({
+const GameOverDialog: FunctionComponent<GameOverDialogProps> = ({
   gameOver,
   playerColor,
   rematch,

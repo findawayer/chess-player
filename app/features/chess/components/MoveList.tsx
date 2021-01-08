@@ -1,13 +1,10 @@
 import { Typography } from '@material-ui/core';
-import {
-  createStyles,
-  fade,
-  makeStyles,
-  Theme,
-} from '@material-ui/core/styles';
-import React, { memo, useEffect, useRef } from 'react';
+import type { Theme } from '@material-ui/core/styles';
+import { createStyles, fade, makeStyles } from '@material-ui/core/styles';
+import type { FunctionComponent } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
-import { ChessMoveLog } from '~app/features/chess/types';
+import type { ChessMoveLog } from '~app/features/chess/types';
 
 const useStyles = makeStyles<Theme>(theme => {
   const scrollbarColor = theme.palette.type === 'dark' ? '#fff' : '#000';
@@ -70,7 +67,7 @@ interface MoveListProps {
   moveList: ChessMoveLog[][];
 }
 
-const MoveList: React.FC<MoveListProps> = ({ moveList }) => {
+const MoveList: FunctionComponent<MoveListProps> = ({ moveList }) => {
   /** Scroller element ref. */
   const scrollerRef = useRef<HTMLDivElement>(null);
   /** CSS classes created via Material-UI. */

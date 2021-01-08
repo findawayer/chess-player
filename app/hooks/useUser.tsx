@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
-import React, { createContext, useContext } from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
+import { createContext, useContext } from 'react';
 
 import { CURRENT_USER_QUERY, CurrentUser } from '~app/graphql';
 
@@ -7,7 +8,7 @@ import { CURRENT_USER_QUERY, CurrentUser } from '~app/graphql';
 export const UserContext = createContext<CurrentUser | null>(null);
 
 /** React provider for the user context above. */
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
+export const UserProvider: FunctionComponent<{ children: ReactNode }> = ({
   children,
 }) => {
   const { data } = useQuery<{ me: CurrentUser | null }>(CURRENT_USER_QUERY);

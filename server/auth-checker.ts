@@ -1,7 +1,7 @@
-import { UserRole } from '@prisma/client';
-import { AuthChecker } from 'type-graphql';
+import type { UserRole } from '@prisma/client';
+import type { AuthChecker } from 'type-graphql';
 
-import { GraphQLContext } from './interfaces';
+import type { GraphQLContext } from './interfaces';
 
 // create auth checker function
 export const authChecker: AuthChecker<GraphQLContext, UserRole> = (

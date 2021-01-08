@@ -1,4 +1,4 @@
-import { ChessSquareName } from './squares';
+import type { ChessSquareName } from './squares';
 
 /**
  * Possible squares that the a piece can move to.

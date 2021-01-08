@@ -1,12 +1,12 @@
 import { useMutation } from '@apollo/client';
 import { Button } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { SIGN_OUT_MUTATION, Signout } from '~app/features/account/graphql';
 import { CURRENT_USER_QUERY } from '~app/graphql';
 
-const SignoutButton: React.FC = () => {
+const SignoutButton: FunctionComponent = () => {
   const [signout] = useMutation<Signout>(SIGN_OUT_MUTATION, {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });

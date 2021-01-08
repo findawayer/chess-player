@@ -2,7 +2,7 @@
 import 'reflect-metadata';
 
 import { ApolloServer } from 'apollo-server-micro';
-import { NextApiHandler } from 'next';
+import type { NextApiHandler } from 'next';
 import NextCors from 'nextjs-cors';
 import { buildSchema } from 'type-graphql';
 

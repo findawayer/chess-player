@@ -17,7 +17,7 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
 import { CURRENT_USER_QUERY } from '~app/graphql';
@@ -31,7 +31,7 @@ interface SignupProps {
   noRedirect?: boolean;
 }
 
-const Signup: React.FC<SignupProps> = ({ noRedirect }) => {
+const Signup: FunctionComponent<SignupProps> = ({ noRedirect }) => {
   const router = useRouter();
   const [signup, { loading, error }] = useMutation<SignupMethod>(
     SIGN_UP_MUTATION,

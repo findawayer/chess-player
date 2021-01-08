@@ -1,6 +1,6 @@
-import { DropTargetMonitor } from 'react-dnd';
+import type { DropTargetMonitor } from 'react-dnd';
 
-import { ChessPiece } from './types';
+import type { ChessPiece } from './types';
 import { isValidSquare, stringifySquare } from './utils';
 
 /**

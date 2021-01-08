@@ -1,4 +1,4 @@
-import { Move, ShortMove } from 'chess.js';
+import type { Move, ShortMove } from 'chess.js';
 import clamp from 'lodash/clamp';
 import { useCallback, useEffect, useState } from 'react';
 

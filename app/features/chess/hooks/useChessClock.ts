@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { ChessPieceColor } from '~app/features/chess/types';
+import type { ChessPieceColor } from '~app/features/chess/types';
 
 /* Delta time reference for a single player side. */
 interface TimeTrackerSide {

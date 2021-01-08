@@ -6,7 +6,7 @@ import {
   NUMBER_OF_RANKS,
   RANK_NAMES,
 } from '~app/features/chess/constants';
-import {
+import type {
   ChessSquare,
   ChessSquareName,
   ChessSquareXY,

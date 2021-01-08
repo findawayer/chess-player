@@ -1,9 +1,10 @@
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import type { Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { SQUARE_SIZE } from '~app/features/chess/constants';
-import { ChessLegalMove, ChessSquare } from '~app/features/chess/types';
+import type { ChessLegalMove, ChessSquare } from '~app/features/chess/types';
 import { squareClass } from '~app/features/chess/utils';
 
 const useStyles = makeStyles<Theme, { isCapture: boolean }>({
@@ -27,7 +28,7 @@ interface LegalSquareProps extends ChessLegalMove {
 }
 
 // @todo: a11y key input handler
-const LegalSquare: React.FC<LegalSquareProps> = ({
+const LegalSquare: FunctionComponent<LegalSquareProps> = ({
   flags,
   square,
   isVisible,

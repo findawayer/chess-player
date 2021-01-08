@@ -1,8 +1,10 @@
 import { LinearProgress } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import type { Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useNProgress } from '@tanem/react-nprogress';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import type { FunctionComponent } from 'react';
+import { useEffect, useState } from 'react';
 
 const useStyles = makeStyles<
   Theme,
@@ -26,7 +28,7 @@ const useStyles = makeStyles<
   }),
 );
 
-const ProgressBar: React.FC = () => {
+const ProgressBar: FunctionComponent = () => {
   const router = useRouter();
   const [isAnimating, setIsAnimating] = useState(false);
   const { animationDuration, isFinished, progress } = useNProgress({

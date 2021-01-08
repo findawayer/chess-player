@@ -1,12 +1,11 @@
 import { Container, Grid } from '@material-ui/core';
-// import { useRouter } from 'next/router';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import UpdatePassword from '~app/features/account/components/UpdatePassword';
 import UpdateUserInfo from '~app/features/account/components/UpdateUserInfo';
 import { useUser } from '~app/hooks';
 
-const MyAccount: React.FC = () => {
+const MyAccount: FunctionComponent = () => {
   const me = useUser();
 
   return !me ? null : (

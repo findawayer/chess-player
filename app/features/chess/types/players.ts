@@ -1,4 +1,4 @@
-import { ChessPieceColor } from './pieces';
+import type { ChessPieceColor } from './pieces';
 
 /**
  * Chess player side.

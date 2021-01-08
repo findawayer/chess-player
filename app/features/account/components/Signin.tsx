@@ -17,21 +17,21 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
-import { CURRENT_USER_QUERY } from '~app/graphql';
-import { useVisibilityToggle } from '~app/hooks';
 import {
   SIGN_IN_MUTATION,
   Signin as SigninMethod,
 } from '~app/features/account/graphql';
+import { CURRENT_USER_QUERY } from '~app/graphql';
+import { useVisibilityToggle } from '~app/hooks';
 
 interface SigninProps {
   noRedirect?: boolean;
 }
 
-const Signin: React.FC<SigninProps> = ({ noRedirect }) => {
+const Signin: FunctionComponent<SigninProps> = ({ noRedirect }) => {
   const router = useRouter();
   const [signin, { loading, error }] = useMutation<SigninMethod>(
     SIGN_IN_MUTATION,

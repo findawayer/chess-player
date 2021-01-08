@@ -1,5 +1,5 @@
-import { ChessPieceColor, ChessPieceVariant } from './pieces';
-import { ChessSquareName } from './squares';
+import type { ChessPieceColor, ChessPieceVariant } from './pieces';
+import type { ChessSquareName } from './squares';
 
 /**
  * Chess move object. Can be considered as an alias of

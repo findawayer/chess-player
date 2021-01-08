@@ -1,4 +1,4 @@
-import React from 'react';
+import type { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
 import GameSelect from '~app/features/chess/components/GameSelect';
@@ -10,7 +10,7 @@ type SelectGameState = Pick<
   'duration' | 'engineLevel' | 'increment' | 'playerColor'
 >;
 
-const SelectGame: React.FC = () => {
+const SelectGame: FunctionComponent = () => {
   // Extracted Redux state
   const { duration, engineLevel, increment, playerColor } = useSelector<
     AppState,

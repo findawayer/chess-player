@@ -13,12 +13,12 @@ import {
 } from '@material-ui/core';
 import { ChessBoardColor } from '@prisma/client';
 import capitalize from 'lodash/capitalize';
-import React from 'react';
+import type { ChangeEvent, FormEvent, FunctionComponent } from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
 import AuthChecker from '~app/features/account/containers/AuthChecker';
-import { ChessSettings, mapChessSettings } from '~app/features/chess/hooks';
 import { UPDATE_CHESS_SETTINGS_MUTATION } from '~app/features/chess/graphql';
+import { ChessSettings, mapChessSettings } from '~app/features/chess/hooks';
 import { CURRENT_USER_QUERY } from '~app/graphql';
 
 interface SettingsDialogProps {
@@ -31,7 +31,7 @@ interface SettingsDialogProps {
   closeSettings(): void;
 }
 
-const SettingsDialog: React.FC<SettingsDialogProps> = ({
+const SettingsDialog: FunctionComponent<SettingsDialogProps> = ({
   isOpen,
   settings,
   changeSetting,
@@ -44,7 +44,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
 
   /** Hnadle changes on <Switch /> components. */
   const handleSwitchChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: ChangeEvent<HTMLInputElement>,
     checked: boolean,
   ) => {
     const { name } = event.target as HTMLInputElement;
@@ -52,7 +52,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   };
   /** Handle changes on <Select /> components. */
   const handleSelectChange = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
+    event: ChangeEvent<{ name?: string; value: unknown }>,
   ) => {
     const { name, value } = event.target;
     changeSetting(
@@ -61,7 +61,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
     );
   };
   /** Handle form submission. */
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     // Hijack form submission.
     event.preventDefault();
     try {

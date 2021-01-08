@@ -6,15 +6,19 @@ import {
   Typography,
 } from '@material-ui/core';
 import Link from 'next/link';
-import React from 'react';
+import type { FunctionComponent, MouseEvent } from 'react';
 
 interface RouteLinkProps {
   href: string;
   text: string;
-  handler?(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  handler?(event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>): void;
 }
 
-const RouteLink: React.FC<RouteLinkProps> = ({ href, text, handler }) =>
+const RouteLink: FunctionComponent<RouteLinkProps> = ({
+  href,
+  text,
+  handler,
+}) =>
   handler ? (
     <Button variant="contained" color="primary" size="large" onClick={handler}>
       {text}
@@ -32,7 +36,7 @@ interface PleaseSigninProps {
   signinHandler?(): void;
 }
 
-const PleaseSignin: React.FC<PleaseSigninProps> = ({
+const PleaseSignin: FunctionComponent<PleaseSigninProps> = ({
   signinHandler,
   signupHandler,
 }) => (

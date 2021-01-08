@@ -1,4 +1,5 @@
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import type { Theme } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { ColorMode } from '@prisma/client';
 import defaultsDeep from 'lodash/defaultsDeep';
 import { useMemo } from 'react';

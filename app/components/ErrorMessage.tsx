@@ -1,12 +1,12 @@
 import type { ApolloError } from '@apollo/client';
 import { Alert } from '@material-ui/lab';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 interface ErrorMessageProps {
   error?: ApolloError;
 }
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
+const ErrorMessage: FunctionComponent<ErrorMessageProps> = ({ error }) => {
   // Display only if `Error` object is provided with a message property.
   // This reduces repetitive conditional statements of this component.
   // [X] {error && <Erorr />}

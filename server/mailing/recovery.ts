@@ -1,7 +1,7 @@
 import dedent from 'dedent';
 
-import { withTemplate } from './withTemplate';
 import { transport } from './transport';
+import { withTemplate } from './withTemplate';
 
 interface RecoveryMailOptions {
   to: string;

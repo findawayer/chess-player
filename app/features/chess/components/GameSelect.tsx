@@ -11,10 +11,11 @@ import {
   Slider,
   Typography,
 } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import type { Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import sample from 'lodash/sample';
 import Link from 'next/link';
-import React from 'react';
+import type { ChangeEvent, FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
@@ -23,8 +24,8 @@ import {
   setIncrement,
   setPlayerColor,
 } from '~app/features/chess/slice';
-import { ChessPieceColor } from '~app/features/chess/types';
-import { AppDispatch } from '~app/vendors/redux';
+import type { ChessPieceColor } from '~app/features/chess/types';
+import type { AppDispatch } from '~app/vendors/redux';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,7 +59,7 @@ interface GameSelectProps {
   playerColor: ChessPieceColor | null;
 }
 
-const GameSelect: React.FC<GameSelectProps> = ({
+const GameSelect: FunctionComponent<GameSelectProps> = ({
   duration,
   engineLevel,
   increment,
@@ -81,13 +82,11 @@ const GameSelect: React.FC<GameSelectProps> = ({
     dispatch(setIncrement((value as number) * 1000));
 
   /** Handle changes from `mode` radio buttons. */
-  const handleModeChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+  const handleModeChange = (event: ChangeEvent<HTMLInputElement>) =>
     dispatch(setPlayerColor(event.target.value === 'simulate' ? null : 'w'));
 
   /** Handle changes from `mode` radio buttons. */
-  const handlePlayerColorChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handlePlayerColorChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedOption = event.target.value;
     const selectedColor =
       selectedOption === 'random'

@@ -1,8 +1,13 @@
 import clsx from 'clsx';
-import React, { memo } from 'react';
+import type { FunctionComponent } from 'react';
+import { memo } from 'react';
 
-import { ChessPieceColor, ChessPieceVariant } from '~app/features/chess/types';
+import type {
+  ChessPieceColor,
+  ChessPieceVariant,
+} from '~app/features/chess/types';
 import { pieceClass } from '~app/features/chess/utils';
+
 import useStyles from './styles/Piece';
 
 interface PieceDragPreviewProps {
@@ -11,7 +16,7 @@ interface PieceDragPreviewProps {
   size: number;
 }
 
-const PieceDragPreview: React.FC<PieceDragPreviewProps> = ({
+const PieceDragPreview: FunctionComponent<PieceDragPreviewProps> = ({
   color,
   variant,
   size,

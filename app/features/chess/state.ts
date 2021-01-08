@@ -1,5 +1,6 @@
-import { ChessBoardColor } from '@prisma/client';
-import {
+import type { ChessBoardColor } from '@prisma/client';
+
+import type {
   ChessGameOver,
   ChessMoveLog,
   ChessPieceColor,

@@ -19,7 +19,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { UserRole } from '@prisma/client';
-import React, { useState } from 'react';
+import type { ChangeEvent, FunctionComponent, MouseEvent } from 'react';
+import { useState } from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
 import {
@@ -33,18 +34,18 @@ import {
 const USERS_PER_PAGE = 10;
 
 /** User table row */
-const UserTableRow: React.FC<{ user: PaginatedUser }> = ({ user }) => {
+const UserTableRow: FunctionComponent<{ user: PaginatedUser }> = ({ user }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [currentRole, setCurrentRole] = useState(user.role);
   const [updateUserRole, { error }] = useMutation<UpdateUserRoleMethod>(
     UPDATE_USER_ROLE_MUTATION,
   );
   /** Handler for clicking role button that triggers edit dialog. */
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   /** Handler for role radio button selection. */
-  const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRoleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentRole((event.target as HTMLInputElement).value as UserRole);
   };
   /** Handle for closing the edit dialog without submitting. */
@@ -135,7 +136,7 @@ const UserTableRow: React.FC<{ user: PaginatedUser }> = ({ user }) => {
 };
 
 /** Permission management table. */
-const Permissions: React.FC = () => {
+const Permissions: FunctionComponent = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(USERS_PER_PAGE);
   const { error, data } = useQuery<{ users: PaginatedUser[] }>(USERS_QUERY, {
@@ -150,9 +151,7 @@ const Permissions: React.FC = () => {
     setPage(newPage);
   };
   /** Handler for rows per change selection. */
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };

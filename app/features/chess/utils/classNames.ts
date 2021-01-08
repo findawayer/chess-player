@@ -1,4 +1,5 @@
-import { ChessPiece, ChessSquare } from '~app/features/chess/types';
+import type { ChessPiece, ChessSquare } from '~app/features/chess/types';
+
 import { stringifySquare } from './squares';
 
 /** Format a CSS class for chess piece. */

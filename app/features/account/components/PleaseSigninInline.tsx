@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import type { FunctionComponent } from 'react';
+import { useState } from 'react';
 
 import PleaseSignin from './PleaseSignin';
 import Signin from './Signin';
 import Signup from './Signup';
 
-const PleaseSigninInline: React.FC = () => {
+const PleaseSigninInline: FunctionComponent = () => {
   const [route, setRoute] = useState<'signin' | 'signup' | null>(null);
   const signinHandler = () => setRoute('signin');
   const signupHandler = () => setRoute('signup');

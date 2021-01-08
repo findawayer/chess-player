@@ -1,5 +1,5 @@
-import { User } from '@prisma/client';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { User } from '@prisma/client';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 /** Authenticated user paylaod exposed to GraphQL context. */
 export type AuthUserPayload = Pick<User, 'id' | 'name' | 'role'>;

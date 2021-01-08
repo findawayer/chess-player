@@ -1,4 +1,4 @@
-import { ChessBoardColor } from '@prisma/client';
+import type { ChessBoardColor } from '@prisma/client';
 import { useEffect, useRef, useState } from 'react';
 
 import {
@@ -7,7 +7,7 @@ import {
   DEFAULT_SHOW_LEGAL,
   DEFAULT_SHOW_RECENT,
 } from '~app/features/chess/constants';
-import { CurrentUser } from '~app/graphql';
+import type { CurrentUser } from '~app/graphql';
 
 export interface ChessSettings {
   autoQueen: boolean;

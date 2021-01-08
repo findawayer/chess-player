@@ -1,10 +1,11 @@
-import { IncomingMessage } from 'http';
-import { NextApiRequest } from 'next';
 import cookie from 'cookie';
+import type { IncomingMessage } from 'http';
+import type { NextApiRequest } from 'next';
 
 import { ACCESS_TOKEN_KEY } from '~server/constants';
-import { AuthUserPayload, GraphQLContext } from '~server/interfaces';
+import type { AuthUserPayload, GraphQLContext } from '~server/interfaces';
 import { prisma } from '~server/prisma';
+
 import { createAccessToken, parseAccessToken } from './auth';
 import { setCookie } from './cookies';
 

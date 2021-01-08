@@ -1,5 +1,5 @@
 import { Container } from '@material-ui/core';
-import { GetServerSideProps } from 'next';
+import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 import Layout from '~app/components/Layout';

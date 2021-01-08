@@ -1,4 +1,4 @@
-import { ChessPieceColor, ChessPlayer } from '~app/features/chess/types';
+import type { ChessPieceColor, ChessPlayer } from '~app/features/chess/types';
 import { invertPieceColor } from './pieces';
 
 /**

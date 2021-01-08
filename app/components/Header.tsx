@@ -7,11 +7,13 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import type { Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import { useUser } from '~app/hooks';
+
 import AccountMenu from './AccountMenu';
 import ColorModeToggler from './ColorModeToggler';
 
@@ -37,7 +39,7 @@ const useStyles = makeStyles<Theme>(theme =>
   }),
 );
 
-const Header: React.FC = () => {
+const Header: FunctionComponent = () => {
   /** Authenticated user. */
   const me = useUser();
   /** User is authenticated */

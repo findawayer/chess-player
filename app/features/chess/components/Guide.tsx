@@ -1,11 +1,13 @@
-import { fade, makeStyles, Theme } from '@material-ui/core/styles';
+import type { Theme } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import { ChessBoardColor } from '@prisma/client';
 import clsx from 'clsx';
-import React, { memo } from 'react';
+import type { FunctionComponent } from 'react';
+import { memo } from 'react';
 
 import { SQUARE_SIZE } from '~app/features/chess/constants';
 import { chessBoardTheme } from '~app/features/chess/themes';
-import { ChessSquareName } from '~app/features/chess/types';
+import type { ChessSquareName } from '~app/features/chess/types';
 import { squareClass } from '~app/features/chess/utils';
 
 interface GuideProps {
@@ -30,7 +32,7 @@ const useStyles = makeStyles<Theme, Omit<GuideProps, 'square'>>({
   },
 });
 
-const Guide: React.FC<GuideProps> = ({ color, variant, square }) => {
+const Guide: FunctionComponent<GuideProps> = ({ color, variant, square }) => {
   const classes = useStyles({ color, variant });
 
   return !square ? null : (

@@ -1,15 +1,17 @@
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import type { FunctionComponent } from 'react';
+import { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { DRAG_ITEM } from '~app/features/chess/react-dnd';
-import {
+import type {
   ChessPieceColor,
   ChessPieceVariant,
   ChessSquare,
 } from '~app/features/chess/types';
 import { pieceClass, squareClass } from '~app/features/chess/utils';
+
 import useStyles from './styles/Piece';
 
 interface PieceProps {
@@ -23,7 +25,7 @@ interface PieceProps {
   handleSelect(square: ChessSquare): void;
 }
 
-const Piece: React.FC<PieceProps> = ({
+const Piece: FunctionComponent<PieceProps> = ({
   id,
   color,
   variant,

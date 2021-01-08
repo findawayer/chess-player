@@ -11,7 +11,6 @@ import { concatPagination } from '@apollo/client/utilities';
 import deepMerge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
 import { useMemo } from 'react';
-// import urlJoin from 'url-join';
 
 export type ApolloState = Record<string, unknown>;
 

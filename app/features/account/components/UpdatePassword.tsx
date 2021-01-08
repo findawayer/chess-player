@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useFormik } from 'formik';
-import React from 'react';
+import type { FunctionComponent } from 'react';
 
 import ErrorMessage from '~app/components/ErrorMessage';
 import SuccessMessage from '~app/components/SuccessMessage';
@@ -25,7 +25,7 @@ import {
 import { CURRENT_USER_QUERY } from '~app/graphql';
 import { useVisibilityToggle } from '~app/hooks';
 
-const UpdatePassword: React.FC = () => {
+const UpdatePassword: FunctionComponent = () => {
   const [
     updatePasword,
     { loading, error, called },

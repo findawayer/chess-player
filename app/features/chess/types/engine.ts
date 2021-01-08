@@ -1,4 +1,4 @@
-import { ChessMove } from './moves';
+import type { ChessMove } from './moves';
 
 /** Chess engine's status. */
 export enum ChessEngineStatus {

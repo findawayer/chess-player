@@ -1,8 +1,8 @@
-import { ChessInstance, Move } from 'chess.js';
+import type { ChessInstance, Move } from 'chess.js';
 import uniqBy from 'lodash/uniqBy';
 
 import { NUMBER_OF_RANKS } from '~app/features/chess/constants';
-import {
+import type {
   ChessLegalMove,
   ChessMoveLog,
   ChessPiece,

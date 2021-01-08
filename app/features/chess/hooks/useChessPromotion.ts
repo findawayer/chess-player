@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import { useCallback, useEffect, useState } from 'react';
 
 import { stringifySquare } from '~app/features/chess/utils';
-import {
+import type {
   ChessPromotion,
   ChessPromotionVariant,
 } from '~app/features/chess/types';

@@ -8,7 +8,7 @@ import {
   requireUserById,
   requireValidPassword,
 } from '~server/guards';
-import { GraphQLContext } from '~server/interfaces';
+import type { GraphQLContext } from '~server/interfaces';
 import { sendRecoveryEmail } from '~server/mailing/recovery';
 import { prisma } from '~server/prisma';
 import {
@@ -17,6 +17,7 @@ import {
   handleSuccessfulLogout,
   hashPassword,
 } from '~server/utils';
+
 import { SignupInput } from './SignupInput';
 import { ChessBoardColor, ColorMode, User, UserRole } from './User';
 import { UserPagination } from './UserPagination';

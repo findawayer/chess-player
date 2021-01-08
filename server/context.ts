@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { GraphQLContext } from './interfaces';
+import type { GraphQLContext } from './interfaces';
 import { getServerSession } from './utils';
 
 /**
