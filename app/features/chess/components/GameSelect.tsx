@@ -18,12 +18,7 @@ import Link from 'next/link';
 import type { ChangeEvent, FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import {
-  setDuration,
-  setEngineLevel,
-  setIncrement,
-  setPlayerColor,
-} from '~app/features/chess/slice';
+import { chessActions } from '~app/features/chess/redux/slice';
 import type { ChessPieceColor } from '~app/features/chess/types';
 import type { AppDispatch } from '~app/vendors/redux';
 
@@ -75,15 +70,19 @@ const GameSelect: FunctionComponent<GameSelectProps> = ({
 
   /** Handle changes from `duration` slider. */
   const handleDurationChange = (_: Unused, value: number | number[]) =>
-    dispatch(setDuration((value as number) * 1000 * 60));
+    dispatch(chessActions.setDuration((value as number) * 1000 * 60));
 
   /** Handle changes from `increment` slider. */
   const handleIncrementChange = (_: Unused, value: number | number[]) =>
-    dispatch(setIncrement((value as number) * 1000));
+    dispatch(chessActions.setIncrement((value as number) * 1000));
 
   /** Handle changes from `mode` radio buttons. */
   const handleModeChange = (event: ChangeEvent<HTMLInputElement>) =>
-    dispatch(setPlayerColor(event.target.value === 'simulate' ? null : 'w'));
+    dispatch(
+      chessActions.setPlayerColor(
+        event.target.value === 'simulate' ? null : 'w',
+      ),
+    );
 
   /** Handle changes from `mode` radio buttons. */
   const handlePlayerColorChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -95,12 +94,12 @@ const GameSelect: FunctionComponent<GameSelectProps> = ({
           // Time to submit PR now and wait for their review.
           sample<ChessPieceColor>(['b', 'w'])!
         : (selectedOption as ChessPieceColor);
-    dispatch(setPlayerColor(selectedColor));
+    dispatch(chessActions.setPlayerColor(selectedColor));
   };
 
   /** Handle changes from `engineLevel` slider. */
   const handleEngineLevelChange = (_: Unused, value: number | number[]) =>
-    dispatch(setEngineLevel(value as number));
+    dispatch(chessActions.setEngineLevel(value as number));
 
   return (
     <Card elevation={2} className={classes.root}>

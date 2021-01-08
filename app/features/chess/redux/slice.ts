@@ -2,16 +2,15 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import type { Move } from 'chess.js';
 
-import { SCORE_DRAW, SCORE_WIN } from './constants';
-import { initialChessState } from './state';
+import { SCORE_DRAW, SCORE_WIN } from '~app/features/chess/constants';
 import type {
   ChessBoardData,
   ChessMove,
   ChessPieceColor,
   ChessPlayer,
   ChessSquareName,
-} from './types';
-import { ChessGameOverType } from './types';
+} from '~app/features/chess/types';
+import { ChessGameOverType } from '~app/features/chess/types';
 import {
   createPieces,
   invertPieceColor,
@@ -19,15 +18,14 @@ import {
   isEnPassant,
   isQueenSideSquare,
   shiftSquareName,
-} from './utils';
+} from '~app/features/chess/utils';
 
-// Redux-toolkit slice: `chess`
+import { initialChessState } from './state';
+
 const chessSlice = createSlice({
-  // Action type prefix.
   name: 'chess',
-  // Initial state.
   initialState: initialChessState,
-  // Note that mutable reducers *ONLY* work inside `createSlice`.
+  // Note that mutable reducers *ONLY* work inside slice.
   reducers: {
     // ---------- Game definitions ---------- //
     // setDuration
@@ -263,32 +261,4 @@ const chessSlice = createSlice({
   },
 });
 
-// Actions
-export const {
-  // Game settings
-  setDuration,
-  setIncrement,
-  setPlayerColor,
-  setEngineLevel,
-  // Pieces
-  setPieces,
-  movePiece,
-  // Moves
-  playMove,
-  undoMove,
-  clearMoves,
-  // Players
-  setPlayers,
-  // Game control
-  checkmate,
-  resign,
-  timeout,
-  stalemate,
-  notEnoughMaterial,
-  repetition,
-  resetGame,
-  flipBoard,
-} = chessSlice.actions;
-
-// Reducer
-export const chessReducer = chessSlice.reducer;
+export const { actions: chessActions, reducer: chessReducer } = chessSlice;

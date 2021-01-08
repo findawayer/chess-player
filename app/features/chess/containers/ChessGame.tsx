@@ -21,21 +21,8 @@ import {
   useStockfish,
 } from '~app/features/chess/hooks';
 import { createBackendOptions } from '~app/features/chess/react-dnd';
-import {
-  checkmate,
-  flipBoard,
-  notEnoughMaterial,
-  playMove,
-  repetition,
-  resetGame,
-  resign,
-  setPieces,
-  setPlayers,
-  stalemate,
-  timeout,
-  undoMove,
-} from '~app/features/chess/slice';
-import type { ChessState } from '~app/features/chess/state';
+import type { ChessState } from '~app/features/chess/redux';
+import { chessActions } from '~app/features/chess/redux/slice';
 import type { ChessPieceColor } from '~app/features/chess/types';
 import {
   createComputers,
@@ -156,26 +143,26 @@ const ChessGame: FunctionComponent = () => {
 
   // ---------- Callbacks ---------- //
   /** Flip the board direction vertically. */
-  const handleFlipBoard = () => dispatch(flipBoard());
+  const handleFlipBoard = () => dispatch(chessActions.flipBoard());
   /** Request a take back to the opponent. */
   const handleTakeBack = useCallback(() => {
     const length = isPlayerTurn ? 2 : 1;
     // Undo move(s) through the validator first.
     times(length, () => validator.undo());
     // Undo move(s) from redux state and restore the board.
-    dispatch(undoMove({ length, board: validator.board() }));
+    dispatch(chessActions.undoMove({ length, board: validator.board() }));
   }, [dispatch, isPlayerTurn, validator]);
   /** Reset the game data. Swap piece colors when `alternate` is set to true. */
   const rematch = useCallback(
     (alternate: boolean) => {
       validator.reset();
       resetClock();
-      dispatch(resetGame({ board: validator.board(), alternate }));
+      dispatch(chessActions.resetGame({ board: validator.board(), alternate }));
     },
     [dispatch, resetClock, validator],
   );
   /** Concede the game. */
-  const handleResign = () => dispatch(resign());
+  const handleResign = () => dispatch(chessActions.resign());
   /** Close the game settings dialog */
   const openSettings = () => setSettingsOpen(true);
   const closeSettings = () => setSettingsOpen(false);
@@ -190,14 +177,14 @@ const ChessGame: FunctionComponent = () => {
     const players = playerColor
       ? createHumanAndComputer({ playerColor })
       : createComputers();
-    dispatch(setPlayers(players));
+    dispatch(chessActions.setPlayers(players));
   }, [dispatch, playerColor]);
 
   // Initialize pieces.
   useEffect(() => {
     // debug
     // validator.load(FEN_WHITE_EN_PASSANT);
-    dispatch(setPieces({ board: validator.board() }));
+    dispatch(chessActions.setPieces({ board: validator.board() }));
   }, [dispatch, validator]);
 
   // Run the clock once both player has played a move.
@@ -223,9 +210,9 @@ const ChessGame: FunctionComponent = () => {
   useEffect(() => {
     if (!gameOver) {
       if (time.w === 0) {
-        dispatch(timeout({ winner: 'b' }));
+        dispatch(chessActions.timeout({ winner: 'b' }));
       } else if (time.b === 0) {
-        dispatch(timeout({ winner: 'w' }));
+        dispatch(chessActions.timeout({ winner: 'w' }));
       }
     }
   }, [dispatch, gameOver, time]);
@@ -233,7 +220,7 @@ const ChessGame: FunctionComponent = () => {
   // The game is over by checkmate.
   useEffect(() => {
     if (!gameOver && validator.in_checkmate()) {
-      dispatch(checkmate({ winner: invertPieceColor(turn) }));
+      dispatch(chessActions.checkmate({ winner: invertPieceColor(turn) }));
     }
   }, [dispatch, gameOver, turn, validator]);
 
@@ -242,15 +229,15 @@ const ChessGame: FunctionComponent = () => {
     if (!gameOver) {
       // Drawn by stalemate.
       if (validator.in_stalemate()) {
-        dispatch(stalemate());
+        dispatch(chessActions.stalemate());
       }
       // Drawn by insufficient material.
       else if (validator.insufficient_material()) {
-        dispatch(notEnoughMaterial());
+        dispatch(chessActions.notEnoughMaterial());
       }
       // Drawn by repetition.
       else if (validator.in_threefold_repetition()) {
-        dispatch(repetition());
+        dispatch(chessActions.repetition());
       }
     }
   }, [dispatch, gameOver, turn, validator]);
@@ -270,7 +257,7 @@ const ChessGame: FunctionComponent = () => {
     if (engineMove) {
       // validate the move first.
       const move = validator.move(engineMove);
-      if (move) dispatch(playMove(move));
+      if (move) dispatch(chessActions.playMove(move));
     }
   }, [dispatch, engineMove, validator]);
 

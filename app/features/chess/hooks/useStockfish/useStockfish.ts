@@ -3,19 +3,19 @@ import clamp from 'lodash/clamp';
 import { useCallback, useEffect, useState } from 'react';
 
 import {
-  calculateDepth,
-  calculateErrorProbability,
-  calculateMaxError,
-  formatMoveString,
-  formatTimeString,
-} from './helpers';
-import {
   ENGINE_IS_LOADED,
   ENGINE_IS_READY,
   FOUND_BEST_MOVE,
   IS_SYSTEM_MESSAGE,
 } from './messages';
 import { useEngine } from './useEngine';
+import {
+  calculateDepth,
+  calculateErrorProbability,
+  calculateMaxError,
+  formatMoveString,
+  formatTimeString,
+} from './utils';
 
 /** Chess engine's status. */
 export enum ChessEngineStatus {

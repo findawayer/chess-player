@@ -16,7 +16,7 @@ import {
 } from '~app/features/chess/hooks';
 import type { DraggedPiece } from '~app/features/chess/react-dnd';
 import { DRAG_ITEM, getDropTargetSquare } from '~app/features/chess/react-dnd';
-import { movePiece, playMove } from '~app/features/chess/slice';
+import { chessActions } from '~app/features/chess/redux';
 import type {
   ChessPieces,
   ChessSquare,
@@ -154,7 +154,7 @@ const Board: FunctionComponent<BoardProps> = ({
         const isPromotion = isPromotingPawn(activePiece, to);
         // Prompt promotion confirm dialog
         if (isPromotion && !settings.autoQueen) {
-          dispatch(movePiece({ from, to }));
+          dispatch(chessActions.movePiece({ from, to }));
           promptPromotion({ color: activePiece.color, from, to });
         } else {
           // Validate the move.
@@ -165,7 +165,7 @@ const Board: FunctionComponent<BoardProps> = ({
           });
           // If the move is valid, commmit the move.
           if (move) {
-            dispatch(playMove(move));
+            dispatch(chessActions.playMove(move));
           }
         }
         // Clear active & legal square highlights.
@@ -230,7 +230,7 @@ const Board: FunctionComponent<BoardProps> = ({
         promotion: promotion.variant,
       });
       // If the move is valid, then commmit the move.
-      if (move) dispatch(playMove(move));
+      if (move) dispatch(chessActions.playMove(move));
     }
   }, [dispatch, promotion, validator]);
 

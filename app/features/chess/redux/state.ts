@@ -6,17 +6,13 @@ import type {
   ChessPieceColor,
   ChessPieces,
   ChessPlayers,
-} from './types';
+} from '~app/features/chess/types';
 
-/**
- * Blueprint of chess game related states.
- */
 export interface ChessState {
   duration: number;
   increment: number;
   turn: ChessPieceColor;
   pieces: ChessPieces;
-  // snapshots: string[];
   moves: ChessMoveLog[];
   players: ChessPlayers;
   playerColor: ChessPieceColor | null;
@@ -24,7 +20,6 @@ export interface ChessState {
   isFlipped: boolean;
   isFrozen: boolean;
   gameOver: ChessGameOver | false;
-  // Game settings
   autoQueen: boolean;
   boardColor: ChessBoardColor;
   showLegal: boolean;
@@ -45,10 +40,6 @@ export const initialChessState: ChessState = {
     byId: {},
     positions: {},
   },
-  // Group of encoded `pieces` state at a specific moment.
-  // Recorded and updated on each move played,
-  // and are used to restore pieces at some point in the past.
-  // snapshots: [],
   // List of moves played for a single chess game.
   // Contains move string in SAN format, along with its move path `from` & `to`.
   moves: [],

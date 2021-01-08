@@ -2,7 +2,7 @@ import type { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
 import GameSelect from '~app/features/chess/components/GameSelect';
-import { ChessState } from '~app/features/chess/state';
+import { ChessState } from '~app/features/chess/redux';
 import { AppState } from '~app/vendors/redux';
 
 type SelectGameState = Pick<

@@ -77,7 +77,6 @@ Requires:
  ┣ 📂app — App's source code besides the server
  ┃ ┣ 📂__tests__ — Unit testing codes
  ┃ ┣ 📂components — Shared React components
- ┃ ┣ 📂contexts — Shared React contexts
  ┃ ┣ 📂features — Per-feature subresources
  ┃ ┃ ┣ 📂account — User authentication
  ┃ ┃ ┣ 📂admin — Admin interface

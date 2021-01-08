@@ -1,15 +1,11 @@
 // Bootstrapped from: https://github.com/vercel/next.js/blob/canary/examples/with-apollo-and-redux/lib/redux.js
 /* eslint-disable no-underscore-dangle */
-import {
-  combineReducers,
-  configureStore,
-  DeepPartial,
-  EnhancedStore,
-} from '@reduxjs/toolkit';
+import type { DeepPartial, EnhancedStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useMemo } from 'react';
 
-import { chessReducer } from '~app/features/chess/slice';
-import type { ChessState } from '~app/features/chess/state';
+import type { ChessState } from '~app/features/chess/redux';
+import { chessReducer } from '~app/features/chess/redux';
 
 /* Root reducer. Define a top-level state field named {key}, handled by `{value}`. */
 export const rootReducer = combineReducers({
