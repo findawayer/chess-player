@@ -1,5 +1,4 @@
 import { NoSsr } from '@material-ui/core';
-import { ChessInstance } from 'chess.js';
 import clsx from 'clsx';
 import map from 'lodash/map';
 import React, { useCallback, useEffect, useMemo } from 'react';
@@ -12,6 +11,7 @@ import {
   ChessSettings,
   useChessGuides,
   useChessPromotion,
+  useChessValidator,
 } from '~app/features/chess/hooks';
 import {
   DRAG_ITEM,
@@ -72,7 +72,6 @@ const renderPieces = (
 
 interface BoardProps {
   // Game data
-  validator: ChessInstance;
   pieces: ChessPieces;
   recentMovePath: ChessSquareName[];
   isFlipped: boolean;
@@ -86,7 +85,6 @@ interface BoardProps {
 }
 
 const Board: React.FC<BoardProps> = ({
-  validator,
   pieces,
   recentMovePath,
   isFlipped,
@@ -98,6 +96,8 @@ const Board: React.FC<BoardProps> = ({
 }) => {
   /** Action dispatcher to Redux store. */
   const dispatch = useDispatch<AppDispatch>();
+  /** Validator instance. */
+  const validator = useChessValidator();
   /** The size of a single square. */
   const squareSize = useMemo(() => width / NUMBER_OF_FILES, [width]);
   // Local state: Highlights on user interacted sqaures.

@@ -3,8 +3,8 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 import Layout from '~app/components/Layout';
-import { UserProvider } from '~app/contexts/UserContext';
 import Permissions from '~app/features/admin/components/Permissions';
+import { UserProvider } from '~app/hooks';
 import { isAdmin } from '~app/utils';
 import { getServerSession } from '~server/utils';
 

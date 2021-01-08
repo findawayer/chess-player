@@ -1,9 +1,8 @@
-import { Box, Container } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import chunk from 'lodash/chunk';
 import times from 'lodash/times';
 import React, {
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -20,10 +19,10 @@ import MoveList from '~app/features/chess/components/MoveList';
 import Player from '~app/features/chess/components/Player';
 import SettingsDialog from '~app/features/chess/components/SettingsDialog';
 import { STOCKFISH_FILE_PATH } from '~app/features/chess/constants';
-import { ValidatorContext } from '~app/features/chess/contexts/ValidatorContext';
 import {
   useChessClock,
   useChessSettings,
+  useChessValidator,
   useStockfish,
 } from '~app/features/chess/hooks';
 import { createBackendOptions } from '~app/features/chess/react-dnd';
@@ -103,10 +102,6 @@ const ChessGame: React.FC = () => {
   /** List of played moves splitted by their fullmove count. */
   const moveList = useMemo(() => chunk(moves, 2), [moves]);
 
-  // ---------- From React context ---------- //
-  /** chess game validator. */
-  const validator = useContext(ValidatorContext);
-
   // ---------- React local state ---------- //
   // Local state: Update clock for active player side until one of their time runs out.
   const {
@@ -160,6 +155,7 @@ const ChessGame: React.FC = () => {
   const recentMovePath = useMemo(() => getRecentMovePath(moves), [moves]);
 
   // ---------- For other libraries ---------- //
+  const validator = useChessValidator();
   /** React DnD: Create backend options asynchronously to work with SSR. */
   const backendOptions = useMemo(() => createBackendOptions(), []);
 
@@ -285,8 +281,8 @@ const ChessGame: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box display="flex" flexWrap="nowrap">
-        <Box flexGrow={1}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={8}>
           <DndProvider backend={TouchBackend} options={backendOptions}>
             <Player
               player={players[topPlayerColor]}
@@ -294,7 +290,6 @@ const ChessGame: React.FC = () => {
             />
             <Board
               targetRef={boardRef}
-              validator={validator}
               pieces={pieces}
               recentMovePath={recentMovePath}
               isFlipped={isFlipped}
@@ -312,8 +307,8 @@ const ChessGame: React.FC = () => {
               rematch={rematch}
             />
           </DndProvider>
-        </Box>
-        <Box flexShrink={0} flexBasis={280} ml={5}>
+        </Grid>
+        <Grid item xs={12} sm={4}>
           <GameControl
             canResign={canResign}
             canTakeBack={canTakeBack}
@@ -329,8 +324,8 @@ const ChessGame: React.FC = () => {
             changeSetting={changeSetting}
             closeSettings={closeSettings}
           />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
     </Container>
   );
 };

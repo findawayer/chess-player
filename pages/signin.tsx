@@ -3,8 +3,8 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 import Layout from '~app/components/Layout';
-import { UserProvider } from '~app/contexts/UserContext';
 import Signin from '~app/features/account/components/Signin';
+import { UserProvider } from '~app/hooks';
 import { getServerSession } from '~server/utils';
 
 /** Redirect user from server side. This avoids flashing and should be more SEO friendly. */

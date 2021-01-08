@@ -2,8 +2,8 @@ import { Container } from '@material-ui/core';
 import Head from 'next/head';
 
 import Layout from '~app/components/Layout';
-import { UserProvider } from '~app/contexts/UserContext';
 import RecoverPassword from '~app/features/account/components/RecoverPassword';
+import { UserProvider } from '~app/hooks';
 
 export default function Recover() {
   return (

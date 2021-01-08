@@ -20,5 +20,9 @@ export const createTheme = (colorMode: ColorMode): Theme =>
   );
 
 /** Get light or dark theme based on user selection. */
-export const useMuiTheme = (colorMode: ColorMode = DEFAULT_COLOR_MODE): Theme =>
-  useMemo(() => createTheme(colorMode), [colorMode]);
+export const useMuiTheme = (
+  colorMode: ColorMode = DEFAULT_COLOR_MODE,
+): Theme => {
+  const theme = useMemo(() => createTheme(colorMode), [colorMode]);
+  return theme;
+};

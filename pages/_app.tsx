@@ -1,5 +1,3 @@
-import 'nprogress/nprogress.css';
-
 import { ApolloProvider } from '@apollo/client';
 // import App, { AppContext, AppProps } from 'next/app';
 import { AppProps } from 'next/app';

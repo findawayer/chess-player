@@ -1,5 +1,5 @@
 import ChessJS from 'chess.js';
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 /**
  * Chess game validator using `chess.js` library. The `Chess` constructor is conditionally exported:
@@ -10,8 +10,14 @@ import { createContext } from 'react';
  * this causes either compile-time or runtime error. (https://github.com/jhlywa/chess.js/issues/196)
  * Here comes the ugly :( workaround below to avoid the issue.
  */
-const createValidator = () =>
-  new (typeof ChessJS === 'function' ? ChessJS : ChessJS.Chess)();
+const chessValidator = new (typeof ChessJS === 'function'
+  ? ChessJS
+  : ChessJS.Chess)();
 
 /** Context to provide the chess validator deep into the React component tree. */
-export const ValidatorContext = createContext(createValidator());
+const ChessValidatorContext = createContext(chessValidator);
+
+export const useChessValidator = () => {
+  const chessValidator = useContext(ChessValidatorContext);
+  return chessValidator;
+};

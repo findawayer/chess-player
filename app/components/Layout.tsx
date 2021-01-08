@@ -1,10 +1,9 @@
 import { Box, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import React, { useMemo } from 'react';
+import Head from 'next/head';
+import React from 'react';
 
-import { ColorModeProvider } from '~app/contexts/ColorModeContext';
-import { useColorMode } from '~app/hooks';
-import { useUser } from '~app/hooks/useUser';
+import { ColorModeApiProvider, useColorMode } from '~app/hooks';
 import { useMuiTheme } from '~app/themes';
 import Header from './Header';
 
@@ -12,33 +11,20 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-/**
- * Outmost presentional layer. Remains static regardless of current route.
- * @todo Think about updating `theme-color` metadata dynamically to match the color mode? Does this improve SEO?
- */
+/** Outmost presentional layer. Should be wrapping all pages. */
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const me = useUser();
   // Local state: Restore color mode from client cache.
-  const { colorMode, updateColorMode } = useColorMode(me?.colorMode);
-  /** App's global theme */
-  const theme = useMuiTheme(colorMode);
-  /** User is authenticated */
-  const hasAuthUser = Boolean(me);
-  /** Create color mode API to pass it deep down. */
-  const colorModeApi = useMemo(
-    () => ({
-      colorMode,
-      toggleColorMode: () =>
-        updateColorMode(colorMode === 'DARK' ? 'LIGHT' : 'DARK'),
-    }),
-    [colorMode, updateColorMode],
-  );
+  const colorModeApi = useColorMode();
+  /** Material UI theme */
+  const theme = useMuiTheme(colorModeApi.colorMode);
 
-  // ThemeProvider: Exposes material UI theme.
-  // CssBaseline: Inject global CSS provided by material-ui.
+  // CssBaseline: global CSS created with Material UI.
   return (
-    <ColorModeProvider value={colorModeApi}>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <ColorModeApiProvider value={colorModeApi}>
+        <Head>
+          <meta name="theme-color" content={theme.palette.background.default} />
+        </Head>
         <CssBaseline />
         <Box
           display="flex"
@@ -46,7 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           role="presentation"
           style={{ height: '100%' }}
         >
-          <Header hasAuthUser={hasAuthUser} />
+          <Header />
           <Box
             component="main"
             flexGrow={1}
@@ -57,8 +43,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {children}
           </Box>
         </Box>
-      </ThemeProvider>
-    </ColorModeProvider>
+      </ColorModeApiProvider>
+    </ThemeProvider>
   );
 };
 

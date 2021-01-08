@@ -1,9 +1,9 @@
 import { MockedProvider } from '@apollo/client/testing';
 import { render, waitFor } from '@testing-library/react';
 
-import { UserProvider } from '~app/contexts';
+import { mockUser } from '~app/__mocks__';
+import { UserProvider } from '~app/hooks';
 import { CURRENT_USER_QUERY } from '~app/graphql';
-import { mockUser } from '~app/utils';
 import AuthChecker from './AuthChecker';
 
 describe('<AuthChecker />', () => {

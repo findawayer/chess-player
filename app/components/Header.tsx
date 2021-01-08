@@ -11,6 +11,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Link from 'next/link';
 import React from 'react';
 
+import { useUser } from '~app/hooks';
 import AccountMenu from './AccountMenu';
 import ColorModeToggler from './ColorModeToggler';
 
@@ -36,11 +37,11 @@ const useStyles = makeStyles<Theme>(theme =>
   }),
 );
 
-interface HeaderProps {
-  hasAuthUser: boolean;
-}
-
-const Header: React.FC<HeaderProps> = ({ hasAuthUser }) => {
+const Header: React.FC = () => {
+  /** Authenticated user. */
+  const me = useUser();
+  /** User is authenticated */
+  const hasAuthUser = Boolean(me);
   const classes = useStyles();
 
   return (

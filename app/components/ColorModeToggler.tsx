@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Switch, Tooltip } from '@material-ui/core';
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { ColorModeContext } from '~app/contexts/ColorModeContext';
+import { useColorModeApi } from '~app/hooks';
 
 const ColorModeToggler: React.FC = () => {
-  const { colorMode, toggleColorMode } = useContext(ColorModeContext);
+  const { colorMode, toggleColorMode } = useColorModeApi();
 
   return (
     <label

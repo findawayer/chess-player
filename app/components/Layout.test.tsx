@@ -3,9 +3,11 @@ import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { mockUser } from '~app/__mocks__';
-import { UserProvider } from '~app/contexts';
+import { UserProvider } from '~app/hooks';
 import { CURRENT_USER_QUERY, UPDATE_COLOR_MODE_MUTATION } from '~app/graphql';
 import Layout from './Layout';
+
+type GetByTestId = (text: string) => HTMLElement;
 
 describe('<Layout />', () => {
   describe('while user is anonymous', () => {
