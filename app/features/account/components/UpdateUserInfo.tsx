@@ -51,55 +51,58 @@ const UpdateUserInfo: FunctionComponent<UpdateUserInfoProps> = ({
 
   return (
     <form method="post" onSubmit={handleSubmit}>
-      <Card component="fieldset" elevation={3} aria-busy={loading}>
-        <CardContent>
-          <Typography variant="h4" component="h2" align="center" gutterBottom>
-            My account info
-          </Typography>
-          <Box mb={2}>
-            <ErrorMessage error={error} />
-            <SuccessMessage
-              isSuccessful={called && !loading && !error}
-              message="Success! Updated your info."
-            />
-          </Box>
-          <Box mb={2}>
-            <FormControl fullWidth>
-              <TextField
-                id="email"
-                name="email"
-                value={values.email}
-                required
-                onChange={handleChange}
-                label="Email"
+      <fieldset disabled={loading} aria-busy={loading}>
+        <Card elevation={3}>
+          <CardContent>
+            <Typography variant="h4" component="h2" align="center" gutterBottom>
+              My account info
+            </Typography>
+            <Box mb={2}>
+              <ErrorMessage error={error} />
+              <SuccessMessage
+                isSuccessful={called && !loading && !error}
+                message="Success! Updated your info."
               />
-            </FormControl>
-          </Box>
-          <Box mb={2}>
-            <FormControl fullWidth>
-              <TextField
-                id="name"
-                name="name"
-                value={values.name}
-                required
-                onChange={handleChange}
-                label="Name"
-              />
-            </FormControl>
-          </Box>
-        </CardContent>
-        <CardActions>
-          <Button
-            type="submit"
-            color="primary"
-            size="large"
-            variant="contained"
-            fullWidth
-          >
-            Apply changes
-          </Button>
-        </CardActions>
-      </Card>
+            </Box>
+            <Box mb={2}>
+              <FormControl fullWidth>
+                <TextField
+                  id="email"
+                  name="email"
+                  value={values.email}
+                  required
+                  onChange={handleChange}
+                  label="Email"
+                />
+              </FormControl>
+            </Box>
+            <Box mb={2}>
+              <FormControl fullWidth>
+                <TextField
+                  id="name"
+                  name="name"
+                  value={values.name}
+                  required
+                  onChange={handleChange}
+                  label="Name"
+                />
+              </FormControl>
+            </Box>
+          </CardContent>
+          <CardActions>
+            <Button
+              type="submit"
+              disabled={loading}
+              color="primary"
+              fullWidth
+              size="large"
+              variant="contained"
+            >
+              Apply changes
+            </Button>
+          </CardActions>
+        </Card>
+      </fieldset>
     </form>
   );
 };

@@ -74,85 +74,92 @@ const Signup: FunctionComponent<SignupProps> = ({ noRedirect }) => {
 
   return (
     <form method="post" onSubmit={handleSubmit}>
-      <Card component="fieldset" elevation={3} aria-busy={loading}>
-        <CardContent>
-          <Typography variant="h4" component="h2" align="center" gutterBottom>
-            Make your account
-          </Typography>
-          <Box mb={2}>
-            <ErrorMessage error={error} />
-          </Box>
-          <Box mb={2}>
-            <FormControl fullWidth>
-              <TextField
-                id="email"
-                name="email"
-                value={values.email}
-                required
-                onChange={handleChange}
-                label="Email"
-              />
-            </FormControl>
-          </Box>
-          <Box mb={2}>
-            <FormControl fullWidth>
-              <TextField
-                id="name"
-                name="name"
-                value={values.name}
-                required
-                onChange={handleChange}
-                label="Name"
-              />
-            </FormControl>
-          </Box>
-          <Box mb={2}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="password">
-                Password <span aria-hidden="true">*</span>
-              </InputLabel>
-              <Input
-                id="password"
-                name="password"
-                type={visibility.password ? 'text' : 'password'}
-                value={values.password}
-                disabled={loading}
-                required
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      onClick={handleVisibilityChange('password')}
-                      onMouseDown={preventMouseDown}
-                    >
-                      {visibility.password ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </Box>
-          <Box mt={3}>
-            <Link href="/signin" passHref>
-              <Typography component="a" color="inherit">
-                Already have an account?
-              </Typography>
-            </Link>
-          </Box>
-        </CardContent>
-        <CardActions>
-          <Button
-            type="submit"
-            color="primary"
-            size="large"
-            variant="contained"
-            fullWidth
-          >
-            Create account
-          </Button>
-        </CardActions>
-      </Card>
+      <fieldset disabled={loading} aria-busy={loading}>
+        <Card elevation={3}>
+          <CardContent>
+            <Typography variant="h4" component="h2" align="center" gutterBottom>
+              Make your account
+            </Typography>
+            <Box mb={2}>
+              <ErrorMessage error={error} />
+            </Box>
+            <Box mb={2}>
+              <FormControl fullWidth>
+                <TextField
+                  id="email"
+                  name="email"
+                  value={values.email}
+                  required
+                  onChange={handleChange}
+                  label="Email"
+                />
+              </FormControl>
+            </Box>
+            <Box mb={2}>
+              <FormControl fullWidth>
+                <TextField
+                  id="name"
+                  name="name"
+                  value={values.name}
+                  required
+                  onChange={handleChange}
+                  label="Name"
+                />
+              </FormControl>
+            </Box>
+            <Box mb={2}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="password">
+                  Password <span aria-hidden="true">*</span>
+                </InputLabel>
+                <Input
+                  id="password"
+                  name="password"
+                  type={visibility.password ? 'text' : 'password'}
+                  value={values.password}
+                  disabled={loading}
+                  required
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={handleVisibilityChange('password')}
+                        onMouseDown={preventMouseDown}
+                      >
+                        {visibility.password ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Box>
+            <Box mt={3}>
+              <Link href="/signin" passHref>
+                <Typography component="a" color="inherit">
+                  Already have an account?
+                </Typography>
+              </Link>
+            </Box>
+          </CardContent>
+          <CardActions>
+            <Button
+              type="submit"
+              disabled={loading}
+              color="primary"
+              fullWidth
+              size="large"
+              variant="contained"
+            >
+              Create account
+            </Button>
+          </CardActions>
+        </Card>
+      </fieldset>
     </form>
   );
 };

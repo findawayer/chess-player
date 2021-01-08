@@ -64,120 +64,127 @@ const UpdatePassword: FunctionComponent = () => {
 
   return (
     <form method="post" onSubmit={handleSubmit}>
-      <Card component="fieldset" elevation={3} aria-busy={loading}>
-        <CardContent>
-          <Typography variant="h4" component="h2" align="center" gutterBottom>
-            My password
-          </Typography>
-          <Box mb={2}>
-            <ErrorMessage error={error} />
-            <SuccessMessage
-              isSuccessful={called && !loading && !error}
-              message="Success! Updated your password."
-            />
-          </Box>
-          <Box mb={2}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="oldPassword">
-                Old password <span aria-hidden="true">*</span>
-              </InputLabel>
-              <Input
-                id="oldPassword"
-                name="oldPassword"
-                type={visibility.oldPassword ? 'text' : 'password'}
-                value={values.oldPassword}
-                disabled={loading}
-                required
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      onClick={handleVisibilityChange('oldPassword')}
-                      onMouseDown={preventMouseDown}
-                    >
-                      {visibility.oldPassword ? (
-                        <Visibility />
-                      ) : (
-                        <VisibilityOff />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                }
+      <fieldset disabled={loading} aria-busy={loading}>
+        <Card elevation={3}>
+          <CardContent>
+            <Typography variant="h4" component="h2" align="center" gutterBottom>
+              My password
+            </Typography>
+            <Box mb={2}>
+              <ErrorMessage error={error} />
+              <SuccessMessage
+                isSuccessful={called && !loading && !error}
+                message="Success! Updated your password."
               />
-            </FormControl>
-          </Box>
-          <Box mb={2}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="password">
-                New password <span aria-hidden="true">*</span>
-              </InputLabel>
-              <Input
-                id="password"
-                name="password"
-                type={visibility.password ? 'text' : 'password'}
-                value={values.password}
-                disabled={loading}
-                required
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      onClick={handleVisibilityChange('password')}
-                      onMouseDown={preventMouseDown}
-                    >
-                      {visibility.password ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </Box>
-          <Box mb={2}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="confirmPassword">
-                Confirm new password <span aria-hidden="true">*</span>
-              </InputLabel>
-              <Input
-                id="confirmPassword"
-                name="confirmPassword"
-                type={visibility.confirmPassword ? 'text' : 'password'}
-                value={values.confirmPassword}
-                disabled={loading}
-                required
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      onClick={handleVisibilityChange('confirmPassword')}
-                      onMouseDown={preventMouseDown}
-                    >
-                      {visibility.confirmPassword ? (
-                        <Visibility />
-                      ) : (
-                        <VisibilityOff />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </Box>
-        </CardContent>
-        <CardActions>
-          <Button
-            type="submit"
-            color="primary"
-            size="large"
-            variant="contained"
-            fullWidth
-          >
-            Update password
-          </Button>
-        </CardActions>
-      </Card>
+            </Box>
+            <Box mb={2}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="oldPassword">
+                  Old password <span aria-hidden="true">*</span>
+                </InputLabel>
+                <Input
+                  id="oldPassword"
+                  name="oldPassword"
+                  type={visibility.oldPassword ? 'text' : 'password'}
+                  value={values.oldPassword}
+                  disabled={loading}
+                  required
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={handleVisibilityChange('oldPassword')}
+                        onMouseDown={preventMouseDown}
+                      >
+                        {visibility.oldPassword ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Box>
+            <Box mb={2}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="password">
+                  New password <span aria-hidden="true">*</span>
+                </InputLabel>
+                <Input
+                  id="password"
+                  name="password"
+                  type={visibility.password ? 'text' : 'password'}
+                  value={values.password}
+                  disabled={loading}
+                  required
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={handleVisibilityChange('password')}
+                        onMouseDown={preventMouseDown}
+                      >
+                        {visibility.password ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Box>
+            <Box mb={2}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="confirmPassword">
+                  Confirm new password <span aria-hidden="true">*</span>
+                </InputLabel>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={visibility.confirmPassword ? 'text' : 'password'}
+                  value={values.confirmPassword}
+                  disabled={loading}
+                  required
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={handleVisibilityChange('confirmPassword')}
+                        onMouseDown={preventMouseDown}
+                      >
+                        {visibility.confirmPassword ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Box>
+          </CardContent>
+          <CardActions>
+            <Button
+              type="submit"
+              disabled={loading}
+              color="primary"
+              fullWidth
+              size="large"
+              variant="contained"
+            >
+              Update password
+            </Button>
+          </CardActions>
+        </Card>
+      </fieldset>
     </form>
   );
 };

@@ -46,43 +46,46 @@ const RecoverPassword: FunctionComponent = () => {
 
   return (
     <form method="post" onSubmit={handleFormSubmit}>
-      <Card component="fieldset" elevation={3} aria-busy={loading}>
-        <CardContent>
-          <Typography variant="h4" component="h2" align="center" gutterBottom>
-            Reset my password
-          </Typography>
-          <Box mb={2}>
-            <ErrorMessage error={error} />
-            <SuccessMessage
-              isSuccessful={called && !loading && !error}
-              message="Success! Check your email for a reset link."
-            />
-          </Box>
-          <Box mb={2}>
-            <FormControl fullWidth>
-              <TextField
-                id="email"
-                name="email"
-                value={email}
-                required
-                onChange={handleEmailInputChange}
-                label="Email"
+      <fieldset disabled={loading} aria-busy={loading}>
+        <Card elevation={3}>
+          <CardContent>
+            <Typography variant="h4" component="h2" align="center" gutterBottom>
+              Reset my password
+            </Typography>
+            <Box mb={2}>
+              <ErrorMessage error={error} />
+              <SuccessMessage
+                isSuccessful={called && !loading && !error}
+                message="Success! Check your email for a reset link."
               />
-            </FormControl>
-          </Box>
-        </CardContent>
-        <CardActions>
-          <Button
-            type="submit"
-            color="primary"
-            size="large"
-            variant="contained"
-            fullWidth
-          >
-            Request reset
-          </Button>
-        </CardActions>
-      </Card>
+            </Box>
+            <Box mb={2}>
+              <FormControl fullWidth>
+                <TextField
+                  id="email"
+                  name="email"
+                  value={email}
+                  required
+                  onChange={handleEmailInputChange}
+                  label="Email"
+                />
+              </FormControl>
+            </Box>
+          </CardContent>
+          <CardActions>
+            <Button
+              type="submit"
+              disabled={loading}
+              color="primary"
+              fullWidth
+              size="large"
+              variant="contained"
+            >
+              Request reset
+            </Button>
+          </CardActions>
+        </Card>
+      </fieldset>
     </form>
   );
 };
