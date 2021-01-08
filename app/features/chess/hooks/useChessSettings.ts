@@ -18,10 +18,10 @@ export interface ChessSettings {
 
 /** Map user settings about chess gaming from the current auth user payload. */
 export const createChessSettings = (me: CurrentUser | null): ChessSettings => ({
-  autoQueen: me?.chessAutoQueen || DEFAULT_AUTO_QUEEN,
-  boardColor: me?.chessBoardColor || DEFAULT_BOARD_COLOR,
-  showLegal: me?.chessShowLegal || DEFAULT_SHOW_LEGAL,
-  showRecent: me?.chessShowRecent || DEFAULT_SHOW_RECENT,
+  autoQueen: me?.chessAutoQueen ?? DEFAULT_AUTO_QUEEN,
+  boardColor: me?.chessBoardColor ?? DEFAULT_BOARD_COLOR,
+  showLegal: me?.chessShowLegal ?? DEFAULT_SHOW_LEGAL,
+  showRecent: me?.chessShowRecent ?? DEFAULT_SHOW_RECENT,
 });
 
 /** Convert chess settings to comply with database table keys. (preefix `chess-`) */

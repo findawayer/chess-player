@@ -46,7 +46,7 @@ export const useColorMode = (): ColorModeApi => {
   // 3. From user's operating system settings.
   // 4. Fallback to `DEFAULT_COLOR_MODE`.
   const [colorMode, setColorMode] = useState(
-    user?.colorMode || restoreColorMode(),
+    user?.colorMode ?? restoreColorMode(),
   );
   // Check accessibility of cookie.
   const [canUseCookie, setCanUseCookie] = useState(true);
@@ -109,8 +109,8 @@ export const useColorModeApi = () => {
 function restoreColorMode(): ColorMode {
   const cookie = new UniversalCookie();
   return (
-    cookie.get(COLOR_MODE_CACHE_KEY) ||
-    getUserPreferredScheme() ||
+    cookie.get(COLOR_MODE_CACHE_KEY) ??
+    getUserPreferredScheme() ??
     DEFAULT_COLOR_MODE
   );
 }

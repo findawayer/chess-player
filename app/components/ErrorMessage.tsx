@@ -11,7 +11,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ error }) => {
   // This reduces repetitive conditional statements of this component.
   // [X] {error && <Erorr />}
   // [O] <Error />
-  if (!error || !error.message) {
+  if (!error?.message) {
     return null;
   }
 

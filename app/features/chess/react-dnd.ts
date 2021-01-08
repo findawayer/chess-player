@@ -40,7 +40,7 @@ const getDropTargetElementsAtPoint = <T extends HTMLElement>(
 const supportsElementsFromPoint = (): boolean =>
   typeof document !== 'undefined' &&
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Boolean(document.elementsFromPoint || (<any>document).msElementsFromPoint);
+  Boolean(document.elementsFromPoint ?? (<any>document).msElementsFromPoint);
 
 /**
  * Backend options for `react-dnd` library.

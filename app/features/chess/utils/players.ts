@@ -18,7 +18,7 @@ export const createHumanAndComputer = ({
 }): Record<ChessPieceColor, ChessPlayer> => {
   const user = createUser('Me');
   const computer = createUser('Stockfish');
-  const userColor = playerColor || 'w';
+  const userColor = playerColor ?? 'w';
   const opponentColor = invertPieceColor(userColor);
   return {
     [userColor]: user,

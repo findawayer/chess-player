@@ -131,10 +131,10 @@ const chessSlice = createSlice({
     // undoMove
     undoMove: (
       chess,
-      action: PayloadAction<{ length: number; board: ChessBoardData }>,
+      action: PayloadAction<{ board: ChessBoardData; length?: number }>,
     ) => {
       // Default undo length to 1
-      const undoLength = action.payload.length || 1;
+      const undoLength = action.payload.length ?? 1;
       // Update movelist.
       // 1. Find the range of moves to remove.
       const startIndex = undoLength * -1;

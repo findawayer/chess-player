@@ -28,9 +28,7 @@
     "database": "prisma studio",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts,.tsx .",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "heroku-postbuild": "yarn build"
+    "test": "npx jest --watch"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
@@ -53,7 +51,7 @@
     "immutability-helper": "^3.1.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
-    "next": "^10.0.4",
+    "next": "^10.0.5",
     "nextjs-cors": "^1.0.1",
     "nodemailer": "^6.4.17",
     "pretty-ms": "^7.0.1",

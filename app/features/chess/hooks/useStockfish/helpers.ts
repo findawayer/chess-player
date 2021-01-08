@@ -36,6 +36,6 @@ export const formatTimeString = ({
 export const formatMoveString = (history: Move[]): string =>
   history.reduce(
     (output, { from, to, promotion }) =>
-      `${output} ${from}${to}${promotion || ''}`,
+      `${output} ${from}${to}${promotion ?? ''}`,
     '',
   );

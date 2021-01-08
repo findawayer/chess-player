@@ -35,7 +35,7 @@ export const useChessGuides = () => {
         update(previousGuides, {
           $merge: {
             active: activeSquare ? stringifySquare(activeSquare) : null,
-            legal: legalMoves || [],
+            legal: legalMoves ?? [],
             hover: null,
           },
         }),
