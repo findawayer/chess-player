@@ -38,7 +38,7 @@ export function isPromotingPawn(
   const isPawn = piece.variant === 'p';
   const isWhitePiece = piece.color === 'w';
   const { y } = objectifySquare(targetSquare);
-  const isAtTheLastRank = isWhitePiece ? y === NUMBER_OF_RANKS - 1 : y === 0;
+  const isAtTheLastRank = y === (isWhitePiece ? 0 : NUMBER_OF_RANKS - 1);
   return isPawn && isAtTheLastRank;
 }
 

@@ -1,3 +1,10 @@
+## 1.0.1 (2020-1-26)
+
+- Move React state related to game options from Redux to local.
+- Fix game score getting reset on rematch.
+- Fix promotion dialog not properly displayed.
+- Replace chess piece graphics with svgsilh.com's publications.
+
 ## 1.0.0-alpha.2 (2020-12-30)
 
 - Merge frontend and backend in a single Next application.

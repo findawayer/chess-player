@@ -15,7 +15,32 @@ export const SQUARE_SIZE = 100 / RANK_NAMES.length;
 
 // ---------- FEN ---------- //
 
+/** FEN: Initial board. */
 export const INITIAL_FEN = `rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1`;
+/** FEN: White is about to checkmate. */
+export const WHITE_CHECKMATE_FEN = '4k3/2R5/4K3/8/8/8/8/8 w - - 0 1';
+/** FEN: Black is about to checkmate. */
+export const BLACK_CHECKMATE_FEN = '4K3/2r5/4k3/8/8/8/8/8 b - - 0 1';
+/** FEN: White is about to Stalemate. */
+export const WHITE_STALEMATE_FEN = '4k3/4P3/3K4/8/8/8/8/8 w - - 0 1';
+/** FEN: Black is about to Stalemate. */
+export const BLACK_STALEMATE_FEN = '4K3/4p3/3k4/8/8/8/8/8 b - - 0 1';
+/** FEN: White is about to lose its last checkmate materials */
+export const BLACK_NO_MATERIAL_FEN = '4K3/4p3/8/4k3/8/8/8/8 w - - 0 1';
+/** FEN: Black is about to lose its last checkmate materials */
+export const WHITE_NO_MATERIAL_FEN = '4k3/4P3/8/4K3/8/8/8/8 b - - 0 1';
+/** FEN: White is about to make a draw by perpetual repetition. */
+export const WHITE_REPETITION_FEN = '6k1/6p1/8/4Q3/8/8/qr6/3K4 w - - 0 1';
+/** FEN: Black is about to make a draw by perpetual repetition. */
+export const BLACK_REPETITION_FEN = '6K1/6P1/8/4q3/8/8/QR6/3k4 b - - 0 1';
+/** FEN: White is about to promote a pawn. */
+export const WHITE_PROMOTION_FEN = '5k2/7P/6K1/8/8/8/8/8 w - - 0 1';
+/** FEN: Black is about to promote a pawn. */
+export const BLACK_PROMOTION_FEN = '8/8/8/8/8/6k1/7p/5K2 b - - 0 1';
+/** FEN: White is about to capture a black pawn en passant. */
+export const WHITE_EN_PASSANT_FEN = '4k3/3p4/8/4P3/8/8/8/4K3 b - - 0 1';
+/** FEN: Black is about to capture a white pawn en passant. */
+export const BLACK_EN_PASSANT_FEN = '4k3/8/8/8/3p4/8/4P3/4K3 w - - 0 1';
 
 // ---------- Scores ---------- //
 

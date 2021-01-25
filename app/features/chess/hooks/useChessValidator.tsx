@@ -1,6 +1,8 @@
 import ChessJS from 'chess.js';
 import { createContext, useContext } from 'react';
 
+import { INITIAL_FEN } from '~app/features/chess/constants';
+
 /**
  * Chess game validator using `chess.js` library. The `Chess` constructor is conditionally exported:
  * - CommonJS environment(like Node in SSR mode): default export.
@@ -12,7 +14,7 @@ import { createContext, useContext } from 'react';
  */
 const chessValidator = new (typeof ChessJS === 'function'
   ? ChessJS
-  : ChessJS.Chess)();
+  : ChessJS.Chess)(INITIAL_FEN);
 
 /** Context to provide the chess validator deep into the React component tree. */
 const ChessValidatorContext = createContext(chessValidator);
