@@ -23,13 +23,8 @@ import {
 import { createBackendOptions } from '~app/features/chess/react-dnd';
 import type { ChessState } from '~app/features/chess/redux';
 import { chessActions } from '~app/features/chess/redux/slice';
-import type { ChessPieceColor } from '~app/features/chess/types';
-import {
-  createComputers,
-  createHumanAndComputer,
-  getRecentMovePath,
-  invertPieceColor,
-} from '~app/features/chess/utils';
+import { ChessResultType } from '~app/features/chess/types';
+import { getRecentMovePath, invertPieceColor } from '~app/features/chess/utils';
 import { useUser } from '~app/hooks';
 import type { AppDispatch, AppState } from '~app/vendors/redux';
 
@@ -37,14 +32,14 @@ type ChessGameState = Pick<
   ChessState,
   | 'duration'
   | 'engineLevel'
-  | 'gameOver'
   | 'increment'
   | 'isFlipped'
   | 'isFrozen'
   | 'moves'
-  | 'playerColor'
   | 'pieces'
+  | 'playerColor'
   | 'players'
+  | 'result'
   | 'turn'
 >;
 
@@ -57,26 +52,26 @@ const ChessGame: FunctionComponent = () => {
   const {
     duration,
     engineLevel,
-    gameOver,
     increment,
     isFlipped,
     isFrozen,
     moves,
-    playerColor,
     pieces,
+    playerColor,
     players,
+    result,
     turn,
   } = useSelector<AppState, ChessGameState>(state => ({
     duration: state.chess.duration,
     engineLevel: state.chess.engineLevel,
-    gameOver: state.chess.gameOver,
     increment: state.chess.increment,
     isFlipped: state.chess.isFlipped,
     isFrozen: state.chess.isFrozen,
     moves: state.chess.moves,
-    playerColor: state.chess.playerColor,
     pieces: state.chess.pieces,
+    playerColor: state.chess.playerColor,
     players: state.chess.players,
+    result: state.chess.result,
     turn: state.chess.turn,
   }));
   /** Action dispatcher to Redux store. */
@@ -110,29 +105,27 @@ const ChessGame: FunctionComponent = () => {
   const isPlayerTurn = turn === playerColor;
   /**
    * Figure out whether to allow the player to resign the game.
-   * 1. The game should not be computer vs computer mode.
+   * 1. The player should be human.
    * 2. The game is not over yet.
    * 3. At least the first move has to be played.
    */
-  const canResign = Boolean(playerColor) && !gameOver && moves.length > 0;
+  const canResign = Boolean(playerColor) && !result && moves.length > 0;
   /**
    * Figure out whether to allow the player to request a take back of move.
-   * 1. The game should not be computer vs computer mode.
+   * 1. The player should be human.
    * 2. The game is not over yet.
    * 3. The player should have played at least 1 move.
-   * 4. It should be the player's turn. (TODO: reconsider this behavior)
    */
   const canTakeBack =
     Boolean(playerColor) &&
-    !gameOver &&
-    moves.length > (playerColor === 'w' ? 1 : 0) &&
-    isPlayerTurn;
+    !result &&
+    moves.length > (playerColor === 'w' ? 1 : 0);
   /** Flag to boost AI's performance when < 1 minute left. */
   const isShortInTime = time[turn] < 60 * 1000;
   /** Player color for the top user box */
-  const topPlayerColor: ChessPieceColor = isFlipped ? 'w' : 'b';
+  const topPlayerColor = isFlipped ? 'w' : 'b';
   /** Player color for the bottom user box */
-  const bottomPlayerColor: ChessPieceColor = isFlipped ? 'b' : 'w';
+  const bottomPlayerColor = isFlipped ? 'b' : 'w';
   /** The source & target squares of the recently played move. */
   const recentMovePath = useMemo(() => getRecentMovePath(moves), [moves]);
 
@@ -150,42 +143,36 @@ const ChessGame: FunctionComponent = () => {
     // Undo move(s) through the validator first.
     times(length, () => validator.undo());
     // Undo move(s) from redux state and restore the board.
-    dispatch(chessActions.undoMove({ length, board: validator.board() }));
+    dispatch(chessActions.undoMove({ fen: validator.fen(), length }));
   }, [dispatch, isPlayerTurn, validator]);
   /** Reset the game data. Swap piece colors when `alternate` is set to true. */
-  const rematch = useCallback(
-    (alternate: boolean) => {
-      validator.reset();
-      resetClock();
-      dispatch(chessActions.resetGame({ board: validator.board(), alternate }));
-    },
-    [dispatch, resetClock, validator],
-  );
+  const rematch = useCallback(() => {
+    validator.reset();
+    resetClock();
+    dispatch(chessActions.resetGame());
+  }, [dispatch, resetClock, validator]);
   /** Concede the game. */
-  const handleResign = () => dispatch(chessActions.resign());
+  const handleResign = useCallback(() => {
+    if (playerColor) {
+      dispatch(
+        chessActions.setGameOver({
+          type: ChessResultType.Resignation,
+          winner: invertPieceColor(playerColor),
+        }),
+      );
+    }
+  }, [dispatch, playerColor]);
   /** Close the game settings dialog */
   const openSettings = () => setSettingsOpen(true);
   const closeSettings = () => setSettingsOpen(false);
 
   // Reset the game data on unmount
   useEffect(() => {
-    return () => rematch(false);
-  }, [rematch]);
-
-  // Initialize players.
-  useEffect(() => {
-    const players = playerColor
-      ? createHumanAndComputer({ playerColor })
-      : createComputers();
-    dispatch(chessActions.setPlayers(players));
-  }, [dispatch, playerColor]);
-
-  // Initialize pieces.
-  useEffect(() => {
-    // debug
-    // validator.load(FEN_WHITE_EN_PASSANT);
-    dispatch(chessActions.setPieces({ board: validator.board() }));
-  }, [dispatch, validator]);
+    return () => {
+      validator.reset();
+      resetClock();
+    };
+  }, [resetClock, validator]);
 
   // Run the clock once both player has played a move.
   useEffect(() => {
@@ -201,56 +188,83 @@ const ChessGame: FunctionComponent = () => {
 
   // Stop the clock when the game is over.
   useEffect(() => {
-    if (gameOver) {
+    if (result) {
       pauseClock();
     }
-  }, [gameOver, pauseClock]);
+  }, [result, pauseClock]);
 
   // The game is over by timeout.
   useEffect(() => {
-    if (!gameOver) {
+    if (!result) {
       if (time.w === 0) {
-        dispatch(chessActions.timeout({ winner: 'b' }));
+        dispatch(
+          chessActions.setGameOver({
+            type: ChessResultType.Timeout,
+            winner: 'b',
+          }),
+        );
       } else if (time.b === 0) {
-        dispatch(chessActions.timeout({ winner: 'w' }));
+        dispatch(
+          chessActions.setGameOver({
+            type: ChessResultType.Timeout,
+            winner: 'w',
+          }),
+        );
       }
     }
-  }, [dispatch, gameOver, time]);
+  }, [dispatch, result, time]);
 
   // The game is over by checkmate.
   useEffect(() => {
-    if (!gameOver && validator.in_checkmate()) {
-      dispatch(chessActions.checkmate({ winner: invertPieceColor(turn) }));
+    if (!result && validator.in_checkmate()) {
+      dispatch(
+        chessActions.setGameOver({
+          type: ChessResultType.Checkmate,
+          winner: invertPieceColor(turn),
+        }),
+      );
     }
-  }, [dispatch, gameOver, turn, validator]);
+  }, [dispatch, result, turn, validator]);
 
   // The game is drawn.
   useEffect(() => {
-    if (!gameOver) {
+    if (!result) {
       // Drawn by stalemate.
       if (validator.in_stalemate()) {
-        dispatch(chessActions.stalemate());
+        dispatch(
+          chessActions.setGameOver({
+            type: ChessResultType.Stalemate,
+          }),
+        );
       }
       // Drawn by insufficient material.
       else if (validator.insufficient_material()) {
-        dispatch(chessActions.notEnoughMaterial());
+        dispatch(
+          chessActions.setGameOver({
+            type: ChessResultType.NotEnoughMaterial,
+          }),
+        );
       }
       // Drawn by repetition.
       else if (validator.in_threefold_repetition()) {
-        dispatch(chessActions.repetition());
+        dispatch(
+          chessActions.setGameOver({
+            type: ChessResultType.Repetition,
+          }),
+        );
       }
     }
-  }, [dispatch, gameOver, turn, validator]);
+  }, [dispatch, result, turn, validator]);
 
   // When the game is over.
   useEffect(() => {
-    if (!gameOver && !isPlayerTurn) {
+    if (!result && !isPlayerTurn) {
       findMove({
         history: validator.history({ verbose: true }),
         accelerate: isShortInTime,
       });
     }
-  }, [findMove, gameOver, isPlayerTurn, isShortInTime, validator]);
+  }, [findMove, result, isPlayerTurn, isShortInTime, validator]);
 
   // Reflect the engine's move to the board.
   useEffect(() => {
@@ -263,8 +277,8 @@ const ChessGame: FunctionComponent = () => {
 
   return (
     <Container maxWidth="lg">
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={8}>
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={9}>
           <DndProvider backend={TouchBackend} options={backendOptions}>
             <Player
               player={players[topPlayerColor]}
@@ -276,7 +290,7 @@ const ChessGame: FunctionComponent = () => {
               recentMovePath={recentMovePath}
               isFlipped={isFlipped}
               isFrozen={isFrozen}
-              isGameOver={Boolean(gameOver)}
+              isGameOver={Boolean(result)}
               settings={settings}
             />
             <Player
@@ -284,13 +298,13 @@ const ChessGame: FunctionComponent = () => {
               time={time[bottomPlayerColor]}
             />
             <GameOverDialog
-              gameOver={gameOver}
+              result={result}
               playerColor={playerColor}
               rematch={rematch}
             />
           </DndProvider>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} md={3}>
           <GameControl
             canResign={canResign}
             canTakeBack={canTakeBack}

@@ -1,35 +1,44 @@
-import type { ChessPieceColor, ChessPlayer } from '~app/features/chess/types';
+import type {
+  ChessPieceColor,
+  ChessPlayer,
+  ChessPlayers,
+} from '~app/features/chess/types';
 import { invertPieceColor } from './pieces';
 
-/**
- * Create a user object. This seperate function can be extended
- * to have ratings, avatar, and/or extra user information.
- */
-const createUser = (name: string): ChessPlayer => ({ name, score: 0 });
+/** Create a chess player object. */
+export const createPlayer = ({
+  name,
+  isAI,
+}: Omit<ChessPlayer, 'score'>): ChessPlayer => ({
+  name,
+  score: 0,
+  isAI,
+});
+
+/** Create a chess player object. */
+export const createAIPlayer = () =>
+  createPlayer({ name: 'Computer', isAI: true });
 
 /**
  * Create a human player and an AI player, and return them
  * grouped by chess piece colors.
  */
-export const createHumanAndComputer = ({
+export const createPlayers = ({
   playerColor,
+  playerName = 'Me',
 }: {
   playerColor: ChessPieceColor | null;
-}): Record<ChessPieceColor, ChessPlayer> => {
-  const user = createUser('Me');
-  const computer = createUser('Stockfish');
-  const userColor = playerColor ?? 'w';
-  const opponentColor = invertPieceColor(userColor);
+  playerName?: string;
+}): ChessPlayers => {
+  if (!playerColor) {
+    return {
+      w: createAIPlayer(),
+      b: createAIPlayer(),
+    };
+  }
+  const opponentColor = invertPieceColor(playerColor);
   return {
-    [userColor]: user,
-    [opponentColor]: computer,
-  } as Record<ChessPieceColor, ChessPlayer>;
+    [playerColor]: createPlayer({ name: playerName }),
+    [opponentColor]: createAIPlayer(),
+  } as ChessPlayers;
 };
-
-/**
- * Create two AI players and return them grouped by chess piece colors.
- */
-export const createComputers = (): Record<ChessPieceColor, ChessPlayer> => ({
-  w: createUser('Stockfish'),
-  b: createUser('Stockfish'),
-});

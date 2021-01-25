@@ -1,18 +1,23 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import type { Move } from 'chess.js';
+import sample from 'lodash/sample';
 
-import { SCORE_DRAW, SCORE_WIN } from '~app/features/chess/constants';
+import {
+  INITIAL_FEN,
+  SCORE_DRAW,
+  SCORE_WIN,
+} from '~app/features/chess/constants';
 import type {
-  ChessBoardData,
   ChessMove,
   ChessPieceColor,
-  ChessPlayer,
   ChessSquareName,
 } from '~app/features/chess/types';
-import { ChessGameOverType } from '~app/features/chess/types';
+import { ChessPlayer, ChessResult } from '~app/features/chess/types';
 import {
+  createAIPlayer,
   createPieces,
+  createPlayers,
   invertPieceColor,
   isCastling,
   isEnPassant,
@@ -20,51 +25,58 @@ import {
   shiftSquareName,
 } from '~app/features/chess/utils';
 
-import { initialChessState } from './state';
+import { ChessState, initialChessState } from './state';
+
+interface ChessConfig
+  extends Pick<ChessState, 'duration' | 'engineLevel' | 'increment'> {
+  mode: 'play' | 'simulate';
+  playerColor: ChessPieceColor | 'random';
+}
 
 const chessSlice = createSlice({
   name: 'chess',
   initialState: initialChessState,
   // Note that mutable reducers *ONLY* work inside slice.
   reducers: {
-    // ---------- Game definitions ---------- //
-    // setDuration
-    setDuration: (chess, action: PayloadAction<number>) => {
-      chess.duration = action.payload;
-    },
-    // setIncrement
-    setIncrement: (chess, action: PayloadAction<number>) => {
-      chess.increment = action.payload;
-    },
-    // setPlayerColr
-    setPlayerColor: (chess, action: PayloadAction<ChessPieceColor | null>) => {
-      const playerColor = action.payload;
-      chess.playerColor = playerColor;
-      chess.isFlipped = playerColor === 'b';
-    },
-    // setEngineLevel
-    setEngineLevel: (chess, action: PayloadAction<number>) => {
-      chess.engineLevel = action.payload;
+    // ---------- Game configurations ---------- //
+    // Apply game settings at one go.
+    configureGame: (chess, action: PayloadAction<ChessConfig>) => {
+      const {
+        duration,
+        engineLevel,
+        increment,
+        mode,
+        playerColor,
+      } = action.payload;
+
+      chess.duration = duration;
+      chess.increment = increment;
+
+      if (mode === 'simulate') {
+        chess.players.w = createAIPlayer();
+        chess.players.b = createAIPlayer();
+        chess.playerColor = null;
+      } else {
+        // Non-null assumption is needed because the return type `lodash.sample()`
+        // contains `undefined`, while this never happens in our case.
+        const color =
+          playerColor === 'random'
+            ? sample<ChessPieceColor>(['b', 'w'])!
+            : playerColor;
+        chess.playerColor = color;
+        chess.players = createPlayers({ playerColor: color });
+        chess.isFlipped = color === 'b';
+      }
+
+      chess.engineLevel = engineLevel;
     },
 
-    // ---------- Pieces ---------- //
-    // setPieces
-    setPieces: (chess, action: PayloadAction<{ board: ChessBoardData }>) => {
-      chess.pieces = createPieces(action.payload.board);
-    },
-    /**
-     * movePiece
-     * Visually move the piece, without updating movelist. Used for pawn promotion.
-     */
-    movePiece: (chess, action: PayloadAction<ChessMove>) => {
-      const { from, to } = action.payload;
-      // Find the ID of the piece that just moved.
-      const movedPieceId = chess.pieces.positions[from]!;
-      // Set the piece to the target square.
-      // This will remove any captured piece from the square.
-      chess.pieces.positions[to] = movedPieceId;
-      // Remove piece from the original square.
-      delete chess.pieces.positions[from];
+    // ---------- Players ---------- //
+    // setPlayers
+    setPlayer: (chess, action: PayloadAction<{ player: ChessPlayer }>) => {
+      if (chess.playerColor) {
+        chess.players[chess.playerColor] = action.payload.player;
+      }
     },
 
     // ---------- Moves ---------- //
@@ -103,6 +115,7 @@ const chessSlice = createSlice({
         //    It should be the adjacent square over which the king crosses.
         const rookNewSquare = shiftSquareName(to, isQueenSide ? 1 : -1);
         // 4. Move the rook.
+
         chess.pieces.positions[rookNewSquare] = rookId;
         delete chess.pieces.positions[rookSquare];
       }
@@ -130,10 +143,11 @@ const chessSlice = createSlice({
     // undoMove
     undoMove: (
       chess,
-      action: PayloadAction<{ board: ChessBoardData; length?: number }>,
+      action: PayloadAction<{ fen: string; length?: number }>,
     ) => {
+      const { fen, length } = action.payload;
       // Default undo length to 1
-      const undoLength = action.payload.length ?? 1;
+      const undoLength = length ?? 1;
       // Update movelist.
       // 1. Find the range of moves to remove.
       const startIndex = undoLength * -1;
@@ -145,7 +159,7 @@ const chessSlice = createSlice({
         chess.turn = invertPieceColor(chess.turn);
       }
       // 4. Update pieces.
-      chess.pieces = createPieces(action.payload.board);
+      chess.pieces = createPieces(fen);
     },
     // clearMoves
     clearMoves: chess => {
@@ -153,106 +167,56 @@ const chessSlice = createSlice({
       chess.turn = 'w';
     },
 
-    // ---------- Players ---------- //
-    // setPlayers
-    setPlayers: (
-      chess,
-      action: PayloadAction<Record<ChessPieceColor, ChessPlayer>>,
-    ) => {
-      const players = action.payload;
-      Object.assign(chess.players.w, players.w);
-      Object.assign(chess.players.b, players.b);
+    // ---------- Pieces ---------- //
+    /**
+     * movePiece
+     * Visually move the piece, without updating movelist. Used for pawn promotion.
+     */
+    movePiece: (chess, action: PayloadAction<ChessMove>) => {
+      const { from, to } = action.payload;
+      // Find the ID of the piece that just moved.
+      const movedPieceId = chess.pieces.positions[from]!;
+      // Set the piece to the target square.
+      // This will remove any captured piece from the square.
+      chess.pieces.positions[to] = movedPieceId;
+      // Remove piece from the original square.
+      delete chess.pieces.positions[from];
     },
 
     // ---------- Game control ---------- //
-    // checkmate
-    checkmate: (chess, action: PayloadAction<{ winner: ChessPieceColor }>) => {
+    // setGameOver
+    setGameOver: (chess, action: PayloadAction<ChessResult>) => {
       const { winner } = action.payload;
-      chess.gameOver = {
-        type: ChessGameOverType.Checkmate,
-        winner,
-      };
-      chess.players[winner].score += 1;
-      chess.isFrozen = true;
-    },
-    // timeout
-    timeout: (chess, action: PayloadAction<{ winner: ChessPieceColor }>) => {
-      const { winner } = action.payload;
-      chess.gameOver = {
-        type: ChessGameOverType.Timeout,
-        winner,
-      };
-      chess.players[winner].score += SCORE_WIN;
-      chess.isFrozen = true;
-    },
-    // resignGame
-    resign: chess => {
-      if (!chess.gameOver && chess.playerColor) {
-        const winner = invertPieceColor(chess.playerColor);
-        chess.gameOver = {
-          type: ChessGameOverType.Resignation,
-          winner,
-        };
+      chess.result = action.payload;
+      if (winner) {
         chess.players[winner].score += SCORE_WIN;
-        chess.isFrozen = true;
+      } else {
+        chess.players.w.score += SCORE_DRAW;
+        chess.players.b.score += SCORE_DRAW;
       }
     },
-    // stalemate
-    stalemate: chess => {
-      chess.gameOver = {
-        type: ChessGameOverType.Stalemate,
-        winner: null,
-      };
-      chess.players.w.score += SCORE_DRAW;
-      chess.players.b.score += SCORE_DRAW;
-      chess.isFrozen = true;
-    },
-    // notEnoughMaterial
-    notEnoughMaterial: chess => {
-      chess.gameOver = {
-        type: ChessGameOverType.NotEnoughMaterial,
-        winner: null,
-      };
-      chess.players.w.score += SCORE_DRAW;
-      chess.players.b.score += SCORE_DRAW;
-      chess.isFrozen = true;
-    },
-    // repetition
-    repetition: chess => {
-      chess.gameOver = {
-        type: ChessGameOverType.Repetition,
-        winner: null,
-      };
-      chess.players.w.score += SCORE_DRAW;
-      chess.players.b.score += SCORE_DRAW;
-      chess.isFrozen = true;
-    },
     // resetGame
-    resetGame: (
-      chess,
-      action: PayloadAction<{ board: ChessBoardData; alternate: boolean }>,
-    ) => {
-      // Reset pieces
-      chess.pieces = createPieces(action.payload.board);
+    resetGame: chess => {
+      // Reset pieces.
+      chess.pieces = createPieces(INITIAL_FEN);
       // Reset moves.
       chess.moves = [];
       // Reset turn.
       chess.turn = 'w';
-      // Setup a rematch state
-      if (action.payload.alternate) {
-        // Swap player colors.
-        [chess.players.w, chess.players.b] = [chess.players.b, chess.players.w];
-        // Toggle the user's color.
-        if (chess.playerColor) {
-          chess.playerColor = invertPieceColor(chess.playerColor);
-        }
-        // Flip the board.
-        chess.isFlipped = !chess.isFlipped;
+      // Reset game result.
+      chess.result = null;
+      // Swap player colors.
+      [chess.players.w, chess.players.b] = [chess.players.b, chess.players.w];
+      // const temp = chess.players.w;
+      // chess.players.w = chess.players.b;
+      // chess.players.b = temp;
+      if (chess.playerColor) {
+        chess.playerColor = invertPieceColor(chess.playerColor);
       }
-      // Reset game over status.
-      chess.gameOver = false;
       // Unfreeze gameplay.
       chess.isFrozen = false;
+      // Flip board.
+      chess.isFlipped = !chess.isFlipped;
     },
     // flipBoard
     flipBoard: chess => {

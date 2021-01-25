@@ -13,6 +13,10 @@ export const NUMBER_OF_SQUARES = NUMBER_OF_RANKS * NUMBER_OF_FILES;
 /** Chess square size in percent. (without unit) */
 export const SQUARE_SIZE = 100 / RANK_NAMES.length;
 
+// ---------- FEN ---------- //
+
+export const INITIAL_FEN = `rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1`;
+
 // ---------- Scores ---------- //
 
 /** Score gained by a win. */
@@ -20,7 +24,20 @@ export const SCORE_WIN = 1;
 /** Score gained by a draw. */
 export const SCORE_DRAW = 0.5;
 
-// ---------- User settings ---------- //
+// ---------- Settings ---------- //
+
+// Time given to play per side. (in minutes)
+export const DEFAULT_DURATION = 10;
+// Time gained by playing a move. (in seconds)
+export const DEFAULT_INCREMENT = 2;
+// Game mode.
+export const DEFAULT_MODE = 'play';
+// Piece color for the player.
+export const DEFAULT_PLAYER_COLOR = 'w';
+// Strength of game AI.
+export const DEFAULT_ENGINE_LEVEL = 0;
+
+// ---------- User configurable settings ---------- //
 
 // Promote automatically to queen without opening confirmation dialog.
 export const DEFAULT_AUTO_QUEEN = false;

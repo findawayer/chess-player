@@ -4,5 +4,5 @@ export * from './guides';
 export * from './moves';
 export * from './pieces';
 export * from './players';
+export * from './result';
 export * from './squares';
-export * from './status';

@@ -1,25 +1,33 @@
 import type { ChessBoardColor } from '@prisma/client';
 
+import {
+  DEFAULT_DURATION,
+  DEFAULT_ENGINE_LEVEL,
+  DEFAULT_INCREMENT,
+  DEFAULT_PLAYER_COLOR,
+  INITIAL_FEN,
+} from '~app/features/chess/constants';
 import type {
-  ChessGameOver,
   ChessMoveLog,
   ChessPieceColor,
   ChessPieces,
   ChessPlayers,
+  ChessResult,
 } from '~app/features/chess/types';
+import { createPieces, createPlayers } from '~app/features/chess/utils';
 
 export interface ChessState {
   duration: number;
   increment: number;
   turn: ChessPieceColor;
   pieces: ChessPieces;
-  moves: ChessMoveLog[];
   players: ChessPlayers;
   playerColor: ChessPieceColor | null;
+  moves: ChessMoveLog[];
   engineLevel: number;
+  result: ChessResult | null;
   isFlipped: boolean;
   isFrozen: boolean;
-  gameOver: ChessGameOver | false;
   autoQueen: boolean;
   boardColor: ChessBoardColor;
   showLegal: boolean;
@@ -29,36 +37,32 @@ export interface ChessState {
 /** Create default state related for `chess` slice. */
 export const initialChessState: ChessState = {
   // Time given to play per side. (in milliseconds)
-  duration: 10 * 60 * 1000, // 10 min.
+  duration: DEFAULT_DURATION * 1000 * 60, // minutes to miliseconds
   // Time gained by playing a move. (in milliseconds)
-  increment: 2 * 1000, // 2 sec.
+  increment: DEFAULT_INCREMENT * 1000, // seconds to miliseconds
   // The time during which a player can move their pieces. Represented by the piece color.
   turn: 'w',
   // Chess pieces. All pieces stored in `byId` object, and their positions on board
   // can be found in `positions` object.
-  pieces: {
-    byId: {},
-    positions: {},
-  },
+  pieces: createPieces(INITIAL_FEN),
+  // Chess players playing white and black pieces respectively. The playing color can
+  // switch on rematches, so do NOT consider the keys as player identifiers.
+  players: createPlayers({ playerColor: DEFAULT_PLAYER_COLOR }),
+  // The piece color that the user is playing. `null` means both players are AI.
+  playerColor: DEFAULT_PLAYER_COLOR,
   // List of moves played for a single chess game.
   // Contains move string in SAN format, along with its move path `from` & `to`.
   moves: [],
-  // Chess players playing white and black pieces respectively. The playing color can
-  // switch on rematches, so do NOT consider the keys as player identifiers.
-  players: {
-    w: { name: '', score: 0 },
-    b: { name: '', score: 0 },
-  },
-  // The piece color that the user is playing. `null` means both players are AI.
-  playerColor: 'w',
   // The engine's strength.
-  engineLevel: 0,
+  engineLevel: DEFAULT_ENGINE_LEVEL,
+  // Object containing the type & the winner of a game result.
+  result: null,
   // Whether the board direction is being flipped or not.
   isFlipped: false,
-  // Whether the gameplay is currently allowed or not.
+  // Whether the gameplay is currently allowed or not. Game is frozen
+  // - Once the game is over until next game begins.
+  // - Once the game
   isFrozen: false,
-  // Game over status expressed either a object or `false`.
-  gameOver: false,
   // Promote automatically to queen without opening confirmation dialog.
   autoQueen: false,
   // Chess board theme.

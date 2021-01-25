@@ -32,6 +32,7 @@ export const mapChessSettings = (settings: ChessSettings) => ({
   chessShowRecent: settings.showRecent,
 });
 
+// TODO: replace me with useUser
 export const useChessSettings = (me: CurrentUser | null) => {
   // Chess settings from currently authenticated user.
   const [settings, setSettings] = useState(createChessSettings(me));

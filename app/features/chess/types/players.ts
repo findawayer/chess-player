@@ -1,16 +1,13 @@
 import type { ChessPieceColor } from './pieces';
 
-/**
- * Chess player side.
- */
+/** Single chess player. */
 export interface ChessPlayer {
+  /** Player name. */
   name: string;
-  // Game score.
+  /** Game score accumulated during this game session. */
   score: number;
-  // rating: number;
+  /** Boolean indicating the player is an AI. */
+  isAI?: boolean;
 }
 
-/**
- * Group of both chess player sides.
- */
 export type ChessPlayers = Record<ChessPieceColor, ChessPlayer>;

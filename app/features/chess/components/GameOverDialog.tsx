@@ -10,8 +10,8 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import type { FunctionComponent } from 'react';
 import { useEffect, useState } from 'react';
 
-import type { ChessGameOver, ChessPieceColor } from '~app/features/chess/types';
-import { ChessGameOverType } from '~app/features/chess/types';
+import type { ChessResult, ChessPieceColor } from '~app/features/chess/types';
+import { ChessResultType } from '~app/features/chess/types';
 import { getFullPieceColor } from '~app/features/chess/utils';
 
 const useStyles = makeStyles<Theme>(theme =>
@@ -38,32 +38,32 @@ const useStyles = makeStyles<Theme>(theme =>
 );
 
 const getTitle = (
-  winner: ChessPieceColor | null,
-  playerColor: ChessPieceColor | null,
+  winner?: ChessPieceColor,
+  playerColor?: ChessPieceColor | null,
 ): string => {
   if (!winner) return 'Draw';
   if (playerColor) return `You ${winner === playerColor ? 'win!' : 'lose…'}`;
   return `${getFullPieceColor(winner)} wins!`;
 };
 
-const getDescription = (gameOver: ChessGameOver): string => {
+const getDescription = (gameOver: ChessResult): string => {
   switch (gameOver.type) {
-    case ChessGameOverType.Checkmate:
+    case ChessResultType.Checkmate:
       return 'by checkmate';
 
-    case ChessGameOverType.Resignation:
+    case ChessResultType.Resignation:
       return `by resignation`;
 
-    case ChessGameOverType.Timeout:
+    case ChessResultType.Timeout:
       return 'on time';
 
-    case ChessGameOverType.Stalemate:
+    case ChessResultType.Stalemate:
       return 'by stalemate';
 
-    case ChessGameOverType.Repetition:
+    case ChessResultType.Repetition:
       return 'by threefold repetition';
 
-    case ChessGameOverType.NotEnoughMaterial:
+    case ChessResultType.NotEnoughMaterial:
       return 'Neither player has enough materials for checkmate.';
 
     default:
@@ -72,13 +72,13 @@ const getDescription = (gameOver: ChessGameOver): string => {
 };
 
 interface GameOverDialogProps {
-  gameOver: ChessGameOver | false;
+  result: ChessResult | null;
   playerColor: ChessPieceColor | null;
   rematch(alternate: boolean): void;
 }
 
 const GameOverDialog: FunctionComponent<GameOverDialogProps> = ({
-  gameOver,
+  result,
   playerColor,
   rematch,
 }) => {
@@ -91,8 +91,8 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = ({
 
   // Toggle the dialog's visibility based on the gameOver props change.
   useEffect(() => {
-    setIsOpen(Boolean(gameOver));
-  }, [gameOver]);
+    setIsOpen(Boolean(result));
+  }, [result]);
 
   return (
     <Dialog
@@ -111,7 +111,7 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = ({
           className={classes.title}
           aria-level={1}
         >
-          {gameOver ? getTitle(gameOver.winner, playerColor) : ''}
+          {result ? getTitle(result.winner, playerColor) : ''}
         </Typography>
         <Typography
           color="textSecondary"
@@ -119,7 +119,7 @@ const GameOverDialog: FunctionComponent<GameOverDialogProps> = ({
           id="chessGameOverDialogDescription"
           className={classes.description}
         >
-          {gameOver ? getDescription(gameOver) : ''}
+          {result ? getDescription(result) : ''}
         </Typography>
       </DialogTitle>
       <DialogContent className={classes.content}>

@@ -20,7 +20,7 @@ const GameControl: FunctionComponent<GameControlProps> = ({
   openSettings,
 }) => {
   return (
-    <Box display="flex" flexWrap="nowrap" justifyContent="space-between">
+    <Box display="flex" flexWrap="nowrap" justifyContent="space-around">
       <Tooltip title="Rotate board">
         <IconButton edge="start" onClick={flipBoard}>
           <Cached fontSize="inherit" />
