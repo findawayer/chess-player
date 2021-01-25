@@ -49,11 +49,22 @@ const useStyles = makeStyles({
       flexFlow: 'column-reverse',
     },
   },
-  piece: {
+  button: {
     position: 'static',
     width: '100%',
+    padding: 0,
     backgroundColor: 'transparent',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '80%',
+    border: 0,
+    appearance: 'none',
     cursor: 'pointer',
+    '&::before': {
+      content: '""',
+      display: 'block',
+      paddingTop: '100%',
+    },
     // Hovered
     '&:hover': {
       backgroundColor: 'rgba(0 0 0 / 8%)',
@@ -96,7 +107,7 @@ const PromotionDialog: FunctionComponent<PromotionDialogProps> = ({
           <button
             key={variant}
             type="button"
-            className={clsx(classes.piece, pieceClass({ color, variant }))}
+            className={clsx(classes.button, pieceClass({ color, variant }))}
             onClick={() => selectPromotion(variant)}
           >
             <Typography variant="srOnly">

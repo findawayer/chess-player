@@ -34,6 +34,32 @@ export const createSquareCSS = () => {
   return css;
 };
 
+export const createPieceCSS = () => {
+  const dictionary = {
+    bk: 'BlackKing',
+    bq: 'BlackQueen',
+    br: 'BlackRook',
+    bb: 'BlackBishop',
+    bn: 'BlackKnight',
+    bp: 'BlackPawn',
+    wk: 'WhiteKing',
+    wq: 'WhiteQueen',
+    wr: 'WhiteRook',
+    wb: 'WhiteBishop',
+    wn: 'WhiteKnight',
+    wp: 'WhitePawn',
+  };
+
+  return Object.keys(dictionary).reduce((css, key) => {
+    css[`& .piece-${key}`] = {
+      backgroundImage: `url(/graphics/${
+        dictionary[key as keyof typeof dictionary]
+      }.svg)`,
+    };
+    return css;
+  }, {} as Record<string, unknown>);
+};
+
 export default makeStyles({
   // This keeps 1:1 aspect ratio
   root: {
@@ -44,6 +70,8 @@ export default makeStyles({
       display: 'block',
       paddingTop: '100%',
     },
+    ...createSquareCSS(),
+    ...createPieceCSS(),
   },
   board: {
     position: 'absolute',
@@ -51,6 +79,5 @@ export default makeStyles({
     left: 0,
     width: '100%',
     height: '100%',
-    ...createSquareCSS(),
   },
 });
